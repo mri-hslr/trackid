@@ -8,8 +8,9 @@ function Fork() {
 
     const section = document.getElementById(`${track}-track`);
 
-    if (section) ({
-       lenis.scrollTo(section);
+    if (section) {
+      section.scrollIntoView({
+        behavior: "smooth",
       });
     }
   };
