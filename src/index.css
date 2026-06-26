@@ -1,9 +1,7 @@
 
-/* stylelint-disable at-rule-no-unknown */
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-/* stylelint-enable at-rule-no-unknown */
+@tailwind base; /* stylelint-disable-line at-rule-no-unknown */
+@tailwind components; /* stylelint-disable-line at-rule-no-unknown */
+@tailwind utilities; /* stylelint-disable-line at-rule-no-unknown */
  
 /* The ONE custom CSS rule in the entire project — the signature teardrop
    divider, copied verbatim from phase-0-reference.html. Every section
