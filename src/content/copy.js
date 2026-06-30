@@ -7,6 +7,25 @@ export const COPY = {
     wordmark: 'TrakID',
     tagline: 'Beautiful enough to wear. Smart enough to never lose.', // TBD, placeholder
     scrollCue: 'Scroll to explore',
+    // Info panel content for the scroll-driven showcase sequence
+    showcase: {
+      productName: 'The Classic Teardrop',
+      description: 'Sterling silver. Lab-grown sapphire. GPS within.',
+      features: [
+        'Real-Time GPS',
+        'SOS Emergency',
+        'Water Resistant',
+      ],
+    },
+    showcaseSecondary: {
+      productName: 'Designed for Life',
+      description: 'Aerospace-grade materials. Magnetic charging. Built to withstand childhood.',
+      features: [
+        'IP67 Water Resistant',
+        'Magnetic Snap Charge',
+        'Impact Resistant',
+      ],
+    },
   },
 
   fork: {
