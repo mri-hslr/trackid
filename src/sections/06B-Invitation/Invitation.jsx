@@ -11,6 +11,7 @@ import {
 import SectionWrapper from "../../components/SectionWrapper";
 import Divider from "../../components/Divider";
 import FormField from "../06A-InstitutionalAsk/FormField";
+import TopographyBackground from "../../components/TopographyBackground";
 
 import { submitLead } from "../../services/leadSubmission";
 import { fadeUp, staggerContainer } from "../../motion/variants";
@@ -169,7 +170,11 @@ export default function Invitation() {
   }
 
   return (
-    <SectionWrapper id="invitation">
+    <SectionWrapper id="invitation" className="relative isolate overflow-hidden">
+      <div className="pointer-events-none absolute inset-0 -z-10">
+        <TopographyBackground />
+      </div>
+
       <motion.div
         variants={staggerContainer}
         initial="initial"

@@ -1,5 +1,6 @@
 import { School, Users, ArrowRight } from "lucide-react";
 import { useTrack } from "../../context/TrackContext";
+import TopographyBackground from "../../components/TopographyBackground";
 
 function Fork() {
   const { activeTrack, setActiveTrack } = useTrack();
@@ -17,7 +18,11 @@ function Fork() {
   };
 
   return (
-    <section className="min-h-screen bg-gradient-to-br from-parchment via-white to-stone flex items-center justify-center px-6 py-24">
+    <section className="relative isolate overflow-hidden min-h-screen bg-gradient-to-br from-parchment via-white to-stone flex items-center justify-center px-6 py-24">
+      <div className="pointer-events-none absolute inset-0 -z-10">
+        <TopographyBackground />
+      </div>
+
       <div className="max-w-7xl w-full">
 
         {/* Heading */}

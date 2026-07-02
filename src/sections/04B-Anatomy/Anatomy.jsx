@@ -19,6 +19,7 @@ import {
 import SectionWrapper from "../../components/SectionWrapper";
 import Divider from "../../components/Divider";
 import PendantCard from "./PendantCard";
+import TopographyBackground from "../../components/TopographyBackground";
 
 import { COPY } from "../../content/copy";
 import { ASSETS } from "../../content/assets";
@@ -87,7 +88,11 @@ export default function Anatomy() {
   }
 
   return (
-    <SectionWrapper id="anatomy">
+    <SectionWrapper id="anatomy" className="relative isolate overflow-hidden">
+      <div className="pointer-events-none absolute inset-0 -z-10">
+        <TopographyBackground />
+      </div>
+
       {/* ==========================================================
                             HERO
       ========================================================== */}
