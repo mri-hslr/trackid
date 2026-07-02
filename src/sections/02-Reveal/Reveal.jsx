@@ -2,6 +2,7 @@
 import { useEffect, useRef } from 'react';
 import { COPY } from '../../content/copy';
 import RevealScene2D from './RevealScene2D';
+import TopographyBackground from '../../components/TopographyBackground';
 
 const { eyebrow } = COPY.reveal;
 
@@ -31,7 +32,10 @@ export default function Reveal() {
       className="bg-parchment"
       style={{ height: '500vh' }}
     >
-      <div className="sticky top-0 h-screen flex flex-col items-center justify-center gap-8 px-6">
+      <div className="relative isolate overflow-hidden sticky top-0 h-screen flex flex-col items-center justify-center gap-8 px-6">
+        <div className="pointer-events-none absolute inset-0 -z-10">
+          <TopographyBackground />
+        </div>
 
         <span className="font-mono text-xs uppercase tracking-widest text-accentDeep">
           {eyebrow}
