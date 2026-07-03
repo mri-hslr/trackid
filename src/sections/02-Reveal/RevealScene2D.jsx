@@ -10,12 +10,6 @@ const PIECES = [
   { key: 'front',   src: '/assets/images/piece-front.png',   finalX: 300,  label: 'Front Shell' },
 ];
 
-function easeInOut(p) {
-  return p < 0.5
-    ? 2 * p * p
-    : 1 - Math.pow(-2 * p + 2, 2) / 2;
-}
-
 export default function RevealScene2D({ progressRef }) {
   const pieceRefs = useRef([]);
   const labelRefs = useRef([]);
@@ -29,20 +23,19 @@ export default function RevealScene2D({ progressRef }) {
   useEffect(() => {
     function animate() {
       const p = progressRef.current;
-      const eased = easeInOut(p);
       const cursor = cursorRef.current;
 
-      currentCursorX.current += (cursor.x - currentCursorX.current) * 0.08;
-      currentCursorY.current += (cursor.y - currentCursorY.current) * 0.08;
-      currentScale.current += ((1 + currentCursorY.current * 0.03) - currentScale.current) * 0.08;
+      currentCursorX.current += (cursor.x - currentCursorX.current) * 0.15;
+      currentCursorY.current += (cursor.y - currentCursorY.current) * 0.15;
+      currentScale.current += ((1 + currentCursorY.current * 0.03) - currentScale.current) * 0.15;
 
       PIECES.forEach((piece, i) => {
-        const baseTargetX = piece.finalX * eased;
+        const baseTargetX = piece.finalX * p;
         const depthMultiplier = 0.7 + (i + 1) * 0.12;
         const cursorDrift = currentCursorX.current * depthMultiplier * 22;
         const targetX = baseTargetX + cursorDrift;
 
-        const lerpSpeed = 0.06 + i * 0.01;
+        const lerpSpeed = 0.18 + i * 0.02;
         currentX.current[i] += (targetX - currentX.current[i]) * lerpSpeed;
 
         const el = pieceRefs.current[i];
@@ -73,7 +66,6 @@ export default function RevealScene2D({ progressRef }) {
   return (
     <div className="relative w-full max-w-5xl mx-auto flex items-center justify-center" style={{ height: '380px' }}>
 
-      {/* Radial glow behind pieces */}
       <div
         className="absolute rounded-full pointer-events-none"
         style={{

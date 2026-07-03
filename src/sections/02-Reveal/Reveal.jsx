@@ -5,6 +5,22 @@ import RevealScene2D from './RevealScene2D';
 
 const { eyebrow } = COPY.reveal;
 
+function mapProgress(raw) {
+  if (raw < 0.40) {
+    // Explode: ease-out
+    const t = raw / 0.40;
+    return 1 - Math.pow(1 - t, 3);
+  } else if (raw < 0.50) {
+    // Hold fully open
+    return 1;
+  } else {
+    // Recombine: ease-in, finishes exactly at raw = 1
+    const t = Math.min(1, (raw - 0.50) / 0.50);
+    return 1 - Math.pow(t, 3);
+  }
+}
+
+
 export default function Reveal() {
   const progressRef = useRef(0);
   const sectionRef = useRef(null);
@@ -17,11 +33,10 @@ export default function Reveal() {
       const total = el.offsetHeight - window.innerHeight;
       const scrolled = -rect.top;
       const raw = Math.min(Math.max(scrolled / total, 0), 1);
-      const p = Math.min(1, raw / 0.8);
-      progressRef.current = p;
+      progressRef.current = mapProgress(raw);
     };
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -29,7 +44,7 @@ export default function Reveal() {
     <section
       ref={sectionRef}
       className="bg-parchment"
-      style={{ height: '500vh' }}
+      style={{ height: '280vh' }}
     >
       <div className="sticky top-0 h-screen flex flex-col items-center justify-center gap-8 px-6">
 
