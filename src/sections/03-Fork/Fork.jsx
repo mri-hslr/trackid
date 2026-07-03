@@ -7,7 +7,7 @@ function Fork() {
   const handleSelect = (track) => {
     setActiveTrack(track);
 
-    const section = document.getElementById(`${track}-track`);
+    const section = document.getElementById( track === "institution" ? "compliance-case" : "anatomy" );
 
     if (section) {
       section.scrollIntoView({
