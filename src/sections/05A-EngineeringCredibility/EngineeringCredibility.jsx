@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { fadeUp, staggerContainer, EASE } from '../../motion/variants';
 import { COPY } from '../../content/copy';
 import SpecGrid from './SpecGrid';
+import TopographyBackground from '../../components/TopographyBackground';
 
 const { eyebrow, headline, founders, specs } = COPY.engineeringCredibility;
 
@@ -15,7 +16,11 @@ const slideInLeft = {
 
 export default function EngineeringCredibility() {
   return (
-    <section className="bg-parchment py-24 px-6">
+    <section className="relative isolate overflow-hidden bg-parchment py-24 px-6">
+      <div className="pointer-events-none absolute inset-0 -z-10">
+        <TopographyBackground />
+      </div>
+
       <div className="max-w-5xl mx-auto flex flex-col gap-12">
 
         {/* Eyebrow + Headline */}

@@ -3,6 +3,7 @@ import { motion, useScroll, useTransform, useReducedMotion } from "framer-motion
 
 import SectionWrapper from "../../components/SectionWrapper";
 import Divider from "../../components/Divider";
+import TopographyBackground from "../../components/TopographyBackground";
 
 import { COPY } from "../../content/copy";
 import { fadeUp, staggerContainer, EASE } from "../../motion/variants";
@@ -38,7 +39,10 @@ export default function ComplianceCase() {
   const glowY = useTransform(scrollYProgress, [0, 1], reducedMotion ? [0, 0] : [40, -40]);
 
   return (
-    <SectionWrapper id="compliance-case">
+    <SectionWrapper id="compliance-case" className="relative isolate overflow-hidden">
+      <div className="pointer-events-none absolute inset-0 -z-10">
+        <TopographyBackground />
+      </div>
 
       {/* ================================================================
           HERO — headline + pendant timeline
