@@ -1,183 +1,128 @@
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&family=Inter:wght@300;400;500&family=JetBrains+Mono:wght@400;700&display=swap');
-
+/* stylelint-disable at-rule-no-unknown */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 /* stylelint-enable at-rule-no-unknown */
 
-/* ============================================================
-   1. OBERMANN COLOR VARIABLES (THE FIX)
-   ============================================================ */
-:root {
-  /* --- Core Brand Colours (Flipped for Dark Theme) --- */
-  --color-ink: #ffffff;         /* Was black, now pure white */
-  --color-parchment: #050205;   /* Was white, now Void Black */
-  --color-cream: #130611;       /* Deep plum for cards */
-  --color-gold: #ffffff;        /* Action accents now white */
-  --color-mist: #a1a1aa;        /* Muted silver */
-  --color-obsidian: #050205;    /* Void black */
+/* ==========================================================
+   TRAKID GLOBAL STYLES
+========================================================== */
 
-  /* --- Semantic Aliases --- */
-  --bg-primary: var(--color-parchment);
-  --bg-dark: var(--color-obsidian);
-  --bg-card: var(--color-cream);
-  --text-primary: var(--color-ink);
-  --text-on-dark: var(--color-ink);
-  --text-secondary: var(--color-mist);
-  --text-accent: var(--color-gold);
-  
-  --border-default: rgba(255, 255, 255, 0.1);
-  --border-on-dark: rgba(255, 255, 255, 0.15);
-
-  /* Typography */
-  --font-display: 'Plus Jakarta Sans', sans-serif;
-  --font-body: 'Inter', system-ui, sans-serif;
-  
-  /* Type Scale & Tracking */
-  --tracking-display: -0.02em;
-  --tracking-body: 0.01em;
-  --tracking-caps: 0.15em;
-  --text-body: 16px;
-  --text-small: 13px;
-  --text-micro: 11px;
-
-  /* Spacing & Layout */
-  --space-section: clamp(80px, 12vw, 160px);
-  --max-width: 1440px;
-  --container-padding: clamp(24px, 5vw, 80px);
+/* The ONE custom CSS rule in the entire project — the signature
+   teardrop divider copied from the design reference.
+*/
+.divider-teardrop {
+  display: flex;
+  align-items: center;
 }
 
-/* ============================================================
-   2. GLOBAL RESETS & THEME ENFORCEMENT
-   ============================================================ */
-*, *::before, *::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+.divider-teardrop::before,
+.divider-teardrop::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    transparent,
+    currentColor,
+    transparent
+  );
+  opacity: 0.35;
 }
 
-html, body, #root, main {
-  width: 100%;
-  min-height: 100vh;
-  overflow-x: hidden;
-}
-
-html {
-  background-color: var(--bg-primary); /* Forces black background globally */
-  color: var(--text-primary);          /* Forces white text globally */
-  font-family: var(--font-body);
-  font-size: var(--text-body);
-  line-height: 1.6;
-  letter-spacing: var(--tracking-body);
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-a { color: inherit; text-decoration: none; }
-button { background: none; border: none; cursor: pointer; }
-
-/* ============================================================
-   3. THE AUTHENTIC MOODY BACKGROUND GRADIENT
-   ============================================================ */
-.bg-obermann-mesh {
-  /* Subdued, dark plum transitioning to void black. No blown-out pink. */
-  background: radial-gradient(circle at 50% 50%, #12050E 0%, #090207 40%, #050205 100%);
-  position: relative;
-}
-
-/* ============================================================
-   4. UTILITY CLASSES & COMPONENTS
-   ============================================================ */
-.container {
-  width: 100%;
-  max-width: var(--max-width);
-  margin: 0 auto;
-  padding-inline: var(--container-padding);
-}
-
-.section { padding-block: var(--space-section); }
-
-.eyebrow {
-  font-family: var(--font-body);
-  font-size: var(--text-micro);
-  font-weight: 600;
-  letter-spacing: 0.35em; /* Kicker spacing */
-  text-transform: uppercase;
-  color: var(--text-secondary);
-}
-
-.headline {
-  font-family: var(--font-display);
-  font-weight: 700;
-  letter-spacing: var(--tracking-display);
-  line-height: 1.1;
-  color: var(--text-primary);
-}
-
-/* Signature teardrop element */
-.divider-teardrop { display: flex; align-items: center; }
-.divider-teardrop::before, .divider-teardrop::after {
-  content: ""; flex: 1; height: 1px; opacity: 0.2;
-  background: linear-gradient(to right, transparent, currentColor, transparent);
-}
 .divider-teardrop .bullet {
-  width: 7px; height: 9px; margin: 0 14px;
+  width: 7px;
+  height: 9px;
+  margin: 0 14px;
   border-radius: 50% 50% 50% 4%;
-  background: currentColor; opacity: 0.5; flex-shrink: 0;
+  background: currentColor;
+  opacity: 0.6;
+  flex-shrink: 0;
 }
 
-/* 3D Model Rendering Optimizations */
-.hero-pendant, .exploded-part, .connector-line, .connector-dot, .annotation {
-  backface-visibility: hidden;
-  transform-style: preserve-3d;
+
+/* Hero Pendant */
+
+.hero-pendant {
+  will-change: transform, opacity;
+  pointer-events: none;
 }
 
-/* Premium Buttons */
-.btn-solid {
-  display: inline-block;
-  padding: 14px 36px;
-  background-color: var(--text-primary);
-  color: var(--bg-primary);
-  font-family: var(--font-display);
-  font-size: var(--text-micro);
+/* Exploded Scene */
+
+.exploded-view {
+  opacity: 0;
+  position: absolute;
+  inset: 0;
+}
+
+/* Individual exploded parts */
+
+.exploded-part {
+  transform: translate(-50%, -50%);
+  will-change: transform, opacity;
+  pointer-events: none;
+}
+
+/* Labels */
+
+.annotation {
+  color: #ffffff;
+  font-size: 20px;
   font-weight: 600;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+  opacity: 0;
+  user-select: none;
+}
+
+/* Connector */
+
+.connector {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.connector-dot {
+  width: 8px;
+  height: 8px;
   border-radius: 9999px;
-  transition: all 0.3s ease;
+  background: #38bdf8;
+  flex-shrink: 0;
+  transform: scale(0);
 }
 
-.btn-solid:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 30px rgba(255, 255, 255, 0.1);
-  background-color: #F4F4F5;
+.connector-line {
+  width: 120px;
+  height: 2px;
+  background: #38bdf8;
+  transform-origin: left center;
+  transform: scaleX(0);
 }
 
-/* ============================================================
-   5. CUSTOM COMPONENT STYLES (Preserved from your files)
-   ============================================================ */
-.counter {
-  font-size: 16px;
-  padding: 5px 10px;
-  border-radius: 5px;
-  color: var(--text-primary);
-  background: var(--bg-card);
-  border: 1px solid var(--border-default);
-  transition: border-color 0.3s;
-  margin-bottom: 24px;
-}
-.counter:hover { border-color: rgba(255,255,255,0.3); }
+/* Optional subtle glow */
 
-#center {
-  display: flex; flex-direction: column; gap: 25px;
-  place-content: center; place-items: center; flex-grow: 1;
+.connector-dot,
+.connector-line {
+  box-shadow: 0 0 10px rgba(56, 189, 248, 0.45);
 }
 
-#next-steps {
-  display: flex; border-top: 1px solid var(--border-default); text-align: left;
+/* Performance */
+
+.hero-pendant,
+.exploded-part,
+.connector-line,
+.connector-dot,
+.annotation {
+  backface-visibility: hidden;
+  transform-style: preserve-3d;}
+/* Reduced motion respect — CSS-level safety net.
+   JS-level checks via useReducedMotion() are the primary mechanism,
+   but this catches any raw CSS animations that slip through. */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
 }
-#next-steps > div { flex: 1 1 0; padding: 32px; }
-
-#docs { border-right: 1px solid var(--border-default); }
-
-#spacer { height: 88px; border-top: 1px solid var(--border-default); }
