@@ -531,7 +531,7 @@ export default function Anatomy() {
         <motion.div
           layout
           {...staggerContainer}
-          className="relative z-10 mt-20 mb-16 grid gap-10 lg:grid-cols-2"
+          className="relative z-10 mt-20 mb-16 grid gap-12 lg:grid-cols-2 max-w-[1500px] mx-auto"
         >
           {filteredItems.map((item, idx) => (
             <motion.div key={item.id} layout className="h-full">

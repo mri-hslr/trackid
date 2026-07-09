@@ -43,7 +43,7 @@ export default function PendantCard({ item }) {
         border-gold/20
         bg-white/70
         backdrop-blur
-        p-8
+        p-6
         shadow-sm
         transition-[border-color,box-shadow]
         duration-300
@@ -90,7 +90,7 @@ export default function PendantCard({ item }) {
 
       {/* Image — click to flip to the back / engraving side */}
 
-      <div className="relative flex justify-center overflow-hidden py-5" style={{ transformStyle: "preserve-3d" }}>
+      <div className="relative flex justify-center overflow-hidden py-2 mb-2" style={{ transformStyle: "preserve-3d" }}>
         <button
           type="button"
           onClick={() => setShowBack((v) => !v)}
@@ -120,11 +120,10 @@ export default function PendantCard({ item }) {
             animate={{ rotateY: showBack ? 180 : 0 }}
             transition={{ duration: 0.6, ease: EASE }}
             style={{
-              transformStyle: "preserve-3d",
-              width: 130,
-              height: 130,
-            }}
-            className="relative overflow-hidden rounded-2xl lg:!h-[150px] lg:!w-[150px]"
+  width: 220,
+  height: 220,
+}}
+className="relative overflow-hidden rounded-3xl lg:!h-[240px] lg:!w-[240px]"
           >
             <motion.img
               src={image}
@@ -192,15 +191,15 @@ export default function PendantCard({ item }) {
           long each pendant's description or motif list is. */}
       <div className="flex-1">
         {/* Name */}
-        <h3 className="mt-6 font-display text-3xl text-ink leading-tight">
+        <h3 className="mt-2 font-display text-3xl text-ink leading-tight">
           {item.name}
         </h3>
 
         {/* Description */}
-        <p className="mt-4 leading-7 text-slate text-base">{item.description}</p>
+        <p className="mt-3 text-[17px] leading-7 text-slate line-clamp-2">{item.description}</p>
 
         {/* Motifs */}
-        <div className="mt-8 space-y-4">
+        <div className="mt-6 space-y-2">
           {item.motifNotes.map((note, index) => (
             <motion.div
               key={note.title}
@@ -213,7 +212,7 @@ export default function PendantCard({ item }) {
               <div className="mt-2 h-2 w-2 rounded-full bg-gold transition-transform duration-300 group-hover:scale-125" />
               <div>
                 <p className="font-display text-base text-ink">{note.title}</p>
-                <p className="mt-1 text-sm leading-6 text-slate">
+                <p className="text-sm text-slate">
                   {note.description}
                 </p>
               </div>
@@ -222,13 +221,13 @@ export default function PendantCard({ item }) {
         </div>
       </div>
 
-      <div className="mt-8 h-px w-full bg-gradient-to-r from-transparent via-gold/30 to-transparent" />
+      <div className="mt-5 h-px w-full bg-gradient-to-r from-transparent via-gold/30 to-transparent" />
 
       {/* Footer — now an actual disclosure trigger, not just static text */}
       <button
         type="button"
         onClick={() => setExpanded((v) => !v)}
-        className="mt-6 flex w-full items-center justify-between border-t border-gold/15 pt-5 text-left"
+        className="mt-3 flex w-full items-center justify-between border-t border-gold/15 pt-5 text-left"
       >
         <span className="font-mono text-xs uppercase tracking-[0.3em] text-accent">
           Craft Collection

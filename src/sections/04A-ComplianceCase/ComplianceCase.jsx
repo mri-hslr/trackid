@@ -486,8 +486,8 @@ export default function ComplianceCase() {
   const partsRotate = useTransform(assemblyProgress, [0.3, 0.6], [reducedMotion ? 0 : -25, 0]);
   const ringScale = useTransform(assemblyProgress, [0.4, 0.62], [0.6, 1]);
 
-  const statementClip = useTransform(assemblyProgress, [0.66, 0.92], ["inset(0 100% 0 0)", "inset(0 0% 0 0)"]);
-  const statementOpacity = useTransform(assemblyProgress, [0.64, 0.7], [0, 1]);
+  const statementClip = useTransform(assemblyProgress, [0.5, 0.64], ["inset(0 100% 0 0)", "inset(0 0% 0 0)"]);
+  const statementOpacity = useTransform(assemblyProgress, [0.48, 0.54], [0, 1]);
 
   // ---------- Horizontal scroll gallery ----------
   const galleryRef = useRef(null);
@@ -496,12 +496,28 @@ export default function ComplianceCase() {
     offset: ["start start", "end end"],
   });
 
-  const panels = [
-    { icon: Shield, title: "Impact Rated", desc: "Reinforced housing survives daily drops, play, and roughhousing without cracking." },
-    { icon: Zap, title: "7-Day Battery", desc: "A single charge outlasts the week — no daily habit for a parent to forget." },
-    { icon: Link2, title: "Clasp-Locked", desc: "A tamper-aware clasp that resists idle fiddling but opens instantly for a caregiver." },
-    { icon: Gem, title: "Jewellery Grade", desc: "14k gold-plated finish indistinguishable from the pendant a child already wants to wear." },
-  ];
+ const panels = [
+  {
+    image: "/assets/images/impact-rated.png",
+    title: "Impact Rated",
+    desc: "Reinforced housing survives daily drops, play, and roughhousing without cracking.",
+  },
+  {
+    image: "/assets/images/battery.png",
+    title: "7-Day Battery",
+    desc: "A single charge outlasts the week — no daily habit for a parent to forget.",
+  },
+  {
+    image: "/assets/images/clasp.png",
+    title: "Clasp-Locked",
+    desc: "A tamper-aware clasp that resists idle fiddling but opens instantly for a caregiver.",
+  },
+  {
+    image: "/assets/images/jewellery-grade.png",
+    title: "Jewellery Grade",
+    desc: "14k gold-plated finish indistinguishable from the pendant a child already wants to wear.",
+  },
+];
 
   const galleryX = useTransform(
     galleryProgress,
@@ -510,7 +526,7 @@ export default function ComplianceCase() {
   );
 
   return (
-    <SectionWrapper id="compliance-case">
+    <SectionWrapper id="compliance-case"  className="pt-12 pb-24">
       {/* Animated Background */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <motion.div
@@ -524,13 +540,122 @@ export default function ComplianceCase() {
           className="absolute right-0 bottom-0 h-[500px] w-[500px] rounded-full bg-accent/5 blur-[160px]"
         />
       </div>
+      {/* ================================================================
+          COMPARISON TABLE
+      ================================================================ */}
+      <motion.div
+        {...fadeUp}
+        initial={fadeUp.initial}
+        whileInView={fadeUp.whileInView}
+        viewport={fadeUp.viewport}
+        transition={fadeUp.transition}
+        className="relative mt-12"
+      >
+        {/* Ambient glow seated behind the winning column only */}
+        <div className="pointer-events-none absolute right-0 top-0 h-full w-1/2 rounded-3xl bg-gold/10 blur-[100px]" />
+
+        <div className="relative rounded-3xl border border-stone bg-white/80 backdrop-blur-xl shadow-[0_40px_100px_rgba(0,0,0,0.1)] overflow-hidden">
+          <div className="grid lg:grid-cols-2">
+            <div className="relative p-8 lg:p-10 text-center">
+              <p className="font-mono text-[10px] uppercase tracking-[0.4em] text-slate/70">Traditional</p>
+              <h3 className="mt-3 font-display text-3xl lg:text-4xl text-slate">GPS Tracker</h3>
+            </div>
+            <div className="relative border-l border-stone bg-gradient-to-br from-gold/[0.08] to-transparent p-8 lg:p-10 text-center overflow-hidden">
+              {/* Winner ribbon */}
+              <motion.div
+                initial={{ opacity: 0, y: -8 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+                className="absolute right-5 top-5 flex items-center gap-1.5 rounded-full bg-ink px-3 py-1"
+              >
+                <span className="h-1.5 w-1.5 rounded-full bg-gold animate-pulse" />
+                <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-gold">Recommended</span>
+              </motion.div>
+              <p className="font-mono text-[10px] uppercase tracking-[0.4em] text-accentDeep">TrakID</p>
+              <h3 className="mt-3 font-display text-3xl lg:text-4xl text-ink">Jewellery First</h3>
+            </div>
+          </div>
+
+          {/* Center VS badge, floating over the divider */}
+          <div className="pointer-events-none absolute left-1/2 top-[86px] z-20 hidden -translate-x-1/2 lg:block">
+            <motion.div
+              initial={{ scale: 0, rotate: -20 }}
+              whileInView={{ scale: 1, rotate: 0 }}
+              viewport={{ once: true }}
+              transition={{ type: "spring", stiffness: 200, damping: 14, delay: 0.3 }}
+              className="flex h-14 w-14 items-center justify-center rounded-full border border-gold/30 bg-ink shadow-[0_10px_30px_rgba(0,0,0,0.3)]"
+            >
+              <span className="font-display text-sm text-gold tracking-widest">VS</span>
+            </motion.div>
+          </div>
+
+          {data.comparison.map((item, i) => (
+            <motion.div
+              key={i}
+              initial="rest"
+              whileHover="hover"
+              className="relative grid lg:grid-cols-2 border-t border-stone/60 overflow-hidden"
+            >
+              {/* Sweeping gold highlight, left → right, on hover */}
+              <motion.div
+                variants={{ rest: { x: "-100%" }, hover: { x: "100%" } }}
+                transition={{ duration: 0.9, ease: EASE }}
+                className="pointer-events-none absolute inset-0 bg-gradient-to-r from-transparent via-gold/8 to-transparent"
+              />
+
+              <motion.div
+                initial={reducedMotion ? {} : { opacity: 0, x: -24 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true, margin: "-40px" }}
+                transition={{ duration: 0.5, delay: i * 0.08, ease: EASE }}
+                variants={{ hover: { x: -4 } }}
+                className="relative flex items-center gap-4 p-6 lg:p-8"
+              >
+                <motion.span
+                  initial={{ scale: 0, rotate: -30, opacity: 0 }}
+                  whileInView={{ scale: 1, rotate: 0, opacity: 1 }}
+                  viewport={{ once: true, margin: "-40px" }}
+                  transition={{ delay: i * 0.06 + 0.1, duration: 0.4, type: "spring", stiffness: 220 }}
+                  className="inline-flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-alert/10 text-alert"
+                >
+                  ✕
+                </motion.span>
+                <p className="text-slate text-base lg:text-lg">{item.traditional}</p>
+              </motion.div>
+
+              <motion.div
+                initial={reducedMotion ? {} : { opacity: 0, x: 24 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true, margin: "-40px" }}
+                transition={{ duration: 0.5, delay: i * 0.08 + 0.05, ease: EASE }}
+                variants={{ hover: { x: 4 } }}
+                className="relative border-l border-stone/60 bg-gold/[0.02] flex items-center gap-4 p-6 lg:p-8"
+              >
+                <motion.span
+                  initial={{ scale: 0, rotate: 30, opacity: 0 }}
+                  whileInView={{ scale: 1, rotate: 0, opacity: 1 }}
+                  viewport={{ once: true, margin: "-40px" }}
+                  transition={{ delay: i * 0.06 + 0.15, duration: 0.4, type: "spring", stiffness: 220 }}
+                  whileHover={reducedMotion ? {} : { scale: 1.15 }}
+                  className="inline-flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-safe text-white shadow-[0_4px_14px_rgba(90,150,110,0.35)]"
+                >
+                  ✓
+                </motion.span>
+                <p className="text-ink text-base lg:text-lg font-semibold">{item.trakid}</p>
+              </motion.div>
+            </motion.div>
+          ))}
+        </div>
+      </motion.div>
+
 
       {/* ================================================================
           HERO — headline + pendant timeline
       ================================================================ */}
       <div
         ref={heroRef}
-        className="relative"
+        className="relative mt-20"
         onMouseMove={(e) => {
           const rect = e.currentTarget.getBoundingClientRect();
           const x = (e.clientX - rect.left) / rect.width - 0.5;
@@ -929,115 +1054,7 @@ export default function ComplianceCase() {
         </div>
       </motion.section>
 
-      {/* ================================================================
-          COMPARISON TABLE
-      ================================================================ */}
-      <motion.div
-        {...fadeUp}
-        initial={fadeUp.initial}
-        whileInView={fadeUp.whileInView}
-        viewport={fadeUp.viewport}
-        transition={fadeUp.transition}
-        className="relative mt-32"
-      >
-        {/* Ambient glow seated behind the winning column only */}
-        <div className="pointer-events-none absolute right-0 top-0 h-full w-1/2 rounded-3xl bg-gold/10 blur-[100px]" />
-
-        <div className="relative rounded-3xl border border-stone bg-white/80 backdrop-blur-xl shadow-[0_40px_100px_rgba(0,0,0,0.1)] overflow-hidden">
-          <div className="grid lg:grid-cols-2">
-            <div className="relative p-8 lg:p-10 text-center">
-              <p className="font-mono text-[10px] uppercase tracking-[0.4em] text-slate/70">Traditional</p>
-              <h3 className="mt-3 font-display text-3xl lg:text-4xl text-slate">GPS Tracker</h3>
-            </div>
-            <div className="relative border-l border-stone bg-gradient-to-br from-gold/[0.08] to-transparent p-8 lg:p-10 text-center overflow-hidden">
-              {/* Winner ribbon */}
-              <motion.div
-                initial={{ opacity: 0, y: -8 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: 0.2 }}
-                className="absolute right-5 top-5 flex items-center gap-1.5 rounded-full bg-ink px-3 py-1"
-              >
-                <span className="h-1.5 w-1.5 rounded-full bg-gold animate-pulse" />
-                <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-gold">Recommended</span>
-              </motion.div>
-              <p className="font-mono text-[10px] uppercase tracking-[0.4em] text-accentDeep">TrakID</p>
-              <h3 className="mt-3 font-display text-3xl lg:text-4xl text-ink">Jewellery First</h3>
-            </div>
-          </div>
-
-          {/* Center VS badge, floating over the divider */}
-          <div className="pointer-events-none absolute left-1/2 top-[86px] z-20 hidden -translate-x-1/2 lg:block">
-            <motion.div
-              initial={{ scale: 0, rotate: -20 }}
-              whileInView={{ scale: 1, rotate: 0 }}
-              viewport={{ once: true }}
-              transition={{ type: "spring", stiffness: 200, damping: 14, delay: 0.3 }}
-              className="flex h-14 w-14 items-center justify-center rounded-full border border-gold/30 bg-ink shadow-[0_10px_30px_rgba(0,0,0,0.3)]"
-            >
-              <span className="font-display text-sm text-gold tracking-widest">VS</span>
-            </motion.div>
-          </div>
-
-          {data.comparison.map((item, i) => (
-            <motion.div
-              key={i}
-              initial="rest"
-              whileHover="hover"
-              className="relative grid lg:grid-cols-2 border-t border-stone/60 overflow-hidden"
-            >
-              {/* Sweeping gold highlight, left → right, on hover */}
-              <motion.div
-                variants={{ rest: { x: "-100%" }, hover: { x: "100%" } }}
-                transition={{ duration: 0.9, ease: EASE }}
-                className="pointer-events-none absolute inset-0 bg-gradient-to-r from-transparent via-gold/8 to-transparent"
-              />
-
-              <motion.div
-                initial={reducedMotion ? {} : { opacity: 0, x: -24 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true, margin: "-40px" }}
-                transition={{ duration: 0.5, delay: i * 0.08, ease: EASE }}
-                variants={{ hover: { x: -4 } }}
-                className="relative flex items-center gap-4 p-6 lg:p-8"
-              >
-                <motion.span
-                  initial={{ scale: 0, rotate: -30, opacity: 0 }}
-                  whileInView={{ scale: 1, rotate: 0, opacity: 1 }}
-                  viewport={{ once: true, margin: "-40px" }}
-                  transition={{ delay: i * 0.06 + 0.1, duration: 0.4, type: "spring", stiffness: 220 }}
-                  className="inline-flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-alert/10 text-alert"
-                >
-                  ✕
-                </motion.span>
-                <p className="text-slate text-base lg:text-lg">{item.traditional}</p>
-              </motion.div>
-
-              <motion.div
-                initial={reducedMotion ? {} : { opacity: 0, x: 24 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true, margin: "-40px" }}
-                transition={{ duration: 0.5, delay: i * 0.08 + 0.05, ease: EASE }}
-                variants={{ hover: { x: 4 } }}
-                className="relative border-l border-stone/60 bg-gold/[0.02] flex items-center gap-4 p-6 lg:p-8"
-              >
-                <motion.span
-                  initial={{ scale: 0, rotate: 30, opacity: 0 }}
-                  whileInView={{ scale: 1, rotate: 0, opacity: 1 }}
-                  viewport={{ once: true, margin: "-40px" }}
-                  transition={{ delay: i * 0.06 + 0.15, duration: 0.4, type: "spring", stiffness: 220 }}
-                  whileHover={reducedMotion ? {} : { scale: 1.15 }}
-                  className="inline-flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-safe text-white shadow-[0_4px_14px_rgba(90,150,110,0.35)]"
-                >
-                  ✓
-                </motion.span>
-                <p className="text-ink text-base lg:text-lg font-semibold">{item.trakid}</p>
-              </motion.div>
-            </motion.div>
-          ))}
-        </div>
-      </motion.div>
-
+      
       {/* ================================================================
           BENEFITS GRID
       ================================================================ */}
@@ -1085,7 +1102,7 @@ export default function ComplianceCase() {
       ================================================================ */}
       <div className="relative mt-36 -mx-6 lg:-mx-20">
         {/* A) Pinned assembly sequence */}
-        <div ref={assemblyRef} className="relative h-[400vh]">
+        <div ref={assemblyRef} className="relative h-[700vh]">
           <div
             className="sticky top-0 h-screen overflow-hidden flex items-center justify-center"
             onMouseMove={(e) => {
@@ -1217,7 +1234,7 @@ export default function ComplianceCase() {
 
             <motion.div style={{ x: galleryX }} className="flex gap-8 px-6 lg:px-20 will-change-transform">
               {panels.map((panel, i) => {
-                const Icon = panel.icon;
+                
                 return (
                   <div
                     key={panel.title}
@@ -1226,9 +1243,13 @@ export default function ComplianceCase() {
                     <div className="absolute -right-10 -top-10 h-40 w-40 rounded-full bg-gold/10 blur-3xl" />
                     <span className="font-mono text-xs text-gold/70">0{i + 1}</span>
                     <div>
-                      <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-full border border-gold/25 bg-parchment">
-                        <Icon size={24} strokeWidth={1.7} className="text-accent" />
-                      </div>
+                      <div className="mb-8 overflow-hidden rounded-2xl">
+  <img
+    src={panel.image}
+    alt={panel.title}
+    className="h-56 w-full object-contain"
+  />
+</div>
                       <h4 className="font-display text-2xl text-ink">{panel.title}</h4>
                       <p className="mt-3 text-sm leading-6 text-slate">{panel.desc}</p>
                     </div>
@@ -1240,7 +1261,7 @@ export default function ComplianceCase() {
         </div>
 
         {/* D) Closing — scramble stat + magnetic CTA */}
-        <div className="relative py-40 px-6 text-center overflow-hidden">
+        <div className="relative py-20 px-6 text-center overflow-hidden">
           <div className="absolute left-1/2 top-1/2 h-[600px] w-[600px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-gold/8 blur-[160px] pointer-events-none" />
           <motion.div
             initial={{ opacity: 0, y: 20 }}
