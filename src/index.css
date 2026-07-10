@@ -1,7 +1,9 @@
 /* stylelint-disable at-rule-no-unknown */
 @tailwind base;
 @tailwind components;
+/* stylelint-disable at-rule-no-unknown */
 @tailwind utilities;
+/* stylelint-enable at-rule-no-unknown */
 /* stylelint-enable at-rule-no-unknown */
 
 /* ==========================================================
@@ -125,4 +127,23 @@
     animation-duration: 0.01ms !important;
     transition-duration: 0.01ms !important;
   }
+}
+/* ===== Section 06 UI Improvements ===== */
+
+input,
+textarea,
+select {
+  border-radius: 10px !important;
+}
+
+button {
+  border-radius: 10px !important;
+}
+
+svg {
+  opacity: 1;
+}
+
+img {
+  opacity: 1;
 }

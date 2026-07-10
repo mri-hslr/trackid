@@ -2,16 +2,20 @@ import clsx from "clsx";
 
 export default function FormField({ field, value, error, onChange }) {
   const baseClasses = clsx(
-    "w-full rounded-3xl border bg-white/70 backdrop-blur-sm px-5 py-4",
-    "text-ink placeholder:text-slate/60",
-    "transition-all duration-300 shadow-sm",
-    "focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold focus:shadow-[0_0_0_4px_rgba(212,168,90,0.08)]",
-    error ? "border-red-400" : "border-gold/20 hover:border-accent/40",
+    "w-full rounded-lg border px-5 py-4",
+    "bg-[#2b2b2b]",
+    "text-white",
+    "placeholder:text-white/40",
+    "border-white/15",
+    "focus:border-[#8B1E3F]",
+    "focus:ring-2",
+    "focus:ring-[#8B1E3F]/30",
+    error && "border-red-500",
   );
 
   return (
     <div className="space-y-2">
-      <label htmlFor={field.name} className="block font-medium text-ink">
+      <label htmlFor={field.name} className="block font-medium text-white">
         {field.label}
 
         {field.required && <span className="ml-1 text-red-500">*</span>}
@@ -38,11 +42,24 @@ export default function FormField({ field, value, error, onChange }) {
           value={value || ""}
           onChange={onChange}
           className={baseClasses}
+          style={{
+            backgroundColor: "#2b2b2b",
+            color: "#ffffff",
+          }}
         >
-          <option value="">Select an option</option>
+          <option value="" style={{ color: "#ffffff", background: "#2b2b2b" }}>
+            Select an option
+          </option>
 
           {field.options.map((option) => (
-            <option key={option.value} value={option.value}>
+            <option
+              key={option.value}
+              value={option.value}
+              style={{
+                color: "#ffffff",
+                background: "#2b2b2b",
+              }}
+            >
               {option.label}
             </option>
           ))}
@@ -58,6 +75,10 @@ export default function FormField({ field, value, error, onChange }) {
           onChange={onChange}
           placeholder={field.placeholder}
           className={baseClasses}
+          style={{
+            backgroundColor: "#2b2b2b",
+            color: "#ffffff",
+          }}
         />
       )}
 

@@ -1,7 +1,202 @@
 import { School, Users, ArrowRight } from "lucide-react";
 import { useTrack } from "../../context/TrackContext";
 
-function Fork() {
+const cards = [
+  {
+    id: "institution",
+    label: "INSTITUTIONS",
+    title: "For Schools & Institutions",
+    description:
+      "Safety, visibility and peace of mind for schools, universities, and educational organizations responsible for student wellbeing.",
+    icon: School,
+    pattern: "/assets/images/institution-pattern.svg",
+  },
+  {
+    id: "family",
+    label: "FAMILY",
+    title: "For Families",
+    description:
+      "A beautiful and secure way to stay connected with children, parents, grandparents, and loved ones through thoughtful technology.",
+    icon: Users,
+    pattern: "/assets/images/family-pattern.svg",
+  },
+];
+
+function ExperienceCard({
+  label,
+  title,
+  description,
+  icon: Icon,
+  pattern,
+  active,
+  onClick,
+}) {
+  return (
+    <div
+      onClick={onClick}
+      className={`
+        group
+        relative
+        overflow-hidden
+        rounded-[34px]
+        border
+        cursor-pointer
+        flex
+        flex-col
+        p-12
+        bg-gradient-to-br
+        from-[#faf8f5]
+        via-[#f6f3ee]
+        to-[#e7dac8]
+        transition-all
+        duration-500
+        hover:-translate-y-3
+        hover:shadow-[0_35px_80px_rgba(0,0,0,.18)]
+        ${
+          active
+            ? "border-[#7B1E3A] ring-1 ring-[#7B1E3A]/30"
+            : "border-[#ddd2c5]"
+        }
+      `}
+    >
+      {/* Shine */}
+      <div className="absolute inset-0 overflow-hidden rounded-[34px] pointer-events-none">
+        <div className="absolute -left-full top-0 h-full w-1/2 -skew-x-12 bg-gradient-to-r from-transparent via-white/40 to-transparent transition-all duration-700 group-hover:left-[150%]" />
+      </div>
+
+      {/* Glow */}
+      <div className="absolute -bottom-20 -right-20 h-52 w-52 rounded-full bg-[#7B1E3A]/15 blur-3xl" />
+
+      {/* Premium Border */}
+      <div className="absolute left-0 top-0 h-1 w-0 bg-gradient-to-r from-[#5A183F] via-[#7B1E3A] to-[#A44A70] transition-all duration-500 group-hover:w-full" />
+
+      {/* Header */}
+      <div className="relative z-10 flex items-center justify-between">
+        <div
+          className="
+          flex
+          h-20
+          w-20
+          items-center
+          justify-center
+          rounded-3xl
+          bg-[#3A1F2D]
+border-[#7B1E3A]/35
+shadow-[0_10px_30px_rgba(123,30,58,0.22)]
+          
+          transition-all
+          duration-500
+          group-hover:scale-110
+          group-hover:-rotate-3
+          group-hover:shadow-[0_12px_35px_rgba(123,30,58,.35)]
+        "
+        >
+          <Icon className="h-9 w-9 text-[#A34D68]" strokeWidth={2} />
+        </div>
+
+        <div
+          className="
+          flex
+          h-12
+          w-12
+          items-center
+          justify-center
+          rounded-full
+          border
+          border-[#d4c7bb]
+          bg-[#faf8f5]
+          transition-all
+          duration-300
+          group-hover:border-[#7B1E3A]
+          group-hover:bg-[#7B1E3A]
+        "
+        >
+          <ArrowRight
+            className="
+            h-5
+            w-5
+            text-[#7B1E3A]
+            transition-all
+            duration-300
+            group-hover:text-white
+            group-hover:translate-x-1
+          "
+          />
+        </div>
+      </div>
+
+      {/* Content */}
+      <div className="relative z-10 mt-10">
+        <p className="mb-5 text-xs uppercase tracking-[0.4em] text-[#7B1E3A]">
+          {label}
+        </p>
+
+        <h3 className="font-display text-4xl leading-tight text-[#1b1b1b]">
+          {title}
+        </h3>
+
+        <p className="mt-6 max-w-md text-lg leading-8 text-[#5b5b5b]">
+          {description}
+        </p>
+      </div>
+
+      {/* Button */}
+      <div className="relative z-10 mt-auto pt-14">
+        <div
+          className="
+          inline-flex
+          items-center
+          gap-3
+          rounded-full
+          bg-[#3A1F2D]
+          px-6
+          py-3
+          text-white
+          font-medium
+          transition-all
+          duration-300
+          group-hover:bg-[#7B1E3A]
+        "
+        >
+          <span>Explore Experience</span>
+
+          <ArrowRight
+            className="
+            h-4
+            w-4
+            transition-transform
+            duration-300
+            group-hover:translate-x-1
+          "
+          />
+        </div>
+      </div>
+
+      {/* Pattern */}
+      <img
+        src={pattern}
+        alt=""
+        className="
+          absolute
+          bottom-8
+          right-8
+          w-48
+          pointer-events-none
+          opacity-30
+          hue-rotate-[300deg]
+          saturate-[180%]
+          brightness-[0.75]
+          contrast-125
+          transition-all
+          duration-700
+          group-hover:opacity-50
+          group-hover:scale-110
+        "
+      />
+    </div>
+  );
+}
+export default function Fork() {
   const { activeTrack, setActiveTrack } = useTrack();
 
   const handleSelect = (track) => {
@@ -19,35 +214,38 @@ function Fork() {
   };
 
   return (
-    <section className="relative overflow-hidden min-h-screen bg-gradient-to-br from-parchment via-white to-stone px-6 py-24 flex items-center">
+    <section className="relative flex min-h-screen items-center overflow-hidden bg-gradient-to-br from-[#090909] via-[#111111] to-[#1b1612] px-6 py-24">
       {/* Background Glow */}
-      <div className="absolute -top-40 -left-40 w-[30rem] h-[30rem] rounded-full bg-amber-200/20 blur-3xl pointer-events-none"></div>
 
-      <div className="absolute -bottom-40 -right-40 w-[32rem] h-[32rem] rounded-full bg-accent/10 blur-3xl pointer-events-none"></div>
+      <div className="absolute -left-40 -top-40 h-[32rem] w-[32rem] rounded-full bg-[#7B1E3A]/15 blur-3xl pointer-events-none" />
 
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,.5),transparent_45%)] pointer-events-none"></div>
+      <div className="absolute -bottom-40 -right-40 h-[32rem] w-[32rem] rounded-full bg-[#5A183F]/15 blur-3xl pointer-events-none" />
 
-      <div className="relative max-w-7xl mx-auto w-full">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,.12),transparent_45%)] pointer-events-none" />
+
+      <div className="relative mx-auto w-full max-w-7xl">
         {/* Heading */}
 
-        <div className="text-center mb-24">
-          <p className="font-mono uppercase tracking-[0.4em] text-accentDeep text-sm mb-4">
+        <div className="mb-24 text-center">
+          <p className="mb-5 font-mono text-sm uppercase tracking-[0.45em] text-[#B76E79]">
             CHOOSE YOUR EXPERIENCE
           </p>
 
-          <h2 className="font-display text-5xl md:text-7xl tracking-tight text-ink">
+          <h2 className="font-display text-5xl tracking-tight text-white md:text-7xl">
             Choose Your Path
           </h2>
 
-          <div className="flex items-center justify-center gap-4 my-8">
-            <div className="w-20 h-px bg-gradient-to-r from-transparent to-amber-300"></div>
+          {/* Divider */}
 
-            <div className="w-3 h-3 rotate-45 bg-white border border-amber-400"></div>
+          <div className="my-8 flex items-center justify-center gap-4">
+            <div className="h-px w-20 bg-gradient-to-r from-transparent to-[#7B1E3A]" />
 
-            <div className="w-20 h-px bg-gradient-to-l from-transparent to-amber-300"></div>
+            <div className="h-3 w-3 rotate-45 border border-[#7B1E3A] bg-white" />
+
+            <div className="h-px w-20 bg-gradient-to-l from-transparent to-[#7B1E3A]" />
           </div>
 
-          <p className="max-w-2xl mx-auto text-slate text-xl leading-9">
+          <p className="mx-auto max-w-2xl text-xl leading-9 text-white/70">
             Whether you're protecting students at scale or staying connected
             with loved ones, discover the experience crafted for you.
           </p>
@@ -55,159 +253,17 @@ function Fork() {
 
         {/* Cards */}
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-stretch">
-          {/* Institution Card */}
-
-          <div
-            onClick={() => handleSelect("institution")}
-            className={`group relative overflow-hidden cursor-pointer rounded-[32px] flex flex-col
-            border p-12
-            bg-gradient-to-br from-white via-white to-amber-50/40
-            transition-all duration-500
-            shadow-lg
-            hover:-translate-y-2
-            hover:scale-[1.015]
-            hover:border-accent/40
-            hover:shadow-[0_25px_60px_rgba(0,0,0,0.12)]
-            ${
-              activeTrack === "institution"
-                ? "border-accent ring-1 ring-amber-300/30 shadow-[0_25px_60px_rgba(0,0,0,0.15)]"
-                : "border-stone/50 hover:ring-1 hover:ring-amber-300/60"
-            }`}
-          >
-            {/* Shine */}
-
-            <div className="pointer-events-none absolute inset-0 overflow-hidden rounded-[32px]">
-              <div className="absolute -left-full top-0 h-full w-1/2 -skew-x-12 bg-gradient-to-r from-transparent via-white/30 to-transparent transition-all duration-700 group-hover:left-[150%]" />
-            </div>
-            {/* Premium Top Border */}
-
-            <div className="absolute top-0 left-0 h-1 w-0 bg-gradient-to-r from-amber-300 via-accent to-accentDeep transition-all duration-500 group-hover:w-full"></div>
-
-            {/* Glow */}
-
-            <div className="absolute -bottom-16 -right-16 w-56 h-56 rounded-full bg-gradient-to-br from-accent/10 to-amber-200/10 blur-3xl"></div>
-
-            {/* Top */}
-
-            <div className="flex items-center justify-between mb-10">
-              <div className="flex items-center justify-center w-20 h-20 rounded-3xl bg-gradient-to-br from-accent/10 to-accent/20 shadow-md transition-all duration-500 group-hover:scale-110 group-hover:-rotate-3">
-                <School className="w-9 h-9 text-accentDeep" />
-              </div>
-
-              <div className="flex items-center justify-center w-12 h-12 rounded-full border border-stone/40 bg-white transition-all duration-300 group-hover:border-accent group-hover:bg-accent/10 group-hover:shadow-md">
-                <ArrowRight className="w-5 h-5 text-accentDeep transition-transform duration-300 group-hover:translate-x-1" />
-              </div>
-            </div>
-
-            <p className="uppercase tracking-[0.35em] text-xs text-accentDeep mb-4">
-              INSTITUTIONS
-            </p>
-
-            <h3 className="font-display text-3xl lg:text-4xl text-ink mb-6 leading-tight">
-              For Schools & Institutions
-            </h3>
-
-            <p className="text-slate text-lg leading-8 max-w-md">
-              Safety, visibility and peace of mind for schools, universities,
-              and educational organizations responsible for student wellbeing.
-            </p>
-
-            <div className="absolute bottom-6 right-6 opacity-40 pointer-events-none">
-              <img
-                src="/assets/images/institution-pattern.svg"
-                alt=""
-                className="w-48 transition-all duration-700 group-hover:scale-110 group-hover:rotate-6"
-              />
-            </div>
-
-            <div className="mt-auto pt-12">
-              <div className="inline-flex items-center gap-2 rounded-full border border-accent/20 px-5 py-2 text-accentDeep font-medium transition-all duration-300 group-hover:border-accent group-hover:bg-accent/5">
-                <span>Explore Experience</span>
-                <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
-              </div>
-            </div>
-          </div>
-          {/* Family Card */}
-
-          <div
-            onClick={() => handleSelect("family")}
-            className={`group relative overflow-hidden cursor-pointer rounded-[32px] flex flex-col
-            border p-12
-            bg-gradient-to-br from-white via-white to-amber-50/40
-            transition-all duration-500
-            shadow-lg
-            hover:-translate-y-2
-            hover:scale-[1.015]
-            hover:border-accent/40
-            hover:shadow-[0_25px_60px_rgba(0,0,0,0.12)]
-            ${
-              activeTrack === "family"
-                ? "border-accent ring-1 ring-amber-300/30 shadow-[0_25px_60px_rgba(0,0,0,0.15)]"
-                : "border-stone/50 hover:ring-1 hover:ring-amber-300/60"
-            }`}
-          >
-            {/* Shine */}
-
-            <div className="pointer-events-none absolute inset-0 overflow-hidden rounded-[32px]">
-              <div className="absolute -left-full top-0 h-full w-1/2 -skew-x-12 bg-gradient-to-r from-transparent via-white/30 to-transparent transition-all duration-700 group-hover:left-[150%]" />
-            </div>
-            {/* Premium Top Border */}
-
-            <div className="absolute top-0 left-0 h-1 w-0 bg-gradient-to-r from-amber-300 via-accent to-accentDeep transition-all duration-500 group-hover:w-full"></div>
-
-            {/* Glow */}
-
-            <div className="absolute -bottom-16 -right-16 w-56 h-56 rounded-full bg-gradient-to-br from-accent/10 to-amber-200/10 blur-3xl"></div>
-
-            {/* Top */}
-
-            <div className="flex items-center justify-between mb-10">
-              <div className="flex items-center justify-center w-20 h-20 rounded-3xl bg-gradient-to-br from-accent/10 to-accent/20 shadow-md transition-all duration-500 group-hover:scale-110 group-hover:-rotate-3">
-                <Users className="w-9 h-9 text-accentDeep" />
-              </div>
-
-              <div
-                className="flex items-center justify-center w-12 h-12 rounded-full border border-stone/40 bg-white transition-all duration-300 group-hover:border-accent group-hover:bg-accent/10
-group-hover:shadow-md"
-              >
-                <ArrowRight className="w-5 h-5 text-accentDeep transition-transform duration-300 group-hover:translate-x-1" />
-              </div>
-            </div>
-
-            <p className="uppercase tracking-[0.35em] text-xs text-accentDeep mb-4">
-              FAMILY
-            </p>
-
-            <h3 className="font-display text-3xl lg:text-4xl text-ink mb-6 leading-tight">
-              For Families
-            </h3>
-
-            <p className="text-slate text-lg leading-8 max-w-md">
-              A beautiful and secure way to stay connected with children,
-              parents, grandparents, and loved ones through thoughtful
-              technology.
-            </p>
-            <div className="absolute bottom-8 right-8 opacity-40 pointer-events-none">
-              <img
-                src="/assets/images/family-pattern.svg"
-                alt=""
-                className="w-48 transition-all duration-700 group-hover:scale-110 group-hover:rotate-6"
-              />
-            </div>
-
-            <div className="mt-auto pt-12">
-              <div className="inline-flex items-center gap-2 rounded-full border border-accent/20 px-5 py-2 text-accentDeep font-medium transition-all duration-300 group-hover:border-accent group-hover:bg-accent/5">
-                <span>Explore Experience</span>
-
-                <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
-              </div>
-            </div>
-          </div>
+        <div className="grid grid-cols-1 gap-10 lg:grid-cols-2">
+          {cards.map((card) => (
+            <ExperienceCard
+              key={card.id}
+              {...card}
+              active={activeTrack === card.id}
+              onClick={() => handleSelect(card.id)}
+            />
+          ))}
         </div>
       </div>
     </section>
   );
 }
-
-export default Fork;
