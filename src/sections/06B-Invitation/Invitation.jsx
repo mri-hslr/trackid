@@ -378,6 +378,7 @@ export default function Invitation() {
                   duration-300
                   hover:-translate-y-1
                   hover:scale-[1.02]
+
                   hover:brightness-105
                   hover:shadow-[0_20px_45px_rgba(123,30,58,.30)]
                   disabled:cursor-not-allowed
