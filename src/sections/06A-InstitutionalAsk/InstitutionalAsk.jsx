@@ -76,14 +76,16 @@ export default function InstitutionalAsk() {
   }
 
   return (
-    <SectionWrapper id="institutional">
-
-      <motion.div
+    <SectionWrapper
+  id="institutional"
+  containerClassName="max-w-[1700px] !px-10 lg:!px-20"
+>
+  <motion.div
         variants={staggerContainer}
         initial="hidden"
         whileInView="show"
         viewport={{ once: true, amount: 0.2 }}
-        className="grid gap-20 lg:grid-cols-[1fr_520px]"
+        className="grid items-start gap-16 lg:grid-cols-[520px_minmax(700px,1fr)]"
       >
 
         {/* LEFT COLUMN */}
@@ -165,7 +167,18 @@ export default function InstitutionalAsk() {
 
         <motion.div
           variants={fadeUp}
-          className="rounded-[36px] border border-gold/20 bg-white/70 p-10 backdrop-blur-xl shadow-xl"
+          className="
+w-full
+max-w-none
+rounded-[36px]
+border
+border-gold/20
+bg-white/70
+p-12
+backdrop-blur-xl
+shadow-xl
+justify-self-stretch
+"
         >
             {submitted ? (
   <div className="flex min-h-[520px] flex-col items-center justify-center text-center">
@@ -239,7 +252,9 @@ export default function InstitutionalAsk() {
 
         </motion.div>
 
-      </motion.div>
+          </motion.div>
+
+
 
       <Divider />
 

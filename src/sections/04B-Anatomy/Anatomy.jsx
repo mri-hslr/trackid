@@ -520,40 +520,29 @@ export default function Anatomy() {
                 scrolling back up reverses the sequence.
         ========================================================== */}
 
-        {filteredItems.length === 0 ? (
-          <p className="relative z-10 py-16 text-center font-mono text-sm uppercase tracking-[0.2em] text-slate">
-            No pieces in this category yet
-          </p>
-        ) : shouldReduceMotion ? (
-          // Reduced-motion fallback: no scroll-jacked overlap, just a plain
-          // stacked list so motion-sensitive visitors get all four normally.
-          <div className="relative z-10 mt-20 mb-16 flex flex-col gap-10">
-            {filteredItems.map((item, idx) => (
-              <div key={item.id} className="h-full">
-                <PendantCard item={item} index={idx + 1} total={filteredItems.length} />
-              </div>
-            ))}
-          </div>
-        ) : (
-          <div
-            ref={stackScrollRef}
-            className="relative left-1/2 z-10 w-screen -translate-x-1/2 mt-20 mb-16"
-            style={{ height: `${filteredItems.length * 100}vh` }}
-          >
-            <div className="sticky top-0 h-screen w-full overflow-hidden">
-              {filteredItems.map((item, idx) => (
-                <StackCard
-                  key={item.id}
-                  index={idx}
-                  total={filteredItems.length}
-                  progress={stackProgress}
-                >
-                  <PendantCard item={item} index={idx + 1} total={filteredItems.length} />
-                </StackCard>
-              ))}
-            </div>
-          </div>
-        )}
+        <motion.div
+          layout
+          {...staggerContainer}
+          className="relative z-10 mt-20 mb-16 grid gap-12 lg:grid-cols-2 max-w-[1500px] mx-auto"
+        >
+          {filteredItems.map((item, idx) => (
+            <motion.div key={item.id} layout className="h-full">
+              <TiltCard
+                reducedMotion={shouldReduceMotion}
+                dimmed={hoveredPendant !== null && hoveredPendant !== idx}
+                onHoverChange={(isHovering) => setHoveredPendant(isHovering ? idx : null)}
+                className="h-full rounded-[28px]"
+              >
+                <PendantCard item={item} />
+              </TiltCard>
+            </motion.div>
+          ))}
+          {filteredItems.length === 0 && (
+            <p className="col-span-2 py-16 text-center font-mono text-sm uppercase tracking-[0.2em] text-slate">
+              No pieces in this category yet
+            </p>
+          )}
+        </motion.div>
       </div>
 
       {/* Kinetic marquee of collection names — texture between grid and features */}

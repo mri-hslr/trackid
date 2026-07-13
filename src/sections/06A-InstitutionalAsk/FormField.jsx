@@ -3,13 +3,20 @@ import { ChevronDown } from "lucide-react";
 
 const CONTROL_HEIGHT = 54;
 
-export default function FormField({ field, value, error, onChange }) {
+export default function FormField({
+  field,
+  value,
+  error,
+  onChange,
+}) {
   const baseClasses = clsx(
     "w-full rounded-3xl border bg-white/70 backdrop-blur-sm px-5 py-4",
     "text-ink placeholder:text-slate/60",
     "transition-all duration-300 shadow-sm",
     "focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold focus:shadow-[0_0_0_4px_rgba(212,168,90,0.08)]",
-    error ? "border-red-400" : "border-gold/20 hover:border-accent/40",
+    error
+      ? "border-red-400"
+      : "border-gold/20 hover:border-accent/40"
   );
 
   const controlStyle = {
@@ -23,7 +30,10 @@ export default function FormField({ field, value, error, onChange }) {
 
   return (
     <div className="space-y-2">
-      <label htmlFor={field.name} className="block font-medium text-ink">
+      <label
+        htmlFor={field.name}
+        className="block font-medium text-ink"
+      >
         {field.label}
         {field.required && <span className="ml-1 text-red-500">*</span>}
       </label>
@@ -36,8 +46,15 @@ export default function FormField({ field, value, error, onChange }) {
           value={value || ""}
           onChange={onChange}
           placeholder={field.placeholder}
-          style={{ height: CONTROL_HEIGHT, padding: "14px 20px", boxSizing: "border-box" }}
-          className={clsx(baseClasses, "leading-normal resize-none")}
+          style={{
+            height: 110,
+            padding: "14px 20px",
+            boxSizing: "border-box",
+          }}
+          className={clsx(
+            baseClasses,
+            "leading-normal resize-none"
+          )}
         />
       ) : field.type === "select" ? (
         <div className="relative">
@@ -56,6 +73,7 @@ export default function FormField({ field, value, error, onChange }) {
               </option>
             ))}
           </select>
+
           <ChevronDown
             size={18}
             strokeWidth={2}
@@ -75,7 +93,11 @@ export default function FormField({ field, value, error, onChange }) {
         />
       )}
 
-      {error && <p className="text-sm text-red-500">{error}</p>}
+      {error && (
+        <p className="text-sm text-red-500">
+          {error}
+        </p>
+      )}
     </div>
   );
 }
