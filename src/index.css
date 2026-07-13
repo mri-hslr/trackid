@@ -8,6 +8,14 @@
    TRAKID GLOBAL STYLES
 ========================================================== */
 
+/* Hide native scrollbar — Lenis smooth-scroll handles the UX */
+html {
+  scrollbar-width: none;            /* Firefox */
+}
+html::-webkit-scrollbar {
+  display: none;                    /* Chrome / Safari / Edge */
+}
+
 /* The ONE custom CSS rule in the entire project — the signature
    teardrop divider copied from the design reference.
 */

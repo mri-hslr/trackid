@@ -1,6 +1,7 @@
 import { useRef, Suspense } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { Environment, Center, useGLTF } from '@react-three/drei';
+import { EffectComposer, Bloom } from '@react-three/postprocessing';
 import { useReducedMotion } from '../../hooks/useReducedMotion';
 
 // ── MODEL LOADER ────────────────────────────────────────────────────────
@@ -67,6 +68,17 @@ export default function PendantScene({ scrollTransformRef }) {
 
       <Suspense fallback={null}>
         <AnimatedStage scrollTransformRef={scrollTransformRef} />
+        
+        {/* Minimal bloom — only catches the brightest specular highlights.
+            The pendant should never appear to glow too much, just glint. */}
+        <EffectComposer disableNormalPass multisampling={4}>
+          <Bloom
+            luminanceThreshold={0.8}
+            mipmapBlur
+            intensity={0.15}
+            radius={0.4}
+          />
+        </EffectComposer>
       </Suspense>
     </Canvas>
   );

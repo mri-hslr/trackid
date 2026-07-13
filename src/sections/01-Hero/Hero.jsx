@@ -2,7 +2,7 @@ import { useRef, useEffect, useCallback } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import PendantScene from './PendantScene';
-import SoundToggle from '../../components/SoundToggle';
+
 import { COPY } from '../../content/copy';
 import { useReducedMotion } from '../../hooks/useReducedMotion';
 
@@ -119,8 +119,7 @@ export default function Hero() {
 
   return (
     <div ref={wrapperRef} style={{ height: `${PIN_DISTANCE_VH}vh` }}>
-      {/* 🔴 APPLIED OBERMANN MESH BACKGROUND HERE */}
-      <section ref={sectionRef} id="hero" className="relative w-full h-screen overflow-hidden bg-obermann-mesh">
+      <section ref={sectionRef} id="hero" className="relative w-full h-screen overflow-hidden" style={{ background: 'radial-gradient(ellipse 80% 70% at 50% 40%, #2a1122 0%, #14070e 40%, #050205 100%)' }}>
         
         {/* The 3D Scene */}
         <div className="absolute inset-0">
@@ -128,10 +127,8 @@ export default function Hero() {
         </div>
 
         {/* HTML UI OVERLAYS */}
-        <div className="absolute inset-0 pointer-events-none flex flex-col items-center justify-between py-12 md:py-16">
-          <div className="w-full px-6 flex justify-end pointer-events-auto">
-            <SoundToggle />
-          </div>
+        <div className="absolute inset-0 pointer-events-none flex flex-col items-center justify-center gap-8 py-12 md:py-16">
+          <div />
 
           <div className="flex flex-col items-center text-center">
             {/* 🔴 UPDATED TO PURE WHITE, BOLD GEOMETRIC SANS */}
