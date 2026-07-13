@@ -225,15 +225,16 @@ justify-self-stretch
         justify-center
         gap-3
         rounded-full
-        bg-accent
+        bg-gold
         px-8
         py-4
         font-medium
-        text-white
+        text-ink
         transition-all
         duration-300
         hover:scale-[1.02]
         hover:shadow-xl
+        hover:bg-gold/90
         disabled:cursor-not-allowed
         disabled:opacity-70
       "

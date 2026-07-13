@@ -10,13 +10,13 @@ export default function FormField({
   onChange,
 }) {
   const baseClasses = clsx(
-    "w-full rounded-3xl border bg-white/70 backdrop-blur-sm px-5 py-4",
-    "text-ink placeholder:text-slate/60",
+    "w-full rounded-3xl border bg-white/5 backdrop-blur-sm px-5 py-4",
+    "text-parchment placeholder:text-parchment/40",
     "transition-all duration-300 shadow-sm",
-    "focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold focus:shadow-[0_0_0_4px_rgba(212,168,90,0.08)]",
+    "focus:outline-none focus:ring-2 focus:ring-gold/40 focus:border-gold focus:shadow-[0_0_0_4px_rgba(212,168,90,0.12)]",
     error
       ? "border-red-400"
-      : "border-gold/20 hover:border-accent/40"
+      : "border-white/15 hover:border-gold/30"
   );
 
   const controlStyle = {
@@ -26,16 +26,17 @@ export default function FormField({
     paddingLeft: 20,
     paddingRight: 20,
     boxSizing: "border-box",
+    colorScheme: "dark",
   };
 
   return (
     <div className="space-y-2">
       <label
         htmlFor={field.name}
-        className="block font-medium text-ink"
+        className="block font-medium text-parchment/90"
       >
         {field.label}
-        {field.required && <span className="ml-1 text-red-500">*</span>}
+        {field.required && <span className="ml-1 text-red-400">*</span>}
       </label>
 
       {field.type === "textarea" ? (
@@ -47,14 +48,12 @@ export default function FormField({
           onChange={onChange}
           placeholder={field.placeholder}
           style={{
-            height: 110,
+            height: CONTROL_HEIGHT,
             padding: "14px 20px",
             boxSizing: "border-box",
+            colorScheme: "dark",
           }}
-          className={clsx(
-            baseClasses,
-            "leading-normal resize-none"
-          )}
+          className={clsx(baseClasses, "leading-normal resize-none")}
         />
       ) : field.type === "select" ? (
         <div className="relative">
@@ -64,11 +63,17 @@ export default function FormField({
             value={value || ""}
             onChange={onChange}
             style={controlStyle}
-            className={baseClasses}
+            className={clsx(baseClasses, "appearance-none pr-12")}
           >
-            <option value="">Select an option</option>
+            <option value="" className="bg-ink text-parchment">
+              Select an option
+            </option>
             {field.options.map((option) => (
-              <option key={option.value} value={option.value}>
+              <option
+                key={option.value}
+                value={option.value}
+                className="bg-ink text-parchment"
+              >
                 {option.label}
               </option>
             ))}
@@ -77,7 +82,7 @@ export default function FormField({
           <ChevronDown
             size={18}
             strokeWidth={2}
-            className="pointer-events-none absolute right-5 top-1/2 -translate-y-1/2 text-slate/60"
+            className="pointer-events-none absolute right-5 top-1/2 -translate-y-1/2 text-parchment/50"
           />
         </div>
       ) : (
@@ -94,7 +99,7 @@ export default function FormField({
       )}
 
       {error && (
-        <p className="text-sm text-red-500">
+        <p className="text-sm text-red-400">
           {error}
         </p>
       )}

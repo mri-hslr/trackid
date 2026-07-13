@@ -540,114 +540,195 @@ export default function ComplianceCase() {
           className="absolute right-0 bottom-0 h-[500px] w-[500px] rounded-full bg-accent/5 blur-[160px]"
         />
       </div>
-      {/* ================================================================
-          COMPARISON TABLE
+       {/* ================================================================
+          🔥 CINEMATIC SECTION — pinned assembly + marquee + horizontal gallery
       ================================================================ */}
-      <motion.div
-        {...fadeUp}
-        initial={fadeUp.initial}
-        whileInView={fadeUp.whileInView}
-        viewport={fadeUp.viewport}
-        transition={fadeUp.transition}
-        className="relative mt-12"
-      >
-        {/* Ambient glow seated behind the winning column only */}
-        <div className="pointer-events-none absolute right-0 top-0 h-full w-1/2 rounded-3xl bg-gold/10 blur-[100px]" />
+      <div className="relative mt-36 -mx-6 lg:-mx-20">
+        {/* A) Pinned assembly sequence */}
+        <div ref={assemblyRef} className="relative h-[700vh]">
+          <div
+            className="sticky top-0 h-screen overflow-hidden flex items-center justify-center"
+            onMouseMove={(e) => {
+              const rect = e.currentTarget.getBoundingClientRect();
+              setAssemblyMouse({
+                x: (e.clientX - rect.left) / rect.width - 0.5,
+                y: (e.clientY - rect.top) / rect.height - 0.5,
+              });
+            }}
+          >
+            <div className="absolute inset-0 bg-gradient-to-b from-ink via-ink/95 to-ink" />
 
-        <div className="relative rounded-3xl border border-stone bg-white/80 backdrop-blur-xl shadow-[0_40px_100px_rgba(0,0,0,0.1)] overflow-hidden">
-          <div className="grid lg:grid-cols-2">
-            <div className="relative p-8 lg:p-10 text-center">
-              <p className="font-mono text-[10px] uppercase tracking-[0.4em] text-slate/70">Traditional</p>
-              <h3 className="mt-3 font-display text-3xl lg:text-4xl text-slate">GPS Tracker</h3>
-            </div>
-            <div className="relative border-l border-stone bg-gradient-to-br from-gold/[0.08] to-transparent p-8 lg:p-10 text-center overflow-hidden">
-              {/* Winner ribbon */}
+            {/* Diagonal light sweep — a moving studio light instead of a flat backdrop */}
+            {!reducedMotion && (
               <motion.div
-                initial={{ opacity: 0, y: -8 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: 0.2 }}
-                className="absolute right-5 top-5 flex items-center gap-1.5 rounded-full bg-ink px-3 py-1"
-              >
-                <span className="h-1.5 w-1.5 rounded-full bg-gold animate-pulse" />
-                <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-gold">Recommended</span>
-              </motion.div>
-              <p className="font-mono text-[10px] uppercase tracking-[0.4em] text-accentDeep">TrakID</p>
-              <h3 className="mt-3 font-display text-3xl lg:text-4xl text-ink">Jewellery First</h3>
-            </div>
-          </div>
-
-          {/* Center VS badge, floating over the divider */}
-          <div className="pointer-events-none absolute left-1/2 top-[86px] z-20 hidden -translate-x-1/2 lg:block">
-            <motion.div
-              initial={{ scale: 0, rotate: -20 }}
-              whileInView={{ scale: 1, rotate: 0 }}
-              viewport={{ once: true }}
-              transition={{ type: "spring", stiffness: 200, damping: 14, delay: 0.3 }}
-              className="flex h-14 w-14 items-center justify-center rounded-full border border-gold/30 bg-ink shadow-[0_10px_30px_rgba(0,0,0,0.3)]"
-            >
-              <span className="font-display text-sm text-gold tracking-widest">VS</span>
-            </motion.div>
-          </div>
-
-          {data.comparison.map((item, i) => (
-            <motion.div
-              key={i}
-              initial="rest"
-              whileHover="hover"
-              className="relative grid lg:grid-cols-2 border-t border-stone/60 overflow-hidden"
-            >
-              {/* Sweeping gold highlight, left → right, on hover */}
-              <motion.div
-                variants={{ rest: { x: "-100%" }, hover: { x: "100%" } }}
-                transition={{ duration: 0.9, ease: EASE }}
-                className="pointer-events-none absolute inset-0 bg-gradient-to-r from-transparent via-gold/8 to-transparent"
+                animate={{ x: ["-30%", "130%"] }}
+                transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", repeatDelay: 1.5 }}
+                className="absolute top-0 h-full w-1/3 rotate-12 bg-gradient-to-r from-transparent via-gold/[0.06] to-transparent pointer-events-none"
               />
+            )}
 
-              <motion.div
-                initial={reducedMotion ? {} : { opacity: 0, x: -24 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true, margin: "-40px" }}
-                transition={{ duration: 0.5, delay: i * 0.08, ease: EASE }}
-                variants={{ hover: { x: -4 } }}
-                className="relative flex items-center gap-4 p-6 lg:p-8"
-              >
-                <motion.span
-                  initial={{ scale: 0, rotate: -30, opacity: 0 }}
-                  whileInView={{ scale: 1, rotate: 0, opacity: 1 }}
-                  viewport={{ once: true, margin: "-40px" }}
-                  transition={{ delay: i * 0.06 + 0.1, duration: 0.4, type: "spring", stiffness: 220 }}
-                  className="inline-flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-alert/10 text-alert"
-                >
-                  ✕
-                </motion.span>
-                <p className="text-slate text-base lg:text-lg">{item.traditional}</p>
-              </motion.div>
+            <Sparkles count={22} className="opacity-70" />
 
+            <motion.div
+              animate={reducedMotion ? {} : { rotate: 360, opacity: [0.08, 0.2, 0.08] }}
+              transition={{
+                rotate: { duration: 60, repeat: Infinity, ease: "linear" },
+                opacity: { duration: 6, repeat: Infinity, ease: "easeInOut" },
+              }}
+              className="absolute h-[900px] w-[900px] rounded-full border border-gold/10"
+            />
+            <motion.div
+              animate={reducedMotion ? {} : { rotate: -360, scale: [1, 1.04, 1] }}
+              transition={{
+                rotate: { duration: 80, repeat: Infinity, ease: "linear" },
+                scale: { duration: 8, repeat: Infinity, ease: "easeInOut" },
+              }}
+              className="absolute h-[650px] w-[650px] rounded-full border border-dashed border-gold/10"
+            />
+
+            {/* Phase 1: wordmark slam */}
+            <motion.div
+              style={{ opacity: wordmarkOpacity, scale: wordmarkScale }}
+              className="absolute flex items-center font-display text-7xl md:text-9xl tracking-tight"
+            >
               <motion.div
-                initial={reducedMotion ? {} : { opacity: 0, x: 24 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true, margin: "-40px" }}
-                transition={{ duration: 0.5, delay: i * 0.08 + 0.05, ease: EASE }}
-                variants={{ hover: { x: 4 } }}
-                className="relative border-l border-stone/60 bg-gold/[0.02] flex items-center gap-4 p-6 lg:p-8"
+                animate={{ rotateY: assemblyMouse.x * 10, rotateX: assemblyMouse.y * -10 }}
+                transition={{ type: "spring", stiffness: 100, damping: 20 }}
+                style={{ transformPerspective: 1000 }}
+                className="relative flex items-center"
               >
+                {/* Soft glow duplicate behind the text so it breathes even before scroll/hover */}
+                <div className="absolute inset-0 flex items-center blur-2xl opacity-40 text-gold select-none" aria-hidden="true">
+                  TRAKID
+                </div>
+
                 <motion.span
-                  initial={{ scale: 0, rotate: 30, opacity: 0 }}
-                  whileInView={{ scale: 1, rotate: 0, opacity: 1 }}
-                  viewport={{ once: true, margin: "-40px" }}
-                  transition={{ delay: i * 0.06 + 0.15, duration: 0.4, type: "spring", stiffness: 220 }}
-                  whileHover={reducedMotion ? {} : { scale: 1.15 }}
-                  className="inline-flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-safe text-white shadow-[0_4px_14px_rgba(90,150,110,0.35)]"
+                  style={{ x: trakX }}
+                  animate={reducedMotion ? {} : { y: [0, -6, 0] }}
+                  transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                  className="relative inline-block text-parchment"
                 >
-                  ✓
+                  TRAK
                 </motion.span>
-                <p className="text-ink text-base lg:text-lg font-semibold">{item.trakid}</p>
+                <motion.span
+                  style={{ x: idX }}
+                  animate={reducedMotion ? {} : { y: [0, 6, 0] }}
+                  transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 0.4 }}
+                  className="relative inline-block text-gold"
+                >
+                  ID
+                </motion.span>
               </motion.div>
             </motion.div>
-          ))}
+
+            {/* Phase 2: parts assembling into a pendant */}
+            <motion.div style={{ opacity: partsOpacity }} className="absolute">
+              <motion.div
+                style={{ scale: ringScale, rotate: partsRotate }}
+                className="relative h-72 w-72 rounded-full border border-gold/25 bg-white/5 backdrop-blur-xl flex items-center justify-center"
+              >
+                <div className="absolute inset-6 rounded-full border border-gold/15" />
+                <Gem size={56} strokeWidth={1.3} className="text-gold" />
+
+                <motion.div style={{ x: partTL }} className="absolute -left-16 -top-10 flex h-16 w-16 items-center justify-center rounded-2xl border border-gold/20 bg-white/10 backdrop-blur-md">
+                  <Shield size={22} className="text-parchment" />
+                </motion.div>
+                <motion.div style={{ x: partTR }} className="absolute -right-16 -top-10 flex h-16 w-16 items-center justify-center rounded-2xl border border-gold/20 bg-white/10 backdrop-blur-md">
+                  <Zap size={22} className="text-parchment" />
+                </motion.div>
+                <motion.div style={{ x: partBL }} className="absolute -left-16 -bottom-10 flex h-16 w-16 items-center justify-center rounded-2xl border border-gold/20 bg-white/10 backdrop-blur-md">
+                  <Link2 size={22} className="text-parchment" />
+                </motion.div>
+                <motion.div style={{ x: partBR }} className="absolute -right-16 -bottom-10 flex h-16 w-16 items-center justify-center rounded-2xl border border-gold/20 bg-white/10 backdrop-blur-md">
+                  <Gem size={22} className="text-parchment" />
+                </motion.div>
+              </motion.div>
+            </motion.div>
+
+            {/* Phase 3: statement mask reveal */}
+            <motion.div style={{ opacity: statementOpacity }} className="absolute px-6 max-w-4xl text-center">
+              <p className="font-mono text-xs uppercase tracking-[0.5em] text-gold/70 mb-6">
+                Assembled for one job
+              </p>
+              <motion.h3
+                style={{ clipPath: statementClip }}
+                className="font-display text-4xl md:text-6xl leading-tight text-parchment"
+              >
+                Every part exists so a child forgets it's even there.
+              </motion.h3>
+            </motion.div>
+          </div>
         </div>
-      </motion.div>
+
+        {/* B) Marquee strip */}
+        <div className="border-y border-stone bg-parchment py-8">
+          <Marquee items={["ALWAYS WORN", "NEVER REMOVED", "TRAKID", "QUIETLY PROTECTED"]} />
+        </div>
+
+        {/* C) Horizontal scroll gallery */}
+        <div ref={galleryRef} className="relative h-[350vh] bg-parchment">
+          <div className="sticky top-0 h-screen overflow-hidden flex flex-col justify-center">
+            <div className="mb-10 px-6 lg:px-20">
+              <p className="font-mono text-xs uppercase tracking-[0.4em] text-accent">Engineered Detail</p>
+              <h2 className="mt-4 font-display text-4xl md:text-6xl text-ink max-w-2xl">
+                Built like jewellery. Tested like hardware.
+              </h2>
+            </div>
+
+            <motion.div style={{ x: galleryX }} className="flex gap-8 px-6 lg:px-20 will-change-transform">
+              {panels.map((panel, i) => {
+                
+                return (
+                  <div
+                    key={panel.title}
+                    className="relative flex-shrink-0 w-[82vw] md:w-[38vw] lg:w-[26vw] aspect-[4/5] rounded-[2.5rem] border border-stone bg-white/80 backdrop-blur-xl shadow-xl p-10 flex flex-col justify-between overflow-hidden"
+                  >
+                    <div className="absolute -right-10 -top-10 h-40 w-40 rounded-full bg-gold/10 blur-3xl" />
+                    <span className="font-mono text-xs text-gold/70">0{i + 1}</span>
+                    <div>
+                      <div className="mb-8 overflow-hidden rounded-2xl">
+  <img
+    src={panel.image}
+    alt={panel.title}
+    className="h-56 w-full object-contain"
+  />
+</div>
+                      <h4 className="font-display text-2xl text-ink">{panel.title}</h4>
+                      <p className="mt-3 text-sm leading-6 text-slate">{panel.desc}</p>
+                    </div>
+                  </div>
+                );
+              })}
+            </motion.div>
+          </div>
+        </div>
+
+        {/* D) Closing — scramble stat + magnetic CTA */}
+        <div className="relative py-20 px-6 text-center overflow-hidden">
+          <div className="absolute left-1/2 top-1/2 h-[600px] w-[600px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-gold/8 blur-[160px] pointer-events-none" />
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <ScrambleText
+              text="96% COMPLIANCE"
+              trigger
+              className="text-5xl md:text-7xl font-display text-ink tracking-tight block"
+            />
+            <p className="mt-6 text-slate text-lg max-w-md mx-auto">
+              Not a feature. An outcome — measured across a full pilot cohort.
+            </p>
+            <div className="mt-12 flex justify-center">
+              <MagneticButton className="bg-ink text-parchment shadow-[0_20px_60px_rgba(0,0,0,0.25)]">
+                Get TrakID
+              </MagneticButton>
+            </div>
+          </motion.div>
+        </div>
+      </div>
+
 
 
       {/* ================================================================
@@ -1097,195 +1178,7 @@ export default function ComplianceCase() {
         </div>
       </motion.section>
 
-      {/* ================================================================
-          🔥 CINEMATIC SECTION — pinned assembly + marquee + horizontal gallery
-      ================================================================ */}
-      <div className="relative mt-36 -mx-6 lg:-mx-20">
-        {/* A) Pinned assembly sequence */}
-        <div ref={assemblyRef} className="relative h-[700vh]">
-          <div
-            className="sticky top-0 h-screen overflow-hidden flex items-center justify-center"
-            onMouseMove={(e) => {
-              const rect = e.currentTarget.getBoundingClientRect();
-              setAssemblyMouse({
-                x: (e.clientX - rect.left) / rect.width - 0.5,
-                y: (e.clientY - rect.top) / rect.height - 0.5,
-              });
-            }}
-          >
-            <div className="absolute inset-0 bg-gradient-to-b from-ink via-ink/95 to-ink" />
-
-            {/* Diagonal light sweep — a moving studio light instead of a flat backdrop */}
-            {!reducedMotion && (
-              <motion.div
-                animate={{ x: ["-30%", "130%"] }}
-                transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", repeatDelay: 1.5 }}
-                className="absolute top-0 h-full w-1/3 rotate-12 bg-gradient-to-r from-transparent via-gold/[0.06] to-transparent pointer-events-none"
-              />
-            )}
-
-            <Sparkles count={22} className="opacity-70" />
-
-            <motion.div
-              animate={reducedMotion ? {} : { rotate: 360, opacity: [0.08, 0.2, 0.08] }}
-              transition={{
-                rotate: { duration: 60, repeat: Infinity, ease: "linear" },
-                opacity: { duration: 6, repeat: Infinity, ease: "easeInOut" },
-              }}
-              className="absolute h-[900px] w-[900px] rounded-full border border-gold/10"
-            />
-            <motion.div
-              animate={reducedMotion ? {} : { rotate: -360, scale: [1, 1.04, 1] }}
-              transition={{
-                rotate: { duration: 80, repeat: Infinity, ease: "linear" },
-                scale: { duration: 8, repeat: Infinity, ease: "easeInOut" },
-              }}
-              className="absolute h-[650px] w-[650px] rounded-full border border-dashed border-gold/10"
-            />
-
-            {/* Phase 1: wordmark slam */}
-            <motion.div
-              style={{ opacity: wordmarkOpacity, scale: wordmarkScale }}
-              className="absolute flex items-center font-display text-7xl md:text-9xl tracking-tight"
-            >
-              <motion.div
-                animate={{ rotateY: assemblyMouse.x * 10, rotateX: assemblyMouse.y * -10 }}
-                transition={{ type: "spring", stiffness: 100, damping: 20 }}
-                style={{ transformPerspective: 1000 }}
-                className="relative flex items-center"
-              >
-                {/* Soft glow duplicate behind the text so it breathes even before scroll/hover */}
-                <div className="absolute inset-0 flex items-center blur-2xl opacity-40 text-gold select-none" aria-hidden="true">
-                  TRAKID
-                </div>
-
-                <motion.span
-                  style={{ x: trakX }}
-                  animate={reducedMotion ? {} : { y: [0, -6, 0] }}
-                  transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                  className="relative inline-block text-parchment"
-                >
-                  TRAK
-                </motion.span>
-                <motion.span
-                  style={{ x: idX }}
-                  animate={reducedMotion ? {} : { y: [0, 6, 0] }}
-                  transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 0.4 }}
-                  className="relative inline-block text-gold"
-                >
-                  ID
-                </motion.span>
-              </motion.div>
-            </motion.div>
-
-            {/* Phase 2: parts assembling into a pendant */}
-            <motion.div style={{ opacity: partsOpacity }} className="absolute">
-              <motion.div
-                style={{ scale: ringScale, rotate: partsRotate }}
-                className="relative h-72 w-72 rounded-full border border-gold/25 bg-white/5 backdrop-blur-xl flex items-center justify-center"
-              >
-                <div className="absolute inset-6 rounded-full border border-gold/15" />
-                <Gem size={56} strokeWidth={1.3} className="text-gold" />
-
-                <motion.div style={{ x: partTL }} className="absolute -left-16 -top-10 flex h-16 w-16 items-center justify-center rounded-2xl border border-gold/20 bg-white/10 backdrop-blur-md">
-                  <Shield size={22} className="text-parchment" />
-                </motion.div>
-                <motion.div style={{ x: partTR }} className="absolute -right-16 -top-10 flex h-16 w-16 items-center justify-center rounded-2xl border border-gold/20 bg-white/10 backdrop-blur-md">
-                  <Zap size={22} className="text-parchment" />
-                </motion.div>
-                <motion.div style={{ x: partBL }} className="absolute -left-16 -bottom-10 flex h-16 w-16 items-center justify-center rounded-2xl border border-gold/20 bg-white/10 backdrop-blur-md">
-                  <Link2 size={22} className="text-parchment" />
-                </motion.div>
-                <motion.div style={{ x: partBR }} className="absolute -right-16 -bottom-10 flex h-16 w-16 items-center justify-center rounded-2xl border border-gold/20 bg-white/10 backdrop-blur-md">
-                  <Gem size={22} className="text-parchment" />
-                </motion.div>
-              </motion.div>
-            </motion.div>
-
-            {/* Phase 3: statement mask reveal */}
-            <motion.div style={{ opacity: statementOpacity }} className="absolute px-6 max-w-4xl text-center">
-              <p className="font-mono text-xs uppercase tracking-[0.5em] text-gold/70 mb-6">
-                Assembled for one job
-              </p>
-              <motion.h3
-                style={{ clipPath: statementClip }}
-                className="font-display text-4xl md:text-6xl leading-tight text-parchment"
-              >
-                Every part exists so a child forgets it's even there.
-              </motion.h3>
-            </motion.div>
-          </div>
-        </div>
-
-        {/* B) Marquee strip */}
-        <div className="border-y border-stone bg-parchment py-8">
-          <Marquee items={["ALWAYS WORN", "NEVER REMOVED", "TRAKID", "QUIETLY PROTECTED"]} />
-        </div>
-
-        {/* C) Horizontal scroll gallery */}
-        <div ref={galleryRef} className="relative h-[350vh] bg-parchment">
-          <div className="sticky top-0 h-screen overflow-hidden flex flex-col justify-center">
-            <div className="mb-10 px-6 lg:px-20">
-              <p className="font-mono text-xs uppercase tracking-[0.4em] text-accent">Engineered Detail</p>
-              <h2 className="mt-4 font-display text-4xl md:text-6xl text-ink max-w-2xl">
-                Built like jewellery. Tested like hardware.
-              </h2>
-            </div>
-
-            <motion.div style={{ x: galleryX }} className="flex gap-8 px-6 lg:px-20 will-change-transform">
-              {panels.map((panel, i) => {
-                
-                return (
-                  <div
-                    key={panel.title}
-                    className="relative flex-shrink-0 w-[82vw] md:w-[38vw] lg:w-[26vw] aspect-[4/5] rounded-[2.5rem] border border-stone bg-white/80 backdrop-blur-xl shadow-xl p-10 flex flex-col justify-between overflow-hidden"
-                  >
-                    <div className="absolute -right-10 -top-10 h-40 w-40 rounded-full bg-gold/10 blur-3xl" />
-                    <span className="font-mono text-xs text-gold/70">0{i + 1}</span>
-                    <div>
-                      <div className="mb-8 overflow-hidden rounded-2xl">
-  <img
-    src={panel.image}
-    alt={panel.title}
-    className="h-56 w-full object-contain"
-  />
-</div>
-                      <h4 className="font-display text-2xl text-ink">{panel.title}</h4>
-                      <p className="mt-3 text-sm leading-6 text-slate">{panel.desc}</p>
-                    </div>
-                  </div>
-                );
-              })}
-            </motion.div>
-          </div>
-        </div>
-
-        {/* D) Closing — scramble stat + magnetic CTA */}
-        <div className="relative py-20 px-6 text-center overflow-hidden">
-          <div className="absolute left-1/2 top-1/2 h-[600px] w-[600px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-gold/8 blur-[160px] pointer-events-none" />
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
-            <ScrambleText
-              text="96% COMPLIANCE"
-              trigger
-              className="text-5xl md:text-7xl font-display text-ink tracking-tight block"
-            />
-            <p className="mt-6 text-slate text-lg max-w-md mx-auto">
-              Not a feature. An outcome — measured across a full pilot cohort.
-            </p>
-            <div className="mt-12 flex justify-center">
-              <MagneticButton className="bg-ink text-parchment shadow-[0_20px_60px_rgba(0,0,0,0.25)]">
-                Get TrakID
-              </MagneticButton>
-            </div>
-          </motion.div>
-        </div>
-      </div>
-
+     
       {/* ================================================================
           CLOSING QUOTE
       ================================================================ */}
