@@ -73,6 +73,27 @@ export default function Hero() {
     prefersReducedMotion,
   });
 
+  // FIX: lock scroll during the intro, restore it after.
+  // Without this, scrolling while the loader plays leaves the page
+  // mid-scroll when the pin below is created — every ScrollTrigger on
+  // the page then measures against the wrong layout and sections
+  // appear frozen/stuck after the intro.
+  useEffect(() => {
+    const lenis = window.lenis;
+    if (introActive) {
+      lenis?.scrollTo(0, { immediate: true });
+      lenis?.stop();
+      document.documentElement.style.overflow = 'hidden';
+    } else {
+      document.documentElement.style.overflow = '';
+      lenis?.start();
+    }
+    return () => {
+      document.documentElement.style.overflow = '';
+      lenis?.start();
+    };
+  }, [introActive]);
+
   useEffect(() => {
     if (prefersReducedMotion) return;
     if (introActive) return;
@@ -112,6 +133,11 @@ export default function Hero() {
       scrub: 1.2,
       animation: tl,
     });
+
+    // FIX: the pin above just inserted a 550vh spacer into the document —
+    // every trigger measured before this moment (Reveal, kinetic chapters)
+    // is now offset. Recalculate them all against the final layout.
+    ScrollTrigger.refresh();
 
     return () => {
       scrollTrigger.kill();

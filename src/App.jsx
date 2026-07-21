@@ -13,21 +13,30 @@ import Divider from './components/Divider';
 gsap.registerPlugin(ScrollTrigger);
 
 // -------------------------------------------------------------------
-// Section imports — uncomment as each section is built.
-// Do NOT reorder: this IS the page's visual sequence.
+// STORY MODE — the page is one linear narrative, read top to bottom:
+//
+//   Prologue    Hero            (intro + pendant — untouched)
+//   Chapter 1   Reveal          The Secret (what's inside the jewel)
+//   Chapter 2   TheMoment       3:42 PM — the fear every parent knows
+//   Chapter 3   TheBelief       A refused tracker protects no one
+//   Chapter 4   Anatomy         The Companions (the collection)
+//   Chapter 5   WatchedOver     The same day, retold with TrakID
+//   Chapter 6   FeatureShowcase The Promise, Kept (proof/specs)
+//   Chapter 7   TheInvitation   One form, both audiences
+//   Epilogue    Closing
+//
+// The old Fork / two-track sections remain on disk but are no longer
+// rendered — the story replaces the branch with a single path.
 // -------------------------------------------------------------------
 import Hero from './sections/01-Hero/Hero';
 import Reveal from './sections/02-Reveal/Reveal';
-import Fork from './sections/03-Fork/Fork';
-import ComplianceCase from './sections/04A-ComplianceCase/ComplianceCase';
+import TheMoment from './sections/03-TheMoment/TheMoment';
+import TheBelief from './sections/04-TheBelief/TheBelief';
 import Anatomy from './sections/04B-Anatomy/Anatomy';
-// ADDED: The new Feature Showcase component
+import WatchedOver from './sections/05-WatchedOver/WatchedOver';
 import FeatureShowcase from './sections/04C-FeatureShowcase/FeatureShowcase';
-import EngineeringCredibility from './sections/05A-EngineeringCredibility/EngineeringCredibility';
-// import PeaceOfMind from './sections/05B-PeaceOfMind/PeaceOfMind';
-import InstitutionalAsk from './sections/06A-InstitutionalAsk/InstitutionalAsk';
-import Invitation from './sections/06B-Invitation/Invitation';
-import Closing from './sections/07-Closing/Closing';
+import TheInvitation from './sections/06-TheInvitation/TheInvitation';
+import Closing from './sections/07-Closing/closing';
 
 function App() {
   // ---------------------------------------------------------------
@@ -76,35 +85,37 @@ function App() {
         {/* The Divider component goes between each section boundary.    */}
         {/* ============================================================ */}
 
+        {/* Prologue */}
         <Hero />
-        {/* <Divider /> */}
+
+        {/* Chapter 1 — The Secret */}
         <Reveal />
-        {/* <Divider /> */}
-        <Fork />
-        {/* <Divider /> */}
+        <Divider className="text-gold/60" />
 
-        {/* --- Institutional Track --- */}
-        <ComplianceCase />
-        {/* <Divider /> */}
-        <EngineeringCredibility />
-        <Divider />
-        <InstitutionalAsk />
-        {/* <Divider /> */}
+        {/* Chapter 2 — The Moment */}
+        <TheMoment />
+        <Divider className="text-gold/60" />
 
-        {/* --- Family Track --- */}
+        {/* Chapter 3 — The Truth */}
+        <TheBelief />
+        <Divider className="text-gold/60" />
+
+        {/* Chapter 4 — The Companions */}
         <Anatomy />
-        {/* <Divider /> */}
-        
-        {/* ADDED: Feature Showcase specifically in the Family track */}
-        <FeatureShowcase />
-        {/* <Divider /> */}
-        
-        {/* <PeaceOfMind /> */}
-        {/* <Divider /> */}
-        <Invitation />
-        {/* <Divider /> */}
+        <Divider className="text-gold/60" />
 
-        {/* --- Shared Closing --- */}
+        {/* Chapter 5 — The Day, Watched Over */}
+        <WatchedOver />
+        <Divider className="text-gold/60" />
+
+        {/* Chapter 6 — The Promise, Kept */}
+        <FeatureShowcase />
+        <Divider className="text-gold/60" />
+
+        {/* Chapter 7 — The Beginning */}
+        <TheInvitation />
+
+        {/* Epilogue */}
         <Closing />
 
       </div>

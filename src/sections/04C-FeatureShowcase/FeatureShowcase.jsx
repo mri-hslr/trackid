@@ -132,7 +132,7 @@ export default function FeatureShowcase() {
         
         <div className="text-center mb-24">
           <span className="font-mono text-xs tracking-[0.3em] uppercase text-gold">
-            The TrakID Difference
+            Chapter Six — The Promise, Kept
           </span>
           <h2 className="font-display text-4xl md:text-5xl lg:text-6xl text-ink mt-6 tracking-tight">
             Built like jewellery. <br className="hidden sm:block"/> Tested like hardware.

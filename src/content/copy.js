@@ -152,7 +152,7 @@ export const COPY = {
   },
 
   anatomy: {
-  eyebrow: "The Collection",
+  eyebrow: "Chapter Four — The Companions",
 
   headline: "Crafted for every personality.",
 
@@ -310,8 +310,96 @@ export const COPY = {
     copyright: '© 2026 TrakID. All rights reserved.',
   },
 
+  // -----------------------------------------------------------------
+  // STORY MODE — chapter copy for the linear narrative flow.
+  // Each chapter has a `marker` (mono eyebrow) rendered by ChapterMarker.
+  // -----------------------------------------------------------------
+  story: {
+    // Kinetic copy — lines are arrays of segments so specific words can be
+    // wrapped in sticker chips: { t: 'word', sticker: 'gold'|'pink'|'ghost' }.
+    moment: {
+      marker: 'Chapter Two — The Moment',
+      day: 'A Tuesday',
+      clock: [{ t: '3:42', sticker: 'gold' }, { t: 'PM' }],
+      lines: [
+        [{ t: 'The bell rang at' }, { t: '3:30.', sticker: 'ghost' }],
+        [{ t: 'It’s 3:42, and she isn’t' }, { t: 'home', sticker: 'pink' }, { t: 'yet.' }],
+        [{ t: 'Twelve minutes is nothing.' }],
+        [{ t: 'Twelve minutes is' }, { t: 'everything.', sticker: 'gold' }],
+      ],
+      resolution:
+        'Every parent knows this silence. We built TrakID so it never has to last longer than a glance.',
+      resolutionAccents: ['never', 'a', 'glance.'],
+      bridge: 'But a tracker only works if it’s there —',
+    },
+
+    belief: {
+      marker: 'Chapter Three — The Truth',
+      headline: [
+        { t: 'A tracker a child' },
+        { t: 'refuses', sticker: 'pink' },
+        { t: 'to wear protects' },
+        { t: 'no one.', sticker: 'gold' },
+      ],
+      body:
+        'Gadgets get removed. Hidden in backpacks. Forgotten on dressers. So we didn’t build a better gadget — we built something children ask to put on.',
+      bodyAccents: ['ask', 'to', 'put', 'on.'],
+      journey: ['Removed', 'Hidden', 'Forgotten', 'Always worn'],
+      quote: 'When children wear it by choice, protection becomes continuous.',
+    },
+
+    watchedOver: {
+      marker: 'Chapter Five — The Day, Watched Over',
+      headline: 'The same Tuesday. This time, you’re there.',
+      subhead:
+        'One quiet dot on a map, from the front door and back to it. No calls. No refreshing. Just knowing.',
+      events: [
+        { time: '8:02 AM',  title: 'Leaves home',        description: 'The day begins. Her pendant wakes with her.', state: 'live' },
+        { time: '8:14 AM',  title: 'Arrives at school',  description: 'Inside the safe zone. You get one gentle note, then silence.', state: 'safe' },
+        { time: '3:42 PM',  title: 'The bell has rung',  description: 'The moment that used to be silence. Now it’s a dot, drifting home.', state: 'moving' },
+        { time: '3:58 PM',  title: 'A detour',           description: 'She stops at a friend’s house. You see it. You breathe. You let her be a kid.', state: 'detour' },
+        { time: '4:26 PM',  title: 'Home',               description: 'The door closes. The map goes quiet. So does the worry.', state: 'home' },
+      ],
+      sos: {
+        label: 'And if she ever needs you',
+        description: 'One long press on the pendant sends an SOS with live location — instantly, to every guardian.',
+      },
+      mapLabels: { home: 'Home', school: 'School', friend: 'Friend’s house', safeZone: 'Safe zone' },
+    },
+
+    invitation: {
+      marker: 'Chapter Seven — The Beginning',
+      headline: 'Every story like this begins with a choice.',
+      subhead: 'Tell us whose story you’re writing.',
+      audiences: {
+        family: {
+          label: 'For My Family',
+          headline: 'Give them the pendant. Keep the peace of mind.',
+          subtitle: 'Join the waitlist — or gift a TrakID to a grandchild, niece, or nephew.',
+          submitLabel: 'Join the Waitlist',
+          successMessage: 'You’re on the list. We’ll be in touch soon.',
+        },
+        institution: {
+          label: 'For My School',
+          headline: 'Bring TrakID to your institution.',
+          subtitle: 'Pilot programmes for schools that take wearability as seriously as safety.',
+          submitLabel: 'Request a Pilot',
+          successMessage: 'Thank you. Our team will be in touch shortly.',
+        },
+      },
+      errorRequired: 'This field is required.',
+    },
+
+    chapters: {
+      reveal:  'Chapter One — The Secret',
+      anatomy: 'Chapter Four — The Companions',
+      proof:   'Chapter Six — The Promise, Kept',
+      closing: 'Epilogue',
+    },
+  },
+
   reveal: {
-    eyebrow: 'Under the surface',
+    eyebrow: 'Chapter One — The Secret',
     annotations: [
       { key: 'gps', label: 'GPS Antenna' },
       { key: 'battery', label: 'Battery' },
