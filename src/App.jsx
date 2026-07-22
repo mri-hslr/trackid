@@ -35,6 +35,7 @@ import TheBelief from './sections/04-TheBelief/TheBelief';
 import Anatomy from './sections/04B-Anatomy/Anatomy';
 import WatchedOver from './sections/05-WatchedOver/WatchedOver';
 import FeatureShowcase from './sections/04C-FeatureShowcase/FeatureShowcase';
+import Constellation from './sections/06C-Constellation/Constellation';
 import TheInvitation from './sections/06-TheInvitation/TheInvitation';
 import Closing from './sections/07-Closing/closing';
 
@@ -111,6 +112,9 @@ function App() {
         {/* Chapter 6 — The Promise, Kept */}
         <FeatureShowcase />
         <Divider className="text-gold/60" />
+
+        {/* Interlude — the particle pendant, statements riding the scroll */}
+        <Constellation />
 
         {/* Chapter 7 — The Beginning */}
         <TheInvitation />

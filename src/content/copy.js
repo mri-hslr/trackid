@@ -396,6 +396,17 @@ export const COPY = {
       proof:   'Chapter Six — The Promise, Kept',
       closing: 'Epilogue',
     },
+
+    // Interlude — the particle pendant (OSOS-key-style pinned sequence).
+    // Each statement tints the constellation: silver → gold → safe green.
+    constellation: {
+      marker: 'Interlude — The Constellation',
+      statements: [
+        { label: 'The Object', text: 'One pendant. Everything that matters, inside.',  color: 'silver' },
+        { label: 'The Craft',  text: 'Crafted to be worn. Engineered to watch over.',  color: 'gold' },
+        { label: 'The Calm',   text: 'So the only thing you feel is peace of mind.',   color: 'safe' },
+      ],
+    },
   },
 
   reveal: {
