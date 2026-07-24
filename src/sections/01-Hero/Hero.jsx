@@ -181,7 +181,7 @@ export default function Hero({ start = true }) {
             <h1
               ref={wordmarkRef}
               style={{ opacity: prefersReducedMotion ? 1 : 0 }}
-              className="font-display text-6xl md:text-8xl font-bold text-white mb-5 tracking-tight drop-shadow-2xl"
+              className="font-display text-7xl md:text-[9rem] lg:text-[12rem] font-black text-white mb-5 tracking-tighter leading-none"
             >
               {COPY.hero.wordmark}
             </h1>

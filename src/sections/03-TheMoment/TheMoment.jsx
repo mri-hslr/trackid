@@ -1,251 +1,207 @@
 // src/sections/03-TheMoment/TheMoment.jsx
-// CHAPTER TWO — THE MOMENT (complete redesign: the minute rail)
-// No pin, no phases — the twelve minutes are a vertical timeline the
-// scroll draws downward, always full, always centered:
-//   · intro line cascades in ("minutes" on gold)
-//   · four minute-beats — 3:30 → 3:34 → 3:38 → 3:42 — each one a
-//     timestamp + a thought that assembles word-by-word (scroll-scrubbed),
-//     connected by a gold rail that draws itself between them
-//   · the beats escalate in size; 3:42 lands biggest, "home" on pink
-//   · the twist: "nothing." gets struck through live, then
-//     "everything." takes its place on gold
-//   · the resolution paragraph brightens word-by-word, then the bridge
-// Zero blank space by construction — the section is as tall as its
-// content. Reduced motion: everything renders static.
+// CHAPTER TWO — THE MOMENT (poster rebuild, matching The Vows style)
+// The twelve minutes told as full-bleed "shouted" poster panels, each
+// with its own stunt — the same visual language as the post-chapter-6
+// Vows run, but cold and escalating:
+//   1. "3:42 PM" — giant timestamp poster, eyebrow "A Tuesday"
+//   2. the four beats, each a big line that pops in on its own panel
+//   3. "SHE ISN'T HOME YET" — the split-slab stunt in brand pink
+//   4. NOTHING / EVERYTHING — filled vs outline word pair
+//   5. the resolution + bridge, quiet close
+// whileInView + scroll-scrubbed, fully reversible, reduced-motion safe.
 
-import { useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { COPY } from '../../content/copy';
-import { fadeUp, EASE } from '../../motion/variants';
+import { EASE } from '../../motion/variants';
 import ChapterMarker from '../../components/ChapterMarker';
-import { KineticLine, KineticParagraph } from '../../components/Kinetic';
-import { useReducedMotion } from '../../hooks/useReducedMotion';
-
-gsap.registerPlugin(ScrollTrigger);
+import CornerLabels from '../../components/CornerLabels';
+import { KineticParagraph } from '../../components/Kinetic';
 
 const { moment } = COPY.story;
 
-// Escalating type scale for the four beats — 3:42 lands biggest
-const BEAT_SIZES = [
-  'text-2xl md:text-4xl',
-  'text-2xl md:text-4xl',
-  'text-3xl md:text-5xl',
-  'text-4xl md:text-6xl lg:text-7xl',
-];
-
-const STICKER_CLASS = {
-  gold:  'rounded-xl md:rounded-2xl px-[0.32em] py-[0.02em] bg-gold text-parchment -rotate-2 shadow-[0_6px_24px_rgba(201,166,107,0.35)]',
-  pink:  'rounded-xl md:rounded-2xl px-[0.32em] py-[0.02em] bg-accentDeep text-ink rotate-2 shadow-[0_6px_24px_rgba(168,28,75,0.35)]',
-  ghost: 'rounded-xl md:rounded-2xl px-[0.32em] py-[0.02em] glass-card text-slate -rotate-1',
+const wordPop = {
+  initial: { opacity: 0, scale: 1.22, filter: 'blur(10px)' },
+  whileInView: { opacity: 1, scale: 1, filter: 'blur(0px)' },
+  viewport: { once: false, amount: 0.5 },
+  transition: { duration: 0.7, ease: EASE },
 };
 
-// A rail segment that draws itself downward as it scrolls into view,
-// with a small gold comet riding its tip.
-function RailSegment({ tall = false }) {
-  const wrapRef = useRef(null);
-  const lineRef = useRef(null);
-  const cometRef = useRef(null);
-  const prefersReducedMotion = useReducedMotion();
+const lineIn = {
+  initial: { opacity: 0, y: 18 },
+  whileInView: { opacity: 1, y: 0 },
+  viewport: { once: false, amount: 0.6 },
+  transition: { duration: 0.55, ease: EASE, delay: 0.2 },
+};
 
-  useEffect(() => {
-    if (prefersReducedMotion) return;
-    const wrap = wrapRef.current;
-    if (!wrap) return;
-
-    const tl = gsap.timeline({
-      scrollTrigger: { trigger: wrap, start: 'top 92%', end: 'top 52%', scrub: 0.5 },
-    });
-    tl.fromTo(lineRef.current, { scaleY: 0 }, { scaleY: 1, ease: 'none' }, 0);
-    tl.fromTo(
-      cometRef.current,
-      { top: '0%', opacity: 1 },
-      { top: '100%', opacity: 0.9, ease: 'none' },
-      0
-    );
-
-    return () => {
-      tl.scrollTrigger?.kill();
-      tl.kill();
-    };
-  }, [prefersReducedMotion]);
-
-  return (
-    <div ref={wrapRef} aria-hidden className={`relative mx-auto ${tall ? 'h-20 md:h-28' : 'h-14 md:h-20'}`}>
-      <span
-        ref={lineRef}
-        style={prefersReducedMotion ? undefined : { transform: 'scaleY(0)' }}
-        className="block w-px h-full origin-top bg-gradient-to-b from-gold/60 via-gold/25 to-white/10"
-      />
-      {!prefersReducedMotion && (
-        <span
-          ref={cometRef}
-          className="absolute left-1/2 -translate-x-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-gold shadow-[0_0_12px_rgba(201,166,107,0.9),0_0_28px_rgba(201,166,107,0.4)]"
-          style={{ top: 0 }}
-        />
-      )}
-    </div>
-  );
+// Render a segment array as text with inline sticker chips
+function Segments({ segments }) {
+  return segments.map((seg, i) => (
+    <span
+      key={i}
+      className={
+        seg.sticker === 'pink'
+          ? 'text-accentDeep'
+          : seg.sticker === 'ghost'
+            ? 'text-slate'
+            : ''
+      }
+    >
+      {seg.t}
+      {i < segments.length - 1 ? ' ' : ''}
+    </span>
+  ));
 }
 
-// Word cascade with optional live strike-through — for the twist lines.
-// Gold stickers get the premium shine sweep.
-function CascadeLine({ segments, className = '', strike = false }) {
-  const words = segments.flatMap((seg) =>
-    seg.t.split(' ').map((w) => ({ w, sticker: seg.sticker }))
-  );
-  return (
-    <p className={className}>
-      {words.map(({ w, sticker }, i) => (
-        <span key={i} className="inline-block overflow-hidden align-bottom mr-[0.26em] pb-[0.1em]">
-          <motion.span
-            initial={{ y: '110%', opacity: 0, filter: 'blur(7px)' }}
-            whileInView={{ y: 0, opacity: 1, filter: 'blur(0px)' }}
-            viewport={{ once: false, amount: 0.6 }}
-            transition={{ duration: 0.5, ease: EASE, delay: i * 0.06 }}
-            className={`relative inline-block ${sticker ? STICKER_CLASS[sticker] : ''} ${
-              sticker === 'gold' ? 'sticker-shine' : ''
-            }`}
-          >
-            {w}
-            {strike && sticker === 'ghost' && (
-              <motion.span
-                initial={{ scaleX: 0 }}
-                whileInView={{ scaleX: 1 }}
-                viewport={{ once: false, amount: 0.6 }}
-                transition={{ duration: 0.45, ease: EASE, delay: words.length * 0.06 + 0.35 }}
-                className="absolute left-[8%] right-[8%] top-1/2 h-[3px] bg-slate origin-left rounded-full"
-              />
-            )}
-          </motion.span>
-        </span>
-      ))}
-    </p>
-  );
-}
+// Escalating type scale for the four beats
+const BEAT_SIZE = [
+  'text-[9vw] md:text-[7vw]',
+  'text-[9vw] md:text-[7vw]',
+  'text-[10vw] md:text-[8vw]',
+  'text-[12vw] md:text-[9vw]',
+];
 
 export default function TheMoment() {
   return (
-    <section id="the-moment" className="relative bg-parchment overflow-hidden">
-      {/* Cold ambience — deliberately not the warm brand pink */}
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          background:
-            'radial-gradient(ellipse 70% 45% at 50% 25%, rgba(30,20,40,0.6) 0%, transparent 70%)',
-        }}
-      />
-      <span
-        aria-hidden
-        className="absolute top-14 left-1/2 -translate-x-1/2 font-display font-bold text-[36vw] md:text-[20vw] leading-none text-ink/[0.035] pointer-events-none select-none"
-      >
-        02
-      </span>
-      <div aria-hidden className="absolute top-[22%] -left-24 w-72 h-72 rounded-full bg-accentDeep/10 blur-[100px] pointer-events-none" />
-      <div aria-hidden className="absolute bottom-[18%] -right-20 w-80 h-80 rounded-full bg-gold/[0.07] blur-[110px] pointer-events-none" />
+    <section id="the-moment" className="relative">
 
-      <div className="relative z-10 max-w-5xl mx-auto px-6 pt-28 md:pt-36 pb-20 md:pb-24 flex flex-col items-center text-center">
-        {/* ---------- Header ---------- */}
-        <ChapterMarker className="mb-10">{moment.marker}</ChapterMarker>
+      {/* ---------- Panel 1 · the timestamp ---------- */}
+      <div className="relative bg-parchment min-h-screen flex flex-col items-center justify-center px-6 overflow-hidden">
+        <div
+          aria-hidden
+          className="absolute inset-0 pointer-events-none"
+          style={{ background: 'radial-gradient(ellipse 70% 50% at 50% 40%, rgba(30,20,40,0.6) 0%, transparent 72%)' }}
+        />
+        <span aria-hidden className="absolute top-14 left-1/2 -translate-x-1/2 font-display font-black text-[40vw] md:text-[24vw] leading-none text-ink/[0.035] pointer-events-none select-none">02</span>
+        <CornerLabels labels={{ tl: 'School’s Out', tr: 'Home By Four', bl: 'Twelve Minutes', br: 'Every Parent Knows' }} tone="text-slate/50" />
 
-        <motion.span
-          {...fadeUp}
-          className="glass-card inline-block rounded-full px-5 py-2 -rotate-3 font-mono text-[10px] md:text-xs uppercase tracking-premium text-slate mb-8"
-        >
+        <ChapterMarker className="mb-8">{moment.marker}</ChapterMarker>
+        <motion.span {...lineIn} className="font-mono text-[11px] md:text-xs uppercase tracking-kicker text-slate mb-6">
           {moment.day}
         </motion.span>
+        <motion.h2 {...wordPop} className="font-display font-black text-ink text-[24vw] md:text-[18vw] leading-none tracking-tighter tabular-nums">
+          3:42<span className="text-gold">.</span>
+        </motion.h2>
+        <motion.p {...lineIn} className="font-body font-semibold text-slate text-base md:text-xl mt-8">
+          The twelve minutes every parent knows.
+        </motion.p>
+      </div>
 
-        <KineticLine
-          segments={moment.intro}
-          className="font-display font-bold text-4xl md:text-6xl text-ink tracking-tight leading-[1.12] max-w-3xl mb-14 md:mb-16"
+      {/* ---------- Panels 2 · the four beats ---------- */}
+      {moment.beats.map((beat, i) => (
+        <div
+          key={beat.time}
+          className="relative bg-parchment min-h-[88vh] flex flex-col items-center justify-center px-6 overflow-hidden text-center"
+        >
+          <div
+            aria-hidden
+            className="absolute inset-0 pointer-events-none"
+            style={{
+              background:
+                i === moment.beats.length - 1
+                  ? 'radial-gradient(ellipse 60% 55% at 50% 50%, rgba(168,28,75,0.15) 0%, rgba(201,166,107,0.05) 45%, transparent 78%)'
+                  : 'radial-gradient(ellipse 65% 50% at 50% 45%, rgba(30,20,40,0.5) 0%, transparent 72%)',
+            }}
+          />
+          <motion.span {...lineIn} className="font-mono text-xs md:text-sm uppercase tracking-kicker text-gold tabular-nums mb-8">
+            {beat.time}
+          </motion.span>
+          <motion.h3
+            {...wordPop}
+            className={`font-display font-black text-ink tracking-tighter leading-[0.98] max-w-6xl ${BEAT_SIZE[i]}`}
+          >
+            <Segments segments={beat.segments} />
+          </motion.h3>
+        </div>
+      ))}
+
+      {/* ---------- Panel 3 · the split-slab climax ---------- */}
+      <div className="relative bg-parchment min-h-screen flex flex-col items-center justify-center px-6 overflow-hidden">
+        <motion.div
+          aria-hidden
+          initial={{ scaleX: 0 }}
+          whileInView={{ scaleX: 1 }}
+          viewport={{ once: false, amount: 0.5 }}
+          transition={{ duration: 0.8, ease: EASE }}
+          className="absolute inset-y-0 left-0 w-[66%] origin-left bg-accentDeep"
+        />
+        <motion.h2
+          {...wordPop}
+          className="relative z-10 font-display font-black uppercase tracking-tighter text-ink text-[13vw] md:text-[10vw] leading-[0.9] text-center"
+        >
+          She isn’t<br />home yet.
+        </motion.h2>
+      </div>
+
+      {/* ---------- Panel 4 · nothing / everything (both fly in from the right) ----------
+           A STATIC wrapper is what triggers whileInView (it never moves, so it
+           reliably enters view); the two lines slide in via variants. Without
+           this, animating each line's own x pushed it off-screen and its
+           in-view trigger never fired — leaving the text invisible. */}
+      <motion.div
+        initial="hidden"
+        whileInView="show"
+        viewport={{ once: false, amount: 0.4 }}
+        className="relative bg-parchment min-h-screen flex flex-col items-center justify-center px-6 overflow-hidden gap-6 md:gap-12"
+      >
+        <div
+          aria-hidden
+          className="absolute inset-0 pointer-events-none"
+          style={{ background: 'radial-gradient(ellipse 60% 45% at 50% 50%, rgba(42,17,34,0.6) 0%, transparent 74%)' }}
         />
 
-        {/* ---------- The minute rail ---------- */}
-        <div className="flex flex-col items-center">
-          {moment.beats.map((beat, i) => (
-            <div key={beat.time} className="flex flex-col items-center">
-              <RailSegment tall={i === moment.beats.length - 1} />
+        {/* "nothing." — slides in from the right, dim and struck through */}
+        <motion.h2
+          variants={{
+            hidden: { opacity: 0, x: 220, filter: 'blur(12px)' },
+            show:   { opacity: 0.55, x: 0, filter: 'blur(0px)', transition: { duration: 0.7, ease: EASE } },
+          }}
+          className="relative z-10 font-display font-black uppercase tracking-tighter text-slate text-[11vw] md:text-[8vw] leading-none text-center"
+        >
+          Twelve minutes is{' '}
+          <span className="relative inline-block">
+            nothing.
+            <motion.span
+              aria-hidden
+              variants={{
+                hidden: { scaleX: 0 },
+                show:   { scaleX: 1, transition: { duration: 0.5, ease: EASE, delay: 0.7 } },
+              }}
+              className="absolute left-0 right-0 top-1/2 h-[4px] bg-slate origin-left rounded-full"
+            />
+          </span>
+        </motion.h2>
 
-              {/* timestamp node — glass chip with tick marks */}
-              <motion.div
-                initial={{ opacity: 0, scale: 0.7, y: 12 }}
-                whileInView={{ opacity: 1, scale: 1, y: 0 }}
-                viewport={{ once: false, amount: 0.8 }}
-                transition={{ duration: 0.5, ease: EASE }}
-                className="relative flex items-center gap-3 my-4 md:my-5"
-              >
-                <span className="h-px w-6 bg-gradient-to-r from-transparent to-gold/50" />
-                <span className="relative glass-card rounded-full px-4 py-1.5 flex items-center gap-2">
-                  {i === moment.beats.length - 1 && (
-                    <span className="absolute -inset-1 rounded-full border border-gold/40 animate-ping" aria-hidden />
-                  )}
-                  <span
-                    className={`w-1.5 h-1.5 rounded-full ${
-                      i === moment.beats.length - 1
-                        ? 'bg-gold shadow-[0_0_10px_rgba(201,166,107,0.9)]'
-                        : 'bg-white/30'
-                    }`}
-                  />
-                  <span className="font-mono text-[11px] md:text-xs uppercase tracking-kicker text-gold tabular-nums">
-                    {beat.time}
-                  </span>
-                </span>
-                <span className="h-px w-6 bg-gradient-to-l from-transparent to-gold/50" />
-              </motion.div>
-
-              <div className="relative">
-                {/* the 3:42 beat gets a soft bloom behind it */}
-                {i === moment.beats.length - 1 && (
-                  <motion.div
-                    aria-hidden
-                    initial={{ opacity: 0, scale: 0.7 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
-                    viewport={{ once: false, amount: 0.6 }}
-                    transition={{ duration: 1.1, ease: EASE }}
-                    className="absolute -inset-x-24 -inset-y-12 pointer-events-none"
-                    style={{
-                      background:
-                        'radial-gradient(ellipse 60% 60% at 50% 50%, rgba(168,28,75,0.16) 0%, rgba(201,166,107,0.06) 45%, transparent 75%)',
-                    }}
-                  />
-                )}
-                <KineticLine
-                  segments={beat.segments}
-                  className={`relative font-display font-bold text-ink tracking-tight leading-[1.15] max-w-4xl mb-2 ${BEAT_SIZES[i]}`}
-                />
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* ---------- The twist ---------- */}
-        <div className="mt-20 md:mt-28 flex flex-col items-center gap-6 md:gap-8">
-          <CascadeLine
-            segments={moment.twist.nothing}
-            strike
-            className="font-display font-bold text-3xl md:text-5xl text-ink tracking-tight leading-[1.15]"
-          />
-          <CascadeLine
-            segments={moment.twist.everything}
-            className="font-display font-bold text-4xl md:text-6xl text-ink tracking-tight leading-[1.15]"
-          />
-        </div>
-
-        {/* ---------- The turn ---------- */}
-        <div className="mt-20 md:mt-28 flex flex-col items-center">
-          <KineticParagraph
-            text={moment.resolution}
-            accents={moment.resolutionAccents}
-            className="font-display text-2xl md:text-4xl font-semibold text-ink leading-snug max-w-3xl mb-12"
-          />
-          <motion.p
-            {...fadeUp}
-            className="font-mono text-[11px] md:text-xs uppercase tracking-kicker text-gold/80"
+        {/* "everything." — slides in from further right, later, bigger, gold */}
+        <motion.h2
+          variants={{
+            hidden: { opacity: 0, x: 320, filter: 'blur(14px)' },
+            show:   { opacity: 1, x: 0, filter: 'blur(0px)', transition: { duration: 0.85, ease: EASE, delay: 0.4 } },
+          }}
+          className="relative z-10 font-display font-black uppercase tracking-tighter text-ink text-[13vw] md:text-[9.5vw] leading-none text-center"
+        >
+          Twelve minutes is{' '}
+          <motion.span
+            variants={{
+              hidden: { scale: 0.8, color: 'rgb(201,166,107)' },
+              show:   { scale: 1, transition: { duration: 0.6, ease: EASE, delay: 1.05 } },
+            }}
+            className="text-gold inline-block"
           >
-            {moment.bridge}
-          </motion.p>
-        </div>
+            everything.
+          </motion.span>
+        </motion.h2>
+      </motion.div>
+
+      {/* ---------- Panel 5 · the quiet turn ---------- */}
+      <div className="relative bg-parchment min-h-[80vh] flex flex-col items-center justify-center px-6 py-24 text-center overflow-hidden">
+        <KineticParagraph
+          text={moment.resolution}
+          accents={moment.resolutionAccents}
+          className="font-display text-2xl md:text-4xl font-semibold text-ink leading-snug max-w-3xl mb-12"
+        />
+        <motion.p {...lineIn} className="font-mono text-[11px] md:text-xs uppercase tracking-kicker text-gold/80">
+          {moment.bridge}
+        </motion.p>
       </div>
     </section>
   );

@@ -11,6 +11,7 @@ import { TrackProvider } from './context/TrackContext';
 import StoryProgress from './components/StoryProgress';
 import StoryThread from './components/StoryThread';
 import SideRail from './components/SideRail';
+import GrainOverlay from './components/GrainOverlay';
 import WipeReveal from './components/WipeReveal';
 import Preloader from './components/Preloader';
 import { COPY } from './content/copy';
@@ -93,6 +94,9 @@ function App() {
 
         {/* Loading screen — sits above everything until the site is ready */}
         {!booted && <Preloader onComplete={() => setBooted(true)} />}
+
+        {/* Site-wide film grain texture */}
+        <GrainOverlay />
 
         {/* Global story spine: top progress bar + chapter rail */}
         <StoryProgress />

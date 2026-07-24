@@ -17,6 +17,8 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { COPY } from '../../content/copy';
 import { EASE } from '../../motion/variants';
 import { useReducedMotion } from '../../hooks/useReducedMotion';
+import CornerLabels from '../../components/CornerLabels';
+import TiltedPoster from '../../components/TiltedPoster';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -76,17 +78,41 @@ export default function TheVows() {
   return (
     <section id="the-vows" className="relative">
 
-      {/* ---------- VOW 1 · PEACE OF MIND — the white inversion ---------- */}
-      <div className="relative bg-ink min-h-[92vh] flex flex-col items-center justify-center px-6 overflow-hidden">
+      {/* ---------- VOW 1 · PEACE OF MIND — dark poster ---------- */}
+      <div
+        className="relative min-h-[92vh] flex flex-col items-center justify-center px-6 overflow-hidden"
+        style={{ background: 'radial-gradient(ellipse 75% 60% at 50% 42%, #2a1122 0%, #14070e 45%, #050205 100%)' }}
+      >
+        <CornerLabels labels={vows.peace.corners} tone="text-gold/60" />
+        <div aria-hidden className="absolute -left-24 top-1/3 w-96 h-96 rounded-full bg-accentDeep/15 blur-[120px] pointer-events-none" />
         <motion.h2
           {...wordPop}
-          className="font-display font-bold uppercase tracking-tight text-parchment text-[11vw] md:text-[9vw] leading-[0.95] text-center"
+          className="font-display font-bold uppercase tracking-tight text-ink text-[11vw] md:text-[9vw] leading-[0.95] text-center"
         >
           {vows.peace.word}
         </motion.h2>
-        <motion.p {...lineIn} className="font-body font-semibold text-parchment/80 text-base md:text-xl mt-8 text-center">
+        <motion.p {...lineIn} className="font-body font-semibold text-slate text-base md:text-xl mt-8 text-center">
           {vows.peace.line}
         </motion.p>
+      </div>
+
+      {/* ---------- The Pledge — a tilted collage card ---------- */}
+      <div className="relative bg-parchment min-h-[80vh] flex items-center justify-center px-6 overflow-hidden">
+        <div
+          aria-hidden
+          className="absolute inset-0 pointer-events-none"
+          style={{ background: 'radial-gradient(ellipse 55% 50% at 50% 50%, rgba(42,17,34,0.6) 0%, transparent 76%)' }}
+        />
+        <TiltedPoster tilt={-7} className="relative w-[78vw] max-w-md aspect-[3/4] rounded-2xl overflow-hidden glass-card">
+          <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-8"
+               style={{ background: 'linear-gradient(150deg, rgba(168,28,75,0.22), rgba(201,166,107,0.14))' }}>
+            <span className="font-mono text-[10px] uppercase tracking-kicker text-gold mb-6">{vows.pledge.kicker}</span>
+            <p className="font-display font-bold text-ink text-2xl md:text-3xl leading-snug">
+              {vows.pledge.line}
+            </p>
+            <span className="mt-8 block w-[9px] h-[12px] bg-gold" style={{ borderRadius: '50% 50% 50% 4%' }} />
+          </div>
+        </TiltedPoster>
       </div>
 
       {/* ---------- VOW 2 · ALWAYS ON — the split slab ---------- */}
@@ -100,6 +126,7 @@ export default function TheVows() {
           transition={{ duration: 0.8, ease: EASE }}
           className="absolute inset-y-0 right-0 w-[68%] origin-right bg-accentDeep"
         />
+        <CornerLabels labels={vows.always.corners} tone="text-ink/55" />
         <motion.h2
           {...wordPop}
           className="relative z-10 font-display font-bold uppercase tracking-tight text-ink text-[12vw] md:text-[9vw] leading-[0.95] text-center"
@@ -113,6 +140,7 @@ export default function TheVows() {
 
       {/* ---------- VOW 3 · ENCRYPTED — the stamp wall ---------- */}
       <div className="relative bg-parchment min-h-[92vh] flex items-center justify-center px-6 overflow-hidden">
+        <CornerLabels labels={vows.encrypted.corners} tone="text-gold/60" />
         <StampWall word={vows.encrypted.word} />
         <div
           aria-hidden

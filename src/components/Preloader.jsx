@@ -12,7 +12,7 @@ import { useEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
 import { COPY } from '../content/copy';
 import { useReducedMotion } from '../hooks/useReducedMotion';
-import IntroBubbles from './IntroBubbles';
+import IntroSmoke from './IntroSmoke';
 
 export default function Preloader({ onComplete }) {
   const rootRef = useRef(null);
@@ -87,12 +87,15 @@ export default function Preloader({ onComplete }) {
           'radial-gradient(ellipse 80% 65% at 50% 42%, #170a13 0%, #0a040a 55%, #050205 100%)',
       }}
     >
-      <IntroBubbles />
+      <IntroSmoke />
 
-      {/* The glowing wordmark — the brand breathing while it loads */}
-      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-        <span className="intro-glow-wordmark font-display font-bold text-6xl md:text-8xl lg:text-9xl tracking-tight select-none">
+      {/* The wordmark + tagline — big and catchy, no glow */}
+      <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none px-6 text-center">
+        <span className="font-display font-black text-ink text-7xl md:text-9xl lg:text-[11rem] tracking-tighter leading-none select-none">
           {COPY.hero.wordmark}
+        </span>
+        <span className="font-mono text-[10px] md:text-xs uppercase tracking-kicker text-gold mt-6">
+          Guardian Jewellery
         </span>
       </div>
 

@@ -356,6 +356,9 @@ export const COPY = {
       bodyAccents: ['ask', 'to', 'put', 'on.'],
       journey: ['Removed', 'Hidden', 'Forgotten', 'Always worn'],
       quote: 'When children wear it by choice, protection becomes continuous.',
+      corners: { tl: 'The Truth', tr: 'No Compromise', bl: 'Worn By Choice', br: 'Protection That Stays' },
+      dripKicker: 'Where every other tracker ends up',
+      pledge: { kicker: 'The Difference', line: 'We didn’t build a better gadget. We built something she asks to put on.' },
     },
 
     watchedOver: {
@@ -424,10 +427,15 @@ export const COPY = {
     // THE VOWS — OSOS-style poster statements (brand promises shouted
     // at full size). Rendered by sections/06D-TheVows.
     vows: {
-      peace:     { word: 'PEACE OF MIND', line: 'Your calm is the product.' },
-      always:    { word: 'ALWAYS ON',     line: 'Protection that doesn’t clock out.' },
-      encrypted: { word: 'ENCRYPTED',     line: 'Her location is hers — and yours. No one else’s.' },
+      peace:     { word: 'PEACE OF MIND', line: 'Your calm is the product.',
+                   corners: { tl: 'Always With Her', tr: 'Never In The Way', bl: 'Worn, Not Watched', br: 'Safe By Design' } },
+      always:    { word: 'ALWAYS ON',     line: 'Protection that doesn’t clock out.',
+                   corners: { tl: 'GPS · LTE', tr: '24 / 7', bl: 'Live Location', br: 'Safe Zones' } },
+      encrypted: { word: 'ENCRYPTED',     line: 'Her location is hers — and yours. No one else’s.',
+                   corners: { tl: 'AES-256', tr: 'Family Only', bl: 'No Third Parties', br: 'Private By Default' } },
       time:      { label: 'Battery', word1: 'SEVEN', word2: 'DAYS', line: 'One charge. A full week of knowing she’s safe.' },
+      // The tilted collage card between the posters
+      pledge:    { kicker: 'The Pledge', line: 'Built for the ones who can’t always be there.' },
     },
 
     // Fixed side rail + fullscreen menu

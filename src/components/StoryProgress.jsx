@@ -64,9 +64,9 @@ export default function StoryProgress() {
 
   return (
     <>
-      {/* Top progress bar */}
+      {/* Bottom progress bar */}
       <div
-        className={`fixed top-0 inset-x-0 z-[60] h-[2px] pointer-events-none transition-opacity duration-700 ${
+        className={`fixed bottom-0 inset-x-0 z-[67] h-[3px] pointer-events-none transition-opacity duration-700 ${
           visible ? 'opacity-100' : 'opacity-0'
         }`}
       >
@@ -80,7 +80,7 @@ export default function StoryProgress() {
       {/* Left chapter rail — desktop only */}
       <nav
         aria-label="Story chapters"
-        className={`fixed left-5 top-1/2 -translate-y-1/2 z-[60] hidden lg:flex flex-col items-center gap-4 transition-opacity duration-700 ${
+        className={`fixed left-[92px] top-1/2 -translate-y-1/2 z-[60] hidden lg:flex flex-col items-center gap-4 transition-opacity duration-700 ${
           visible ? 'opacity-100' : 'opacity-0 pointer-events-none'
         }`}
       >

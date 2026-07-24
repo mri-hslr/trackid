@@ -42,22 +42,27 @@ export default function SideRail() {
 
   return (
     <>
-      {/* ---------- The rail (desktop) ---------- */}
-      <div className="fixed left-0 top-0 bottom-0 w-14 z-[66] hidden lg:flex flex-col items-center justify-between py-6 border-r border-white/[0.06] bg-parchment/60 backdrop-blur-sm pointer-events-none">
+      {/* ---------- The side rail (desktop) — wider ---------- */}
+      <div className="fixed left-0 top-0 bottom-0 w-20 z-[66] hidden lg:flex flex-col items-center justify-between py-8 border-r border-white/[0.08] bg-parchment/70 backdrop-blur-md">
         <button
           type="button"
           aria-label={open ? 'Close menu' : 'Open menu'}
           onClick={() => setOpen((v) => !v)}
-          className="pointer-events-auto group flex flex-col items-center justify-center gap-[5px] w-10 h-10"
+          className="group flex flex-col items-center gap-2.5"
         >
-          <span className={`block h-[2px] bg-ink transition-all duration-300 ${open ? 'w-5 rotate-45 translate-y-[7px]' : 'w-5'}`} />
-          <span className={`block h-[2px] bg-ink transition-all duration-300 ${open ? 'opacity-0' : 'w-3.5 group-hover:w-5'}`} />
-          <span className={`block h-[2px] bg-ink transition-all duration-300 ${open ? 'w-5 -rotate-45 -translate-y-[7px]' : 'w-5'}`} />
+          <span className="flex flex-col justify-center gap-[6px] w-7">
+            <span className={`block h-[2px] bg-ink transition-all duration-300 ${open ? 'w-7 rotate-45 translate-y-[8px]' : 'w-7'}`} />
+            <span className={`block h-[2px] bg-ink transition-all duration-300 ${open ? 'opacity-0' : 'w-4 group-hover:w-7'}`} />
+            <span className={`block h-[2px] bg-ink transition-all duration-300 ${open ? 'w-7 -rotate-45 -translate-y-[8px]' : 'w-7'}`} />
+          </span>
+          <span className="font-mono text-[9px] uppercase tracking-premium text-ink">
+            {open ? 'Close' : 'Menu'}
+          </span>
         </button>
 
         <a
           href={`mailto:${email}`}
-          className="pointer-events-auto font-mono text-[10px] uppercase tracking-premium text-slate hover:text-ink transition-colors duration-300 [writing-mode:vertical-rl] rotate-180"
+          className="font-mono text-[10px] uppercase tracking-premium text-slate hover:text-ink transition-colors duration-300 [writing-mode:vertical-rl] rotate-180"
         >
           {email}
         </a>
@@ -114,7 +119,7 @@ export default function SideRail() {
             </svg>
 
             {/* chapter rows */}
-            <nav className="relative z-10 h-full flex flex-col justify-center pl-8 md:pl-28 pr-6 md:pr-[40%]">
+            <nav className="relative z-10 h-full flex flex-col justify-center pl-8 md:pl-36 pr-6 md:pr-[40%]">
               {chapters.map((c, i) => (
                 <motion.button
                   key={c.id}

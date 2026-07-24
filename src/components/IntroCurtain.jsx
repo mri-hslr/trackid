@@ -7,7 +7,7 @@
 
 import { forwardRef } from 'react';
 import { COPY } from '../content/copy';
-import IntroBubbles from './IntroBubbles';
+import IntroSmoke from './IntroSmoke';
 
 const IntroCurtain = forwardRef(
   ({ smokeVideoRef, loaderRef, cornerTagRef, cornerCollectionRef, cornerFeatureRef, cornerStatusRef }, ref) => {
@@ -21,8 +21,8 @@ const IntroCurtain = forwardRef(
             'radial-gradient(ellipse 80% 65% at 50% 42%, #170a13 0%, #0a040a 55%, #050205 100%)',
         }}
       >
-        {/* Iridescent bubbles drifting up through the dark */}
-        <IntroBubbles />
+        {/* Drifting luminous smoke */}
+        <IntroSmoke />
 
         {/* Optional smoke layer — kept for the timeline's opacity tween.
             On the dark curtain it blends additively instead of multiply. */}

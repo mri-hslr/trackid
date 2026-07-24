@@ -301,3 +301,90 @@ html::-webkit-scrollbar {
   -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.5);
   color: transparent;
 }
+
+/* ==========================================================
+   INTRO SMOKE — drifting luminous mist (replaces bubbles)
+========================================================== */
+.intro-smoke {
+  position: absolute;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  filter: blur(60px);
+  mix-blend-mode: screen;
+  will-change: transform;
+  animation-name: introSmokeDrift;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+@keyframes introSmokeDrift {
+  0%   { transform: translate(-50%, -50%) scale(1)    rotate(0deg); }
+  50%  { transform: translate(-38%, -62%) scale(1.25) rotate(20deg); }
+  100% { transform: translate(-60%, -44%) scale(1.1)  rotate(-14deg); }
+}
+
+/* ==========================================================
+   FILM GRAIN — site-wide cinematic texture
+========================================================== */
+.grain-overlay {
+  position: fixed;
+  inset: -50%;
+  width: 200%;
+  height: 200%;
+  z-index: 64;
+  pointer-events: none;
+  opacity: 0.05;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation: grainShift 0.6s steps(3) infinite;
+  will-change: transform;
+}
+@keyframes grainShift {
+  0%   { transform: translate(0, 0); }
+  33%  { transform: translate(-4%, 3%); }
+  66%  { transform: translate(3%, -2%); }
+  100% { transform: translate(-2%, -3%); }
+}
+
+/* ==========================================================
+   CORNER LABELS — poster slogans anchored in four corners
+========================================================== */
+.corner-label {
+  position: absolute;
+  z-index: 20;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  pointer-events: none;
+}
+@media (min-width: 768px) {
+  .corner-label { font-size: 11px; }
+}
+
+/* ==========================================================
+   DRIP — words that melt away (echoes the reference's dripping 1984)
+========================================================== */
+.drip-word {
+  position: relative;
+  display: inline-block;
+}
+.drip-word::before,
+.drip-word::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  width: 2px;
+  border-radius: 0 0 2px 2px;
+  background: currentColor;
+  opacity: 0.5;
+  animation: dripFall 2.6s ease-in infinite;
+}
+.drip-word::before { left: 30%; height: 14px; animation-delay: 0.2s; }
+.drip-word::after  { left: 62%; height: 22px; animation-delay: 1.1s; }
+@keyframes dripFall {
+  0%   { transform: translateY(-6px) scaleY(0.4); opacity: 0; }
+  30%  { opacity: 0.5; }
+  100% { transform: translateY(26px) scaleY(1); opacity: 0; }
+}
