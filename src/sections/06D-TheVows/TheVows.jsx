@@ -96,46 +96,51 @@ export default function TheVows() {
         </motion.p>
       </StackCard>
 
-      {/* ---------- The Pledge — a tilted collage card ---------- */}
-      <StackCard bg="#050205" className="flex items-center justify-center px-6">
-        <div
-          aria-hidden
-          className="absolute inset-0 pointer-events-none"
-          style={{ background: 'radial-gradient(ellipse 55% 50% at 50% 50%, rgba(42,17,34,0.6) 0%, transparent 76%)' }}
-        />
-        <TiltedPoster tilt={-7} className="relative w-[78vw] max-w-md aspect-[3/4] rounded-2xl overflow-hidden glass-card">
-          <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-8"
-               style={{ background: 'linear-gradient(150deg, rgba(168,28,75,0.22), rgba(201,166,107,0.14))' }}>
-            <span className="font-mono text-[10px] uppercase tracking-kicker text-gold mb-6">{vows.pledge.kicker}</span>
-            <p className="font-display font-bold text-ink text-2xl md:text-3xl leading-snug">
-              {vows.pledge.line}
-            </p>
-            <span className="mt-8 block w-[9px] h-[12px] bg-gold" style={{ borderRadius: '50% 50% 50% 4%' }} />
-          </div>
-        </TiltedPoster>
-      </StackCard>
+      {/* ---------- VOW 2 · ALWAYS ON + The Pledge (merged) ---------- */}
+      <StackCard bg={POSTER_BG} className="flex items-center justify-center px-6 md:px-12">
+        <div aria-hidden className="absolute -left-24 top-1/4 w-96 h-96 rounded-full bg-accentDeep/15 blur-[120px] pointer-events-none" />
+        <div aria-hidden className="absolute -right-20 bottom-1/4 w-80 h-80 rounded-full bg-gold/[0.08] blur-[120px] pointer-events-none" />
 
-      {/* ---------- VOW 2 · ALWAYS ON — the split slab ---------- */}
-      <StackCard bg={POSTER_BG} className="flex flex-col items-center justify-center px-6">
-        {/* the pink panel wipes across behind the text */}
-        <motion.div
-          aria-hidden
-          initial={{ scaleX: 0 }}
-          whileInView={{ scaleX: 1 }}
-          viewport={{ once: false, amount: 0.5 }}
-          transition={{ duration: 0.8, ease: EASE }}
-          className="absolute inset-y-0 right-0 w-[68%] origin-right bg-accentDeep"
-        />
-        <CornerLabels labels={vows.always.corners} tone="text-ink/55" />
-        <motion.h2
-          {...wordPop}
-          className="relative z-10 font-display font-bold uppercase tracking-tight text-ink text-[12vw] md:text-[9vw] leading-[0.95] text-center"
-        >
-          {vows.always.word}
-        </motion.h2>
-        <motion.p {...lineIn} className="relative z-10 font-body font-semibold text-ink/90 text-base md:text-xl mt-8 text-center">
-          {vows.always.line}
-        </motion.p>
+        <div className="relative z-10 w-full max-w-6xl grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+          {/* LEFT — the statement */}
+          <div className="text-center lg:text-left">
+            <motion.span {...lineIn} className="inline-block font-mono text-[10px] md:text-xs uppercase tracking-kicker text-gold mb-6">
+              The Promise
+            </motion.span>
+            <motion.h2
+              {...wordPop}
+              className="font-display font-black uppercase tracking-tighter text-ink text-[15vw] md:text-[8vw] leading-[0.9]"
+            >
+              Always<br /><span className="text-accentDeep">On</span>
+            </motion.h2>
+            <motion.p {...lineIn} className="font-body font-semibold text-slate text-base md:text-xl mt-6 max-w-md mx-auto lg:mx-0">
+              {vows.always.line}
+            </motion.p>
+
+            {/* feature chips (from the old corner labels) */}
+            <motion.div {...lineIn} className="flex flex-wrap justify-center lg:justify-start gap-2.5 mt-8">
+              {Object.values(vows.always.corners).map((c) => (
+                <span key={c} className="glass-card rounded-full px-4 py-2 font-mono text-[10px] uppercase tracking-premium text-slate">
+                  {c}
+                </span>
+              ))}
+            </motion.div>
+          </div>
+
+          {/* RIGHT — the pledge card */}
+          <TiltedPoster tilt={5} className="relative w-full max-w-sm mx-auto aspect-[4/5] rounded-3xl overflow-hidden glass-card">
+            <div
+              className="absolute inset-0 flex flex-col items-center justify-center text-center px-8 md:px-10"
+              style={{ background: 'linear-gradient(150deg, rgba(168,28,75,0.30), rgba(201,166,107,0.16))' }}
+            >
+              <span className="font-mono text-[10px] uppercase tracking-kicker text-gold mb-6">{vows.pledge.kicker}</span>
+              <p className="font-display font-bold text-ink text-2xl md:text-3xl leading-snug">
+                {vows.pledge.line}
+              </p>
+              <span className="mt-8 block w-[9px] h-[12px] bg-gold" style={{ borderRadius: '50% 50% 50% 4%' }} />
+            </div>
+          </TiltedPoster>
+        </div>
       </StackCard>
 
       {/* ---------- VOW 3 · ENCRYPTED — the stamp wall ---------- */}

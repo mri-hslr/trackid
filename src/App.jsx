@@ -3,7 +3,7 @@
 // smooth scroll, renders section slots in order. Section developers
 // uncomment their imports as they build.
 
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import Lenis from 'lenis';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -12,8 +12,8 @@ import StoryProgress from './components/StoryProgress';
 import StoryThread from './components/StoryThread';
 import SideRail from './components/SideRail';
 import GrainOverlay from './components/GrainOverlay';
+import SmokeLoader from './components/SmokeLoader';
 import WipeReveal from './components/WipeReveal';
-import Preloader from './components/Preloader';
 import { COPY } from './content/copy';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -47,10 +47,6 @@ import TheInvitation from './sections/06-TheInvitation/TheInvitation';
 import Closing from './sections/07-Closing/closing';
 
 function App() {
-  // The site mounts (and loads assets) BEHIND the preloader; the hero's
-  // pendant-drop unveiling only starts once the preloader hands off.
-  const [booted, setBooted] = useState(false);
-
   // ---------------------------------------------------------------
   // Lenis smooth-scroll — initialized once at the App root.
   // Synced with GSAP ScrollTrigger so pinning and scrubbed timelines
@@ -59,12 +55,22 @@ function App() {
   // integration pattern that prevents double-RAF loops.
   // ---------------------------------------------------------------
   useEffect(() => {
+    // Always open at the top (the hero) — stop the browser from
+    // restoring the previous scroll position on refresh.
+    if ('scrollRestoration' in window.history) {
+      window.history.scrollRestoration = 'manual';
+    }
+    window.scrollTo(0, 0);
+
     const lenis = new Lenis({
       duration: 1.2,         // scroll duration for smooth feel
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // exponential ease-out
       orientation: 'vertical',
       smoothWheel: true,
     });
+
+    // Snap Lenis to the top on boot too (it tracks its own position)
+    lenis.scrollTo(0, { immediate: true });
 
     // ADDED: Expose Lenis globally so Hero.jsx can pause it during the intro sequence
     window.lenis = lenis;
@@ -92,8 +98,8 @@ function App() {
     <TrackProvider>
       <div className="bg-parchment text-ink font-body antialiased min-h-screen">
 
-        {/* Loading screen — sits above everything until the site is ready */}
-        {!booted && <Preloader onComplete={() => setBooted(true)} />}
+        {/* Brief smoke loading moment, then reveals the hero */}
+        <SmokeLoader />
 
         {/* Site-wide film grain texture */}
         <GrainOverlay />
@@ -110,7 +116,7 @@ function App() {
         {/* ============================================================ */}
 
         {/* Prologue — unveiling starts when the preloader hands off */}
-        <Hero start={booted} />
+        <Hero start />
 
         {/* Chapter 1 — The Secret */}
         <Reveal />

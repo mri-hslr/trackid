@@ -20,6 +20,19 @@ const SNAKE_TEXT = Array(6).fill(snake).join('');
 
 export default function SideRail() {
   const [open, setOpen] = useState(false);
+  // The rail/menu chrome only appears once the hero intro has finished,
+  // so it never sits on top of the loading/unveiling sequence.
+  const [ready, setReady] = useState(
+    typeof window !== 'undefined' && window.__trakidReady === true
+  );
+
+  useEffect(() => {
+    if (ready) return;
+    const onReady = () => setReady(true);
+    if (window.__trakidReady) { setReady(true); return; }
+    window.addEventListener('trakid:ready', onReady);
+    return () => window.removeEventListener('trakid:ready', onReady);
+  }, [ready]);
 
   // lock scroll while the menu is open
   useEffect(() => {
@@ -28,6 +41,8 @@ export default function SideRail() {
     else lenis?.start();
     return () => lenis?.start();
   }, [open]);
+
+  if (!ready) return null;
 
   const jumpTo = (id) => {
     setOpen(false);
@@ -43,7 +58,7 @@ export default function SideRail() {
   return (
     <>
       {/* ---------- The side rail (desktop) — wider ---------- */}
-      <div className="fixed left-0 top-0 bottom-0 w-20 z-[66] hidden lg:flex flex-col items-center justify-between py-8 border-r border-white/[0.08] bg-parchment/70 backdrop-blur-md">
+      <div className="chrome-fade-in fixed left-0 top-0 bottom-0 w-20 z-[66] hidden lg:flex flex-col items-center justify-between py-8 border-r border-white/[0.08] bg-parchment/70 backdrop-blur-md">
         <button
           type="button"
           aria-label={open ? 'Close menu' : 'Open menu'}
@@ -73,7 +88,7 @@ export default function SideRail() {
         type="button"
         aria-label={open ? 'Close menu' : 'Open menu'}
         onClick={() => setOpen((v) => !v)}
-        className="fixed top-5 left-5 z-[66] lg:hidden glass-card rounded-full w-11 h-11 flex flex-col items-center justify-center gap-[4px]"
+        className="chrome-fade-in fixed top-5 left-5 z-[66] lg:hidden glass-card rounded-full w-11 h-11 flex flex-col items-center justify-center gap-[4px]"
       >
         <span className={`block h-[2px] bg-ink transition-all duration-300 ${open ? 'w-4 rotate-45 translate-y-[6px]' : 'w-4'}`} />
         <span className={`block h-[2px] bg-ink transition-all duration-300 ${open ? 'opacity-0' : 'w-3'}`} />
@@ -118,33 +133,34 @@ export default function SideRail() {
               </text>
             </svg>
 
-            {/* chapter rows — scrollable, centred, with breathing room.
-                The inner block uses m-auto so it centres when it fits and
-                scrolls (without clipping the top) when it doesn't. */}
-            <nav className="relative z-10 h-full overflow-y-auto pl-8 md:pl-36 pr-6 md:pr-[40%]">
-              <div className="flex flex-col gap-5 md:gap-8 min-h-full justify-center py-24 m-auto">
-                {chapters.map((c, i) => (
-                  <motion.button
-                    key={c.id}
-                    type="button"
-                    onClick={() => jumpTo(c.id)}
-                    initial={{ opacity: 0, x: -40 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: -24 }}
-                    transition={{ duration: 0.45, ease: EASE, delay: 0.05 + i * 0.045 }}
-                    className="group flex items-baseline gap-4 text-left border-b border-white/[0.07] pb-3 md:pb-4 flex-shrink-0"
+            {/* chapter rows — real gaps between each, scrollable with the
+                mouse wheel. data-lenis-prevent lets the wheel scroll this
+                panel natively instead of Lenis swallowing the event. */}
+            <nav
+              data-lenis-prevent
+              className="relative z-10 h-full overflow-y-auto overscroll-contain flex flex-col gap-10 md:gap-12 py-24 pl-8 md:pl-36 pr-6 md:pr-[40%]"
+            >
+              {chapters.map((c, i) => (
+                <motion.button
+                  key={c.id}
+                  type="button"
+                  onClick={() => jumpTo(c.id)}
+                  initial={{ opacity: 0, x: -40 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -24 }}
+                  transition={{ duration: 0.45, ease: EASE, delay: 0.05 + i * 0.045 }}
+                  className="group flex items-center gap-5 text-left border-b border-white/[0.09] pb-5 flex-shrink-0"
+                >
+                  <span className="font-mono text-[10px] text-gold/70 tabular-nums w-6 flex-shrink-0">
+                    {String(i + 1).padStart(2, '0')}
+                  </span>
+                  <span
+                    className={`menu-item ${i % 2 === 1 ? 'menu-item-solid' : ''} font-display font-bold uppercase tracking-tight text-3xl md:text-5xl leading-none`}
                   >
-                    <span className="font-mono text-[10px] text-gold/70 tabular-nums w-6 flex-shrink-0">
-                      {String(i + 1).padStart(2, '0')}
-                    </span>
-                    <span
-                      className={`menu-item ${i % 2 === 1 ? 'menu-item-solid' : ''} font-display font-bold uppercase tracking-tight text-3xl md:text-5xl leading-tight`}
-                    >
-                      {c.label}
-                    </span>
-                  </motion.button>
-                ))}
-              </div>
+                    {c.label}
+                  </span>
+                </motion.button>
+              ))}
             </nav>
           </motion.div>
         )}

@@ -20,6 +20,8 @@ import {
 
 import SectionWrapper from "../../components/SectionWrapper";
 import Divider from "../../components/Divider";
+import ChapterMarker from "../../components/ChapterMarker";
+import { KineticLine } from "../../components/Kinetic";
 import PendantCard from "./PendantCard";
 
 import { COPY } from "../../content/copy";
@@ -45,23 +47,20 @@ const FILTERS = ["All", "New", "Bestseller"];
 // ============================================================
 
 // ─── Aceternity-Style Dot Grid Background ────────────────────────────────
+// Ambience matching the rest of the site — plum radial ground + drifting
+// brand orbs (replaces the old dot grid, which felt off-brand).
 function DotBackground() {
   return (
-    <div className="pointer-events-none absolute inset-0 flex items-center justify-center bg-transparent z-0 overflow-hidden">
-      {/* The dot pattern - increased opacity and size for visibility */}
+    <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
       <div
-        className="absolute inset-0 opacity-80"
+        className="absolute inset-0"
         style={{
-          backgroundImage: `radial-gradient(rgba(201,166,107,0.35) 2px, transparent 2px)`,
-          backgroundSize: "40px 40px",
-          backgroundPosition: "center center",
-          // Broadened mask so it doesn't fade out too early
-          WebkitMaskImage: "radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 100%)",
-          maskImage: "radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 100%)",
+          background:
+            "radial-gradient(ellipse 70% 55% at 50% 35%, rgba(42,17,34,0.55) 0%, transparent 72%)",
         }}
       />
-      {/* Subtle ambient light in the center to highlight the pendant and text */}
-      <div className="absolute left-1/2 top-1/2 h-[800px] w-[800px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-accentDeep/10 blur-[130px]" />
+      <div className="absolute -left-24 top-1/4 h-96 w-96 rounded-full bg-accentDeep/15 blur-[120px]" />
+      <div className="absolute -right-24 bottom-1/4 h-96 w-96 rounded-full bg-gold/[0.08] blur-[120px]" />
     </div>
   );
 }
@@ -433,81 +432,28 @@ export default function Anatomy() {
       >
         {/* TOP COPY - Center Aligned, Full Width */}
         <motion.div {...fadeUp} className="space-y-8 relative z-20 flex flex-col items-center text-center w-full">
-          <ScrambleText
-            text={data.eyebrow}
-            className="uppercase tracking-[0.35em] text-accent text-sm block"
-          />
+          <ChapterMarker>{data.eyebrow}</ChapterMarker>
 
-          <motion.div
-            initial={{ scaleX: 0 }}
-            whileInView={{ scaleX: 1 }}
-            viewport={{ once: false }}
-            transition={{ duration: 0.6, ease: EASE }}
-            style={{ originX: 0.5 }}
-            className="h-[2px] w-12 rounded-full bg-gold mx-auto"
+          {/* GSAP kinetic heading — matches the rest of the site */}
+          <KineticLine
+            segments={[
+              { t: "Crafted for every" },
+              { t: "personality.", sticker: "gold" },
+            ]}
+            className="font-display font-black text-ink tracking-tighter leading-[1.05] text-5xl md:text-7xl xl:text-[80px] max-w-5xl mx-auto"
           />
-
-          <h2 className="font-display text-5xl md:text-7xl xl:text-[80px] leading-[1.05] text-ink max-w-5xl mx-auto">
-            <motion.div
-              initial={shouldReduceMotion ? false : { opacity: 0, y: -40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: false, margin: "-60px" }}
-              transition={{ type: "spring", stiffness: 110, damping: 13, delay: 0 }}
-            >
-              {renderHighlightedWords("Crafted for every personality.", ["personality"])}
-            </motion.div>
-            <motion.div
-              initial={shouldReduceMotion ? false : { opacity: 0, y: -40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: false, margin: "-60px" }}
-              transition={{ type: "spring", stiffness: 110, damping: 13, delay: 0.15 }}
-            >
-              {renderHighlightedWords("Designed for everyday protection.", ["protection"])}
-            </motion.div>
-          </h2>
+          <KineticLine
+            segments={[
+              { t: "Designed for everyday" },
+              { t: "protection.", sticker: "pink" },
+            ]}
+            className="font-display font-black text-ink tracking-tighter leading-[1.05] text-5xl md:text-7xl xl:text-[80px] max-w-5xl mx-auto"
+          />
 
           <p className="max-w-2xl mx-auto text-lg leading-8 text-slate">
             Explore our collection of premium smart pendants where timeless
             craftsmanship meets intelligent protection.
           </p>
-        </motion.div>
-
-        {/* BOTTOM VISUAL — Aceternity style perfectly centered image */}
-        <motion.div {...fadeUp} ref={heroRef} className="relative flex justify-center items-center h-[500px] w-full mt-4">
-          
-          <RadarPulse tone="gold" size={460} reducedMotion={shouldReduceMotion} />
-          <CapabilityHalo items={FEATURES} radius={230} reducedMotion={shouldReduceMotion} />
-
-          <motion.div
-            style={
-              shouldReduceMotion
-                ? undefined
-                : { rotateX: tiltX, rotateY: tiltY, x: px, y: py, transformPerspective: 1000 }
-            }
-            className="relative z-10 flex items-center justify-center"
-          >
-            {/* Premium sleek container framing the image */}
-            <div className="relative flex items-center justify-center overflow-hidden rounded-[32px] border border-white/5 bg-white/[0.02] p-10 backdrop-blur-sm shadow-[0_30px_60px_rgba(0,0,0,0.4)] before:absolute before:inset-0 before:bg-gradient-to-br before:from-white/10 before:to-transparent before:opacity-20">
-              
-              {/* Perfectly sized image */}
-              <motion.img
-                animate={shouldReduceMotion ? undefined : { y: [-4, 4, -4] }}
-                transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-                src={ASSETS.pendants.classicTeardrop.heroImage}
-                alt="TrakID Pendant"
-                className="relative z-10 mx-auto w-[200px] md:w-[240px] lg:w-[280px] object-contain drop-shadow-[0_20px_30px_rgba(0,0,0,0.5)]"
-              />
-
-              {/* Diagonal glare sweep */}
-              {!shouldReduceMotion && (
-                <motion.div
-                  animate={{ x: ["-200%", "200%"] }}
-                  transition={{ duration: 4, repeat: Infinity, repeatDelay: 3, ease: "easeInOut" }}
-                  className="pointer-events-none absolute inset-y-0 w-1/2 -skew-x-12 bg-gradient-to-r from-transparent via-white/10 to-transparent z-20"
-                />
-              )}
-            </div>
-          </motion.div>
         </motion.div>
 
       </motion.div>

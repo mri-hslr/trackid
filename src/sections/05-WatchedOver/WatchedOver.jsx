@@ -10,7 +10,7 @@ import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { BellRing } from 'lucide-react';
 import { COPY } from '../../content/copy';
-import { fadeUp, EASE } from '../../motion/variants';
+import { EASE } from '../../motion/variants';
 import { useReducedMotion } from '../../hooks/useReducedMotion';
 import ChapterMarker from '../../components/ChapterMarker';
 import MapScene from './MapScene';
@@ -18,6 +18,16 @@ import MapScene from './MapScene';
 const { watchedOver } = COPY.story;
 const EVENTS = watchedOver.events;
 const WRAPPER_VH = 300; // scroll length of the pinned day
+
+// Stable one-time entrance — the global fadeUp is once:false, which
+// flickers inside a PINNED section (the element hovers at the viewport
+// margin as the section scrubs). once:true fixes the header flicker.
+const headIn = {
+  initial: { opacity: 0, y: 20 },
+  whileInView: { opacity: 1, y: 0 },
+  viewport: { once: true, margin: '-40px' },
+  transition: { duration: 0.6, ease: EASE },
+};
 
 export default function WatchedOver() {
   const prefersReducedMotion = useReducedMotion();
@@ -69,7 +79,7 @@ export default function WatchedOver() {
       className="relative bg-parchment"
       style={{ height: `${WRAPPER_VH}vh` }}
     >
-      <div className="lg:sticky lg:top-0 lg:h-screen overflow-hidden flex items-center">
+      <div className="lg:sticky lg:top-0 lg:h-screen overflow-hidden flex items-center py-16 lg:py-8">
         <div
           className="absolute inset-0 pointer-events-none"
           style={{
@@ -78,18 +88,18 @@ export default function WatchedOver() {
           }}
         />
 
-        <div className="relative w-full max-w-6xl mx-auto px-6 py-12 lg:py-0">
-          <div className="flex flex-col items-center text-center mb-6 lg:mb-8">
-            <ChapterMarker className="mb-5">{watchedOver.marker}</ChapterMarker>
+        <div className="relative w-full max-w-6xl mx-auto px-6">
+          <div className="flex flex-col items-center text-center mb-5 lg:mb-6">
+            <ChapterMarker className="mb-4">{watchedOver.marker}</ChapterMarker>
             <motion.h2
-              {...fadeUp}
-              className="font-display text-2xl md:text-3xl lg:text-4xl font-bold text-ink tracking-tight leading-tight max-w-3xl mb-3"
+              {...headIn}
+              className="font-display text-2xl md:text-3xl lg:text-4xl font-bold text-ink tracking-tight leading-tight max-w-3xl mb-2"
             >
               {watchedOver.headline}
             </motion.h2>
             <motion.p
-              {...fadeUp}
-              className="font-body text-xs md:text-sm text-slate max-w-xl leading-relaxed"
+              {...headIn}
+              className="font-body text-sm text-slate max-w-xl leading-relaxed"
             >
               {watchedOver.subhead}
             </motion.p>
@@ -97,7 +107,7 @@ export default function WatchedOver() {
 
           <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-10 items-center">
             {/* THE TIMELINE — scroll moves the day; click scrolls to a moment */}
-            <motion.div {...fadeUp} className="lg:col-span-2 flex flex-col">
+            <motion.div {...headIn} className="lg:col-span-2 glass-card rounded-3xl p-4 md:p-5">
               {EVENTS.map((event, i) => {
                 const isActive = i === activeIndex;
                 return (
@@ -105,42 +115,50 @@ export default function WatchedOver() {
                     key={event.time}
                     type="button"
                     onClick={() => jumpTo(i)}
-                    className="group relative flex gap-5 text-left focus:outline-none"
+                    className="group relative flex gap-4 text-left focus:outline-none w-full"
                   >
-                    <div className="flex flex-col items-center">
+                    {/* rail + node */}
+                    <div className="flex flex-col items-center pt-1">
                       <span
-                        className={`mt-1.5 w-3 h-3 rounded-full border transition-all duration-500 flex-shrink-0 ${
+                        className={`w-3 h-3 rounded-full border transition-all duration-500 flex-shrink-0 ${
                           isActive
-                            ? 'bg-gold border-gold shadow-[0_0_14px_rgba(201,166,107,0.6)]'
+                            ? 'bg-gold border-gold shadow-[0_0_14px_rgba(201,166,107,0.7)] scale-110'
                             : i < activeIndex
-                              ? 'bg-gold/40 border-gold/40'
+                              ? 'bg-gold/50 border-gold/50'
                               : 'bg-transparent border-white/25 group-hover:border-gold/50'
                         }`}
                       />
                       {i < EVENTS.length - 1 && (
-                        <span className="w-px flex-1 bg-gradient-to-b from-white/20 to-white/5" />
+                        <span
+                          className={`w-px flex-1 transition-colors duration-500 ${
+                            i < activeIndex ? 'bg-gold/40' : 'bg-white/10'
+                          }`}
+                        />
                       )}
                     </div>
 
+                    {/* content — active row lifts into a highlighted pill */}
                     <div
-                      className={`pb-4 transition-opacity duration-500 ${
-                        isActive ? 'opacity-100' : 'opacity-45 group-hover:opacity-75'
+                      className={`flex-1 rounded-2xl px-3 -mx-3 mb-1 py-2 transition-all duration-500 ${
+                        isActive
+                          ? 'bg-white/[0.05] opacity-100'
+                          : 'opacity-45 group-hover:opacity-80 group-hover:bg-white/[0.02]'
                       }`}
                     >
                       <span className="font-mono text-[10px] uppercase tracking-premium text-gold tabular-nums">
                         {event.time}
                       </span>
-                      <h3 className="font-display text-sm md:text-base font-semibold text-ink mt-0.5 mb-1">
+                      <h3 className="font-display text-sm md:text-base font-semibold text-ink mt-0.5">
                         {event.title}
                       </h3>
                       <AnimatePresence initial={false}>
                         {isActive && (
                           <motion.p
-                            initial={{ opacity: 0, height: 0 }}
-                            animate={{ opacity: 1, height: 'auto' }}
-                            exit={{ opacity: 0, height: 0 }}
+                            initial={{ opacity: 0, height: 0, marginTop: 0 }}
+                            animate={{ opacity: 1, height: 'auto', marginTop: 4 }}
+                            exit={{ opacity: 0, height: 0, marginTop: 0 }}
                             transition={{ duration: 0.4, ease: EASE }}
-                            className="font-body text-sm text-slate leading-relaxed max-w-xs overflow-hidden"
+                            className="font-body text-xs md:text-sm text-slate leading-relaxed overflow-hidden"
                           >
                             {event.description}
                           </motion.p>
@@ -153,7 +171,7 @@ export default function WatchedOver() {
             </motion.div>
 
             {/* THE MAP + SOS */}
-            <motion.div {...fadeUp} className="lg:col-span-3 flex flex-col gap-4 w-full max-w-[560px] mx-auto lg:max-w-none">
+            <motion.div {...headIn} className="lg:col-span-3 flex flex-col gap-4 w-full max-w-[560px] mx-auto lg:max-w-none">
               <div className="glass-card rounded-[28px] p-3">
                 <MapScene
                   activeState={activeEvent.state}

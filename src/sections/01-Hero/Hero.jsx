@@ -89,6 +89,10 @@ export default function Hero({ start = true }) {
     } else {
       document.documentElement.style.overflow = '';
       lenis?.start();
+      // Signal the rest of the UI (side menu, etc.) that the intro is
+      // done, so chrome can fade in only after the site has loaded.
+      window.__trakidReady = true;
+      window.dispatchEvent(new Event('trakid:ready'));
     }
     return () => {
       document.documentElement.style.overflow = '';
@@ -112,7 +116,7 @@ export default function Hero({ start = true }) {
 
     tl.to(
       scrollTransformRef.current,
-      { x: -1.2, y: -0.2, rotY: Math.PI / 6, rotX: 0.1, scale: 1.5, ease: 'power2.inOut', duration: phaseDuration(PHASES.pendantMove1) },
+      { x: -1.3, y: -0.2, rotY: Math.PI / 6, rotX: 0.1, scale: 2.1, ease: 'power2.inOut', duration: phaseDuration(PHASES.pendantMove1) },
       PHASES.pendantMove1.start
     );
 
@@ -121,7 +125,7 @@ export default function Hero({ start = true }) {
 
     tl.to(
       scrollTransformRef.current,
-      { x: 1.4, y: 0.2, rotY: -Math.PI / 4, rotX: -0.1, scale: 2.5, ease: 'power2.inOut', duration: phaseDuration(PHASES.pendantMove2) },
+      { x: 1.5, y: 0.2, rotY: -Math.PI / 4, rotX: -0.1, scale: 3.2, ease: 'power2.inOut', duration: phaseDuration(PHASES.pendantMove2) },
       PHASES.pendantMove2.start
     );
 
@@ -180,10 +184,18 @@ export default function Hero({ start = true }) {
           <div className="flex flex-col items-center text-center mb-auto" style={{ marginTop: '52vh' }}>
             <h1
               ref={wordmarkRef}
-              style={{ opacity: prefersReducedMotion ? 1 : 0 }}
-              className="font-display text-7xl md:text-[9rem] lg:text-[12rem] font-black text-white mb-5 tracking-tighter leading-none"
+              className="font-display text-7xl md:text-[9rem] lg:text-[12rem] font-black text-white mb-5 tracking-tighter leading-none flex justify-center"
             >
-              {COPY.hero.wordmark}
+              {COPY.hero.wordmark.split('').map((ch, i) => (
+                <span key={i} className="inline-block overflow-hidden pb-[0.08em]">
+                  <span
+                    className="hero-letter inline-block"
+                    style={{ opacity: prefersReducedMotion ? 1 : 0 }}
+                  >
+                    {ch}
+                  </span>
+                </span>
+              ))}
             </h1>
             <p
               ref={taglineRef}
@@ -207,15 +219,15 @@ export default function Hero({ start = true }) {
         {/* Panel 1 */}
         <div
           ref={panelRef}
-          className="absolute right-[8%] md:right-[12%] top-1/2 -translate-y-1/2 pointer-events-none max-w-xs md:max-w-sm"
+          className="absolute right-[6%] md:right-[9%] top-1/2 -translate-y-1/2 pointer-events-none max-w-sm md:max-w-md"
           style={{ opacity: prefersReducedMotion ? 1 : 0 }}
         >
-          <h2 className="font-display text-2xl md:text-3xl font-bold text-white mb-3 tracking-tight">{showcase.productName}</h2>
-          <p className="font-body text-sm md:text-base text-slate mb-6 leading-relaxed">{showcase.description}</p>
-          <div className="w-12 h-px bg-white/20 mb-5" />
-          <div className="flex flex-col gap-2.5">
+          <h2 className="font-display text-4xl md:text-6xl font-black text-white mb-4 tracking-tighter leading-none">{showcase.productName}</h2>
+          <p className="font-body text-base md:text-xl text-slate mb-7 leading-relaxed">{showcase.description}</p>
+          <div className="w-16 h-px bg-white/25 mb-6" />
+          <div className="flex flex-col gap-3">
             {showcase.features.map((feature) => (
-              <span key={feature} className="font-mono text-[10px] uppercase tracking-premium text-white/60 font-medium">{feature}</span>
+              <span key={feature} className="font-mono text-xs md:text-sm uppercase tracking-premium text-white/70 font-medium">{feature}</span>
             ))}
           </div>
         </div>
@@ -223,15 +235,15 @@ export default function Hero({ start = true }) {
         {/* Panel 2 */}
         <div
           ref={panel2Ref}
-          className="absolute left-[8%] md:left-[12%] top-1/2 -translate-y-1/2 pointer-events-none max-w-xs md:max-w-sm text-left"
+          className="absolute left-[6%] md:left-[9%] top-1/2 -translate-y-1/2 pointer-events-none max-w-sm md:max-w-md text-left"
           style={{ opacity: prefersReducedMotion ? 1 : 0 }}
         >
-          <h2 className="font-display text-2xl md:text-3xl font-bold text-white mb-3 tracking-tight">{showcaseSecondary.productName}</h2>
-          <p className="font-body text-sm md:text-base text-slate mb-6 leading-relaxed">{showcaseSecondary.description}</p>
-          <div className="w-12 h-px bg-white/20 mb-5" />
-          <div className="flex flex-col gap-2.5">
+          <h2 className="font-display text-4xl md:text-6xl font-black text-white mb-4 tracking-tighter leading-none">{showcaseSecondary.productName}</h2>
+          <p className="font-body text-base md:text-xl text-slate mb-7 leading-relaxed">{showcaseSecondary.description}</p>
+          <div className="w-16 h-px bg-white/25 mb-6" />
+          <div className="flex flex-col gap-3">
             {showcaseSecondary.features.map((feature) => (
-              <span key={feature} className="font-mono text-[10px] uppercase tracking-premium text-white/60 font-medium">{feature}</span>
+              <span key={feature} className="font-mono text-xs md:text-sm uppercase tracking-premium text-white/70 font-medium">{feature}</span>
             ))}
           </div>
         </div>
