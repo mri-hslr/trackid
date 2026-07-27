@@ -133,10 +133,13 @@ export default function SideRail() {
               </text>
             </svg>
 
-            {/* chapter rows — evenly distributed to fill the viewport, each
-                band divided by a hairline (OSOS-style). Scrolls if it can't
-                fit. */}
-            <nav className="relative z-10 h-full overflow-y-auto flex flex-col py-16 pl-8 md:pl-36 pr-6 md:pr-[40%]">
+            {/* chapter rows — real gaps between each, scrollable with the
+                mouse wheel. data-lenis-prevent lets the wheel scroll this
+                panel natively instead of Lenis swallowing the event. */}
+            <nav
+              data-lenis-prevent
+              className="relative z-10 h-full overflow-y-auto overscroll-contain flex flex-col gap-10 md:gap-12 py-24 pl-8 md:pl-36 pr-6 md:pr-[40%]"
+            >
               {chapters.map((c, i) => (
                 <motion.button
                   key={c.id}
@@ -146,7 +149,7 @@ export default function SideRail() {
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: -24 }}
                   transition={{ duration: 0.45, ease: EASE, delay: 0.05 + i * 0.045 }}
-                  className="group flex-1 min-h-[8.5vh] flex items-center gap-5 text-left border-b border-white/[0.09] first:border-t"
+                  className="group flex items-center gap-5 text-left border-b border-white/[0.09] pb-5 flex-shrink-0"
                 >
                   <span className="font-mono text-[10px] text-gold/70 tabular-nums w-6 flex-shrink-0">
                     {String(i + 1).padStart(2, '0')}
