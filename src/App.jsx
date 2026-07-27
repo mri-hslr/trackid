@@ -3,7 +3,7 @@
 // smooth scroll, renders section slots in order. Section developers
 // uncomment their imports as they build.
 
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import Lenis from 'lenis';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -13,7 +13,6 @@ import StoryThread from './components/StoryThread';
 import SideRail from './components/SideRail';
 import GrainOverlay from './components/GrainOverlay';
 import WipeReveal from './components/WipeReveal';
-import Preloader from './components/Preloader';
 import { COPY } from './content/copy';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -47,10 +46,6 @@ import TheInvitation from './sections/06-TheInvitation/TheInvitation';
 import Closing from './sections/07-Closing/closing';
 
 function App() {
-  // The site mounts (and loads assets) BEHIND the preloader; the hero's
-  // pendant-drop unveiling only starts once the preloader hands off.
-  const [booted, setBooted] = useState(false);
-
   // ---------------------------------------------------------------
   // Lenis smooth-scroll — initialized once at the App root.
   // Synced with GSAP ScrollTrigger so pinning and scrubbed timelines
@@ -92,9 +87,6 @@ function App() {
     <TrackProvider>
       <div className="bg-parchment text-ink font-body antialiased min-h-screen">
 
-        {/* Loading screen — sits above everything until the site is ready */}
-        {!booted && <Preloader onComplete={() => setBooted(true)} />}
-
         {/* Site-wide film grain texture */}
         <GrainOverlay />
 
@@ -110,7 +102,7 @@ function App() {
         {/* ============================================================ */}
 
         {/* Prologue — unveiling starts when the preloader hands off */}
-        <Hero start={booted} />
+        <Hero start />
 
         {/* Chapter 1 — The Secret */}
         <Reveal />
