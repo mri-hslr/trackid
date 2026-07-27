@@ -19,6 +19,9 @@ import { EASE } from '../../motion/variants';
 import { useReducedMotion } from '../../hooks/useReducedMotion';
 import CornerLabels from '../../components/CornerLabels';
 import TiltedPoster from '../../components/TiltedPoster';
+import StackCard from '../../components/StackCard';
+
+const POSTER_BG = 'radial-gradient(ellipse 75% 60% at 50% 42%, #2a1122 0%, #14070e 45%, #050205 100%)';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -79,10 +82,7 @@ export default function TheVows() {
     <section id="the-vows" className="relative">
 
       {/* ---------- VOW 1 · PEACE OF MIND — dark poster ---------- */}
-      <div
-        className="relative min-h-[92vh] flex flex-col items-center justify-center px-6 overflow-hidden"
-        style={{ background: 'radial-gradient(ellipse 75% 60% at 50% 42%, #2a1122 0%, #14070e 45%, #050205 100%)' }}
-      >
+      <StackCard first bg={POSTER_BG} className="flex flex-col items-center justify-center px-6">
         <CornerLabels labels={vows.peace.corners} tone="text-gold/60" />
         <div aria-hidden className="absolute -left-24 top-1/3 w-96 h-96 rounded-full bg-accentDeep/15 blur-[120px] pointer-events-none" />
         <motion.h2
@@ -94,10 +94,10 @@ export default function TheVows() {
         <motion.p {...lineIn} className="font-body font-semibold text-slate text-base md:text-xl mt-8 text-center">
           {vows.peace.line}
         </motion.p>
-      </div>
+      </StackCard>
 
       {/* ---------- The Pledge — a tilted collage card ---------- */}
-      <div className="relative bg-parchment min-h-[80vh] flex items-center justify-center px-6 overflow-hidden">
+      <StackCard bg="#050205" className="flex items-center justify-center px-6">
         <div
           aria-hidden
           className="absolute inset-0 pointer-events-none"
@@ -113,10 +113,10 @@ export default function TheVows() {
             <span className="mt-8 block w-[9px] h-[12px] bg-gold" style={{ borderRadius: '50% 50% 50% 4%' }} />
           </div>
         </TiltedPoster>
-      </div>
+      </StackCard>
 
       {/* ---------- VOW 2 · ALWAYS ON — the split slab ---------- */}
-      <div className="relative bg-parchment min-h-[92vh] flex flex-col items-center justify-center px-6 overflow-hidden">
+      <StackCard bg={POSTER_BG} className="flex flex-col items-center justify-center px-6">
         {/* the pink panel wipes across behind the text */}
         <motion.div
           aria-hidden
@@ -136,10 +136,10 @@ export default function TheVows() {
         <motion.p {...lineIn} className="relative z-10 font-body font-semibold text-ink/90 text-base md:text-xl mt-8 text-center">
           {vows.always.line}
         </motion.p>
-      </div>
+      </StackCard>
 
       {/* ---------- VOW 3 · ENCRYPTED — the stamp wall ---------- */}
-      <div className="relative bg-parchment min-h-[92vh] flex items-center justify-center px-6 overflow-hidden">
+      <StackCard bg={POSTER_BG} className="flex items-center justify-center px-6">
         <CornerLabels labels={vows.encrypted.corners} tone="text-gold/60" />
         <StampWall word={vows.encrypted.word} />
         <div
@@ -153,15 +153,10 @@ export default function TheVows() {
         >
           {vows.encrypted.line}
         </motion.p>
-      </div>
+      </StackCard>
 
-      {/* ---------- VOW 4 · TICK TOCK — the word pair ---------- */}
-      <div className="relative bg-parchment min-h-[92vh] flex flex-col items-center justify-center px-6 overflow-hidden">
-        <div
-          aria-hidden
-          className="absolute inset-0 pointer-events-none"
-          style={{ background: 'radial-gradient(ellipse 60% 45% at 50% 60%, rgba(42,17,34,0.6) 0%, transparent 72%)' }}
-        />
+      {/* ---------- VOW 4 · SEVEN DAYS — the word pair ---------- */}
+      <StackCard bg={POSTER_BG} className="flex flex-col items-center justify-center px-6">
         <motion.span {...lineIn} className="relative z-10 font-mono text-[11px] md:text-xs uppercase tracking-kicker text-gold mb-8">
           {vows.time.label}
         </motion.span>
@@ -188,7 +183,7 @@ export default function TheVows() {
         <motion.p {...lineIn} className="relative z-10 font-body text-slate text-base md:text-xl mt-10 text-center">
           {vows.time.line}
         </motion.p>
-      </div>
+      </StackCard>
     </section>
   );
 }

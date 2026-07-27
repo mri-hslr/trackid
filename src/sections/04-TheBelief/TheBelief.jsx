@@ -16,6 +16,7 @@ import { EASE } from '../../motion/variants';
 import ChapterMarker from '../../components/ChapterMarker';
 import CornerLabels from '../../components/CornerLabels';
 import TiltedPoster from '../../components/TiltedPoster';
+import StackCard from '../../components/StackCard';
 
 const { belief } = COPY.story;
 
@@ -74,7 +75,7 @@ export default function TheBelief() {
     <section id="the-belief" className="relative">
 
       {/* ---------- Panel 1 · the thesis poster ---------- */}
-      <div className="relative min-h-screen flex flex-col items-center justify-center px-6 overflow-hidden text-center" style={{ background: POSTER_BG }}>
+      <StackCard first bg={POSTER_BG} className="flex flex-col items-center justify-center px-6 text-center">
         <CornerLabels labels={belief.corners} tone="text-gold/60" />
         <span aria-hidden className="absolute top-14 right-4 md:right-16 font-display font-black text-[38vw] md:text-[22vw] leading-none text-ink/[0.04] pointer-events-none select-none">03</span>
         <div aria-hidden className="absolute -left-24 top-1/3 w-96 h-96 rounded-full bg-accentDeep/15 blur-[120px] pointer-events-none" />
@@ -84,10 +85,10 @@ export default function TheBelief() {
           segments={belief.headline}
           className="font-display font-black tracking-tighter leading-[1.05] text-[8.5vw] md:text-[6vw] max-w-6xl"
         />
-      </div>
+      </StackCard>
 
       {/* ---------- Panel 2 · the drip ---------- */}
-      <div className="relative min-h-screen flex flex-col items-center justify-center px-6 overflow-hidden text-center" style={{ background: POSTER_BG }}>
+      <StackCard bg={POSTER_BG} className="flex flex-col items-center justify-center px-6 text-center">
         <motion.span {...lineIn} className="font-mono text-[11px] md:text-xs uppercase tracking-kicker text-slate mb-14">
           {belief.dripKicker}
         </motion.span>
@@ -140,10 +141,10 @@ export default function TheBelief() {
             {finalWord}
           </motion.span>
         </motion.div>
-      </div>
+      </StackCard>
 
       {/* ---------- Panel 3 · the difference (tilted card) ---------- */}
-      <div className="relative min-h-[85vh] flex items-center justify-center px-6 overflow-hidden" style={{ background: POSTER_BG }}>
+      <StackCard bg={POSTER_BG} className="flex items-center justify-center px-6">
         <TiltedPoster tilt={7} className="relative w-[80vw] max-w-lg aspect-[4/3] rounded-2xl overflow-hidden glass-card">
           <div
             className="absolute inset-0 flex flex-col items-center justify-center text-center px-8 md:px-12"
@@ -155,10 +156,10 @@ export default function TheBelief() {
             </p>
           </div>
         </TiltedPoster>
-      </div>
+      </StackCard>
 
       {/* ---------- Panel 4 · the quote ---------- */}
-      <div className="relative min-h-[70vh] flex items-center justify-center px-6 overflow-hidden text-center" style={{ background: POSTER_BG }}>
+      <StackCard bg={POSTER_BG} className="flex items-center justify-center px-6 text-center">
         <motion.blockquote
           initial={{ opacity: 0, scale: 1.15, filter: 'blur(12px)' }}
           whileInView={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
@@ -170,7 +171,7 @@ export default function TheBelief() {
             “{belief.quote}”
           </p>
         </motion.blockquote>
-      </div>
+      </StackCard>
     </section>
   );
 }

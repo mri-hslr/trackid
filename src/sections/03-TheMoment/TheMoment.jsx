@@ -15,6 +15,7 @@ import { COPY } from '../../content/copy';
 import { EASE } from '../../motion/variants';
 import ChapterMarker from '../../components/ChapterMarker';
 import CornerLabels from '../../components/CornerLabels';
+import StackCard from '../../components/StackCard';
 import { KineticParagraph } from '../../components/Kinetic';
 
 const { moment } = COPY.story;
@@ -65,7 +66,7 @@ export default function TheMoment() {
     <section id="the-moment" className="relative">
 
       {/* ---------- Panel 1 · the timestamp ---------- */}
-      <div className="relative bg-parchment min-h-screen flex flex-col items-center justify-center px-6 overflow-hidden">
+      <StackCard first bg="#050205" className="flex flex-col items-center justify-center px-6">
         <div
           aria-hidden
           className="absolute inset-0 pointer-events-none"
@@ -84,14 +85,11 @@ export default function TheMoment() {
         <motion.p {...lineIn} className="font-body font-semibold text-slate text-base md:text-xl mt-8">
           The twelve minutes every parent knows.
         </motion.p>
-      </div>
+      </StackCard>
 
       {/* ---------- Panels 2 · the four beats ---------- */}
       {moment.beats.map((beat, i) => (
-        <div
-          key={beat.time}
-          className="relative bg-parchment min-h-[88vh] flex flex-col items-center justify-center px-6 overflow-hidden text-center"
-        >
+        <StackCard key={beat.time} bg="#050205" className="flex flex-col items-center justify-center px-6 text-center">
           <div
             aria-hidden
             className="absolute inset-0 pointer-events-none"
@@ -111,11 +109,11 @@ export default function TheMoment() {
           >
             <Segments segments={beat.segments} />
           </motion.h3>
-        </div>
+        </StackCard>
       ))}
 
       {/* ---------- Panel 3 · the split-slab climax ---------- */}
-      <div className="relative bg-parchment min-h-screen flex flex-col items-center justify-center px-6 overflow-hidden">
+      <StackCard bg="#050205" className="flex flex-col items-center justify-center px-6">
         <motion.div
           aria-hidden
           initial={{ scaleX: 0 }}
@@ -130,70 +128,67 @@ export default function TheMoment() {
         >
           She isn’t<br />home yet.
         </motion.h2>
-      </div>
+      </StackCard>
 
-      {/* ---------- Panel 4 · nothing / everything (both fly in from the right) ----------
-           A STATIC wrapper is what triggers whileInView (it never moves, so it
-           reliably enters view); the two lines slide in via variants. Without
-           this, animating each line's own x pushed it off-screen and its
-           in-view trigger never fired — leaving the text invisible. */}
-      <motion.div
-        initial="hidden"
-        whileInView="show"
-        viewport={{ once: false, amount: 0.4 }}
-        className="relative bg-parchment min-h-screen flex flex-col items-center justify-center px-6 overflow-hidden gap-6 md:gap-12"
-      >
+      {/* ---------- Panel 4 · nothing / everything (both fly in from the right) ---------- */}
+      <StackCard bg="#050205" className="flex items-center justify-center px-6">
         <div
           aria-hidden
           className="absolute inset-0 pointer-events-none"
           style={{ background: 'radial-gradient(ellipse 60% 45% at 50% 50%, rgba(42,17,34,0.6) 0%, transparent 74%)' }}
         />
-
-        {/* "nothing." — slides in from the right, dim and struck through */}
-        <motion.h2
-          variants={{
-            hidden: { opacity: 0, x: 220, filter: 'blur(12px)' },
-            show:   { opacity: 0.55, x: 0, filter: 'blur(0px)', transition: { duration: 0.7, ease: EASE } },
-          }}
-          className="relative z-10 font-display font-black uppercase tracking-tighter text-slate text-[11vw] md:text-[8vw] leading-none text-center"
+        <motion.div
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: false, amount: 0.4 }}
+          className="relative z-10 flex flex-col items-center justify-center gap-6 md:gap-12 w-full"
         >
-          Twelve minutes is{' '}
-          <span className="relative inline-block">
-            nothing.
-            <motion.span
-              aria-hidden
-              variants={{
-                hidden: { scaleX: 0 },
-                show:   { scaleX: 1, transition: { duration: 0.5, ease: EASE, delay: 0.7 } },
-              }}
-              className="absolute left-0 right-0 top-1/2 h-[4px] bg-slate origin-left rounded-full"
-            />
-          </span>
-        </motion.h2>
-
-        {/* "everything." — slides in from further right, later, bigger, gold */}
-        <motion.h2
-          variants={{
-            hidden: { opacity: 0, x: 320, filter: 'blur(14px)' },
-            show:   { opacity: 1, x: 0, filter: 'blur(0px)', transition: { duration: 0.85, ease: EASE, delay: 0.4 } },
-          }}
-          className="relative z-10 font-display font-black uppercase tracking-tighter text-ink text-[13vw] md:text-[9.5vw] leading-none text-center"
-        >
-          Twelve minutes is{' '}
-          <motion.span
+          {/* "nothing." — slides in from the right, dim and struck through */}
+          <motion.h2
             variants={{
-              hidden: { scale: 0.8, color: 'rgb(201,166,107)' },
-              show:   { scale: 1, transition: { duration: 0.6, ease: EASE, delay: 1.05 } },
+              hidden: { opacity: 0, x: 220, filter: 'blur(12px)' },
+              show:   { opacity: 0.55, x: 0, filter: 'blur(0px)', transition: { duration: 0.7, ease: EASE } },
             }}
-            className="text-gold inline-block"
+            className="font-display font-black uppercase tracking-tighter text-slate text-[11vw] md:text-[8vw] leading-none text-center"
           >
-            everything.
-          </motion.span>
-        </motion.h2>
-      </motion.div>
+            Twelve minutes is{' '}
+            <span className="relative inline-block">
+              nothing.
+              <motion.span
+                aria-hidden
+                variants={{
+                  hidden: { scaleX: 0 },
+                  show:   { scaleX: 1, transition: { duration: 0.5, ease: EASE, delay: 0.7 } },
+                }}
+                className="absolute left-0 right-0 top-1/2 h-[4px] bg-slate origin-left rounded-full"
+              />
+            </span>
+          </motion.h2>
 
-      {/* ---------- Panel 5 · the quiet turn ---------- */}
-      <div className="relative bg-parchment min-h-[80vh] flex flex-col items-center justify-center px-6 py-24 text-center overflow-hidden">
+          {/* "everything." — slides in from further right, later, bigger, gold */}
+          <motion.h2
+            variants={{
+              hidden: { opacity: 0, x: 320, filter: 'blur(14px)' },
+              show:   { opacity: 1, x: 0, filter: 'blur(0px)', transition: { duration: 0.85, ease: EASE, delay: 0.4 } },
+            }}
+            className="font-display font-black uppercase tracking-tighter text-ink text-[13vw] md:text-[9.5vw] leading-none text-center"
+          >
+            Twelve minutes is{' '}
+            <motion.span
+              variants={{
+                hidden: { scale: 0.8 },
+                show:   { scale: 1, transition: { duration: 0.6, ease: EASE, delay: 1.05 } },
+              }}
+              className="text-gold inline-block"
+            >
+              everything.
+            </motion.span>
+          </motion.h2>
+        </motion.div>
+      </StackCard>
+
+      {/* ---------- Panel 5 · the quiet turn (releases the stack) ---------- */}
+      <div className="relative z-10 bg-parchment min-h-[80vh] rounded-t-[2rem] md:rounded-t-[3rem] shadow-[0_-32px_70px_rgba(0,0,0,0.6)] flex flex-col items-center justify-center px-6 py-24 text-center overflow-hidden">
         <KineticParagraph
           text={moment.resolution}
           accents={moment.resolutionAccents}

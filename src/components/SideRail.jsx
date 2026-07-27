@@ -118,29 +118,33 @@ export default function SideRail() {
               </text>
             </svg>
 
-            {/* chapter rows */}
-            <nav className="relative z-10 h-full flex flex-col justify-center pl-8 md:pl-36 pr-6 md:pr-[40%]">
-              {chapters.map((c, i) => (
-                <motion.button
-                  key={c.id}
-                  type="button"
-                  onClick={() => jumpTo(c.id)}
-                  initial={{ opacity: 0, x: -40 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -24 }}
-                  transition={{ duration: 0.45, ease: EASE, delay: 0.05 + i * 0.045 }}
-                  className="group flex items-baseline gap-4 text-left border-b border-white/[0.07] py-2.5 md:py-3"
-                >
-                  <span className="font-mono text-[10px] text-gold/70 tabular-nums w-6 flex-shrink-0">
-                    {String(i + 1).padStart(2, '0')}
-                  </span>
-                  <span
-                    className={`menu-item ${i % 2 === 1 ? 'menu-item-solid' : ''} font-display font-bold uppercase tracking-tight text-3xl md:text-5xl leading-tight`}
+            {/* chapter rows — scrollable, centred, with breathing room.
+                The inner block uses m-auto so it centres when it fits and
+                scrolls (without clipping the top) when it doesn't. */}
+            <nav className="relative z-10 h-full overflow-y-auto pl-8 md:pl-36 pr-6 md:pr-[40%]">
+              <div className="flex flex-col gap-5 md:gap-8 min-h-full justify-center py-24 m-auto">
+                {chapters.map((c, i) => (
+                  <motion.button
+                    key={c.id}
+                    type="button"
+                    onClick={() => jumpTo(c.id)}
+                    initial={{ opacity: 0, x: -40 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -24 }}
+                    transition={{ duration: 0.45, ease: EASE, delay: 0.05 + i * 0.045 }}
+                    className="group flex items-baseline gap-4 text-left border-b border-white/[0.07] pb-3 md:pb-4 flex-shrink-0"
                   >
-                    {c.label}
-                  </span>
-                </motion.button>
-              ))}
+                    <span className="font-mono text-[10px] text-gold/70 tabular-nums w-6 flex-shrink-0">
+                      {String(i + 1).padStart(2, '0')}
+                    </span>
+                    <span
+                      className={`menu-item ${i % 2 === 1 ? 'menu-item-solid' : ''} font-display font-bold uppercase tracking-tight text-3xl md:text-5xl leading-tight`}
+                    >
+                      {c.label}
+                    </span>
+                  </motion.button>
+                ))}
+              </div>
             </nav>
           </motion.div>
         )}
