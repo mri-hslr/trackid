@@ -72,8 +72,12 @@ export default function StoryProgress() {
       >
         <div
           ref={barRef}
-          className="h-full origin-left bg-gradient-to-r from-gold/40 via-gold to-gold"
-          style={{ transform: 'scaleX(0)' }}
+          className="h-full origin-left"
+          style={{
+            transform: 'scaleX(0)',
+            background: 'linear-gradient(to right, #A81C4B 0%, #E11D5C 55%, #FF2E74 100%)',
+            boxShadow: '0 0 10px rgba(225,29,92,0.6)',
+          }}
         />
       </div>
 
