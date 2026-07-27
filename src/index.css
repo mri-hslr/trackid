@@ -388,3 +388,10 @@ html::-webkit-scrollbar {
   30%  { opacity: 0.5; }
   100% { transform: translateY(26px) scaleY(1); opacity: 0; }
 }
+
+/* Chrome (side rail / menu button) fades in after the intro */
+.chrome-fade-in { animation: chromeFadeIn 0.7s ease both; }
+@keyframes chromeFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}

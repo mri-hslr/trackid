@@ -54,12 +54,22 @@ function App() {
   // integration pattern that prevents double-RAF loops.
   // ---------------------------------------------------------------
   useEffect(() => {
+    // Always open at the top (the hero) — stop the browser from
+    // restoring the previous scroll position on refresh.
+    if ('scrollRestoration' in window.history) {
+      window.history.scrollRestoration = 'manual';
+    }
+    window.scrollTo(0, 0);
+
     const lenis = new Lenis({
       duration: 1.2,         // scroll duration for smooth feel
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // exponential ease-out
       orientation: 'vertical',
       smoothWheel: true,
     });
+
+    // Snap Lenis to the top on boot too (it tracks its own position)
+    lenis.scrollTo(0, { immediate: true });
 
     // ADDED: Expose Lenis globally so Hero.jsx can pause it during the intro sequence
     window.lenis = lenis;
