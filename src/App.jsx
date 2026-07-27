@@ -12,6 +12,7 @@ import StoryProgress from './components/StoryProgress';
 import StoryThread from './components/StoryThread';
 import SideRail from './components/SideRail';
 import GrainOverlay from './components/GrainOverlay';
+import SmokeLoader from './components/SmokeLoader';
 import WipeReveal from './components/WipeReveal';
 import { COPY } from './content/copy';
 
@@ -96,6 +97,9 @@ function App() {
   return (
     <TrackProvider>
       <div className="bg-parchment text-ink font-body antialiased min-h-screen">
+
+        {/* Brief smoke loading moment, then reveals the hero */}
+        <SmokeLoader />
 
         {/* Site-wide film grain texture */}
         <GrainOverlay />

@@ -4,7 +4,6 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import PendantScene from './PendantScene';
 import AnimatedMeshBackground from './AnimatedMeshBackground';
-import IntroSmoke from '../../components/IntroSmoke';
 import IntroCurtain from '../../components/IntroCurtain';
 import { useIntroSequence } from './useIntroSequence';
 import SoundToggle from '../../components/SoundToggle';
@@ -158,9 +157,6 @@ export default function Hero({ start = true }) {
     <div ref={wrapperRef} style={{ height: `${PIN_DISTANCE_VH}vh` }}>
       <section ref={sectionRef} id="hero" className="relative w-full h-screen overflow-hidden">
         <AnimatedMeshBackground />
-
-        {/* Ambient smoke drifting behind the pendant */}
-        <IntroSmoke opacity={0.35} />
 
         {/* The 3D Scene — elevated above the curtain (z-50) only during intro */}
         <div className={`absolute inset-0 ${introActive ? 'z-[55]' : ''}`}>
