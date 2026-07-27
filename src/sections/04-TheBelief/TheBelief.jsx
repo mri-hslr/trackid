@@ -145,32 +145,54 @@ export default function TheBelief() {
 
       {/* ---------- Panel 3 · the difference (tilted card) ---------- */}
       <StackCard bg={POSTER_BG} className="flex items-center justify-center px-6">
-        <TiltedPoster tilt={7} className="relative w-[80vw] max-w-lg aspect-[4/3] rounded-2xl overflow-hidden glass-card">
+        <TiltedPoster tilt={7} className="relative w-[86vw] max-w-xl aspect-[5/3] rounded-3xl overflow-hidden glass-card">
           <div
-            className="absolute inset-0 flex flex-col items-center justify-center text-center px-8 md:px-12"
+            className="absolute inset-0 flex flex-col items-center justify-center text-center px-8 md:px-14"
             style={{ background: 'linear-gradient(150deg, rgba(168,28,75,0.28), rgba(201,166,107,0.16))' }}
           >
-            <span className="font-mono text-[10px] uppercase tracking-kicker text-gold mb-6">{belief.pledge.kicker}</span>
-            <p className="font-display font-bold text-ink text-2xl md:text-4xl leading-snug">
+            <span className="font-mono text-[10px] uppercase tracking-kicker text-gold mb-5">{belief.pledge.kicker}</span>
+            <p className="font-display font-bold text-ink text-xl md:text-3xl leading-snug max-w-md">
               {belief.pledge.line}
             </p>
           </div>
         </TiltedPoster>
       </StackCard>
 
-      {/* ---------- Panel 4 · the quote ---------- */}
-      <StackCard bg={POSTER_BG} className="flex items-center justify-center px-6 text-center">
-        <motion.blockquote
-          initial={{ opacity: 0, scale: 1.15, filter: 'blur(12px)' }}
-          whileInView={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
-          viewport={{ once: false, amount: 0.5 }}
-          transition={{ duration: 0.8, ease: EASE }}
-          className="relative z-10 max-w-3xl"
+      {/* ---------- Panel 4 · the quote (closing heading) ---------- */}
+      <StackCard bg={POSTER_BG} className="flex flex-col items-center justify-center px-6 text-center">
+        <div aria-hidden className="absolute -right-16 top-1/4 w-96 h-96 rounded-full bg-gold/[0.07] blur-[120px] pointer-events-none" />
+
+        {/* big gold quotation mark fills the space above */}
+        <motion.span
+          aria-hidden
+          initial={{ opacity: 0, y: 30, scale: 0.8 }}
+          whileInView={{ opacity: 1, y: 0, scale: 1 }}
+          viewport={{ once: false, amount: 0.6 }}
+          transition={{ duration: 0.7, ease: EASE }}
+          className="font-display font-black text-gold/25 text-[14vw] md:text-[10vw] leading-[0.6] select-none"
         >
-          <p className="font-display text-2xl md:text-4xl italic text-ink leading-relaxed">
-            “{belief.quote}”
+          “
+        </motion.span>
+
+        <motion.blockquote
+          initial={{ opacity: 0, y: 24, filter: 'blur(10px)' }}
+          whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+          viewport={{ once: false, amount: 0.5 }}
+          transition={{ duration: 0.8, ease: EASE, delay: 0.1 }}
+          className="relative z-10 max-w-4xl -mt-4"
+        >
+          <p className="font-display font-bold text-ink text-4xl md:text-6xl leading-[1.1] tracking-tight">
+            When children wear it by <span className="text-gold">choice</span>, protection becomes <span className="text-gold">continuous</span>.
           </p>
         </motion.blockquote>
+
+        <motion.div
+          initial={{ scaleX: 0 }}
+          whileInView={{ scaleX: 1 }}
+          viewport={{ once: false, amount: 0.6 }}
+          transition={{ duration: 0.6, ease: EASE, delay: 0.3 }}
+          className="mt-10 h-px w-24 bg-gradient-to-r from-transparent via-gold to-transparent"
+        />
       </StackCard>
     </section>
   );

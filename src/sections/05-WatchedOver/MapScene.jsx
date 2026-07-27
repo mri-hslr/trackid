@@ -59,15 +59,30 @@ export default function MapScene({ activeState, labels, prefersReducedMotion }) 
       role="img"
       aria-label="Illustrated map showing the child's route between home, school, and a friend's house"
     >
-      {/* Night-city backdrop */}
-      <rect width="400" height="300" rx="20" className="text-stone fill-current" />
+      <defs>
+        <radialGradient id="map-vignette" cx="50%" cy="42%" r="75%">
+          <stop offset="0%" stopColor="#1a0c16" />
+          <stop offset="70%" stopColor="#0d0510" />
+          <stop offset="100%" stopColor="#050205" />
+        </radialGradient>
+        <filter id="map-glow" x="-60%" y="-60%" width="220%" height="220%">
+          <feGaussianBlur stdDeviation="3" result="b" />
+          <feMerge>
+            <feMergeNode in="b" />
+            <feMergeNode in="SourceGraphic" />
+          </feMerge>
+        </filter>
+      </defs>
+
+      {/* Backdrop with soft vignette */}
+      <rect width="400" height="300" rx="20" fill="url(#map-vignette)" />
 
       {/* Street grid — faint, abstract */}
-      <g className="text-ink" strokeOpacity="0.06" stroke="currentColor" strokeWidth="1">
-        {[60, 130, 200, 270, 340].map((x) => (
+      <g className="text-ink" strokeOpacity="0.05" stroke="currentColor" strokeWidth="0.75">
+        {[50, 100, 150, 200, 250, 300, 350].map((x) => (
           <line key={`v${x}`} x1={x} y1="0" x2={x} y2="300" />
         ))}
-        {[60, 120, 180, 240].map((y) => (
+        {[50, 100, 150, 200, 250].map((y) => (
           <line key={`h${y}`} x1="0" y1={y} x2="400" y2={y} />
         ))}
       </g>
@@ -77,25 +92,26 @@ export default function MapScene({ activeState, labels, prefersReducedMotion }) 
         d="M 0 60 Q 90 90 60 300"
         fill="none"
         className="text-accentDeep"
-        stroke="currentColor" strokeOpacity="0.25" strokeWidth="14" strokeLinecap="round"
+        stroke="currentColor" strokeOpacity="0.22" strokeWidth="16" strokeLinecap="round"
+        filter="url(#map-glow)"
       />
 
       {/* Safe zones */}
       <Zone cx="72"  cy="225" r="34" active={activeZone === 'home'} />
       <Zone cx="318" cy="78"  r="38" active={activeZone === 'school'} />
 
-      {/* The route — home → school, with the friend's-house branch */}
+      {/* The route — a soft gold trail, home → school + friend branch */}
       <path
         d="M 72 225 C 130 215 150 160 200 140 C 250 120 280 100 318 78"
         fill="none"
-        className="text-ink"
-        stroke="currentColor" strokeOpacity="0.28" strokeWidth="2" strokeDasharray="1 7" strokeLinecap="round"
+        className="text-gold"
+        stroke="currentColor" strokeOpacity="0.5" strokeWidth="1.5" strokeDasharray="1.5 7" strokeLinecap="round"
       />
       <path
         d="M 268 138 C 258 165 246 185 236 199"
         fill="none"
-        className="text-ink"
-        stroke="currentColor" strokeOpacity="0.18" strokeWidth="2" strokeDasharray="1 7" strokeLinecap="round"
+        className="text-gold"
+        stroke="currentColor" strokeOpacity="0.3" strokeWidth="1.5" strokeDasharray="1.5 7" strokeLinecap="round"
       />
 
       {/* Places */}
@@ -144,18 +160,28 @@ export default function MapScene({ activeState, labels, prefersReducedMotion }) 
             : { duration: 1.4, ease: EASE }
         }
       >
-        {/* Pulse ring */}
+        {/* Pulse rings */}
         {!prefersReducedMotion && (
-          <motion.circle
-            r="8"
-            className="text-gold"
-            fill="none" stroke="currentColor" strokeWidth="1.5"
-            animate={{ r: [8, 16], opacity: [0.7, 0] }}
-            transition={{ duration: 1.8, repeat: Infinity, ease: 'easeOut' }}
-          />
+          <>
+            <motion.circle
+              r="8"
+              className="text-gold"
+              fill="none" stroke="currentColor" strokeWidth="1.5"
+              animate={{ r: [8, 18], opacity: [0.7, 0] }}
+              transition={{ duration: 1.8, repeat: Infinity, ease: 'easeOut' }}
+            />
+            <motion.circle
+              r="8"
+              className="text-gold"
+              fill="none" stroke="currentColor" strokeWidth="1"
+              animate={{ r: [8, 18], opacity: [0.5, 0] }}
+              transition={{ duration: 1.8, repeat: Infinity, ease: 'easeOut', delay: 0.9 }}
+            />
+          </>
         )}
-        <circle r="5.5" className="text-gold fill-current" />
-        <circle r="2.2" className="text-parchment fill-current" />
+        <circle r="7" className="text-gold fill-current" filter="url(#map-glow)" opacity="0.9" />
+        <circle r="5" className="text-gold fill-current" />
+        <circle r="2" className="text-parchment fill-current" />
       </motion.g>
     </svg>
   );

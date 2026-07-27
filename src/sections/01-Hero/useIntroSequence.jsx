@@ -183,7 +183,18 @@ export function useIntroSequence({
     }, T + SPIN_STOP_AT);
 
     if (wordmarkRef.current) {
-      tl.fromTo(wordmarkRef.current, { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.8, ease: 'power2.out' }, T + SPIN_STOP_AT + 0.4);
+      // GSAP kinetic reveal — the wordmark's letters rise in, staggered.
+      const letters = wordmarkRef.current.querySelectorAll('.hero-letter');
+      if (letters.length) {
+        tl.fromTo(
+          letters,
+          { yPercent: 115, opacity: 0 },
+          { yPercent: 0, opacity: 1, stagger: 0.07, duration: 0.7, ease: 'power3.out' },
+          T + SPIN_STOP_AT + 0.4
+        );
+      } else {
+        tl.fromTo(wordmarkRef.current, { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.8, ease: 'power2.out' }, T + SPIN_STOP_AT + 0.4);
+      }
     }
     if (taglineRef.current) {
       tl.fromTo(taglineRef.current, { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.8, ease: 'power2.out' }, T + SPIN_STOP_AT + 0.6);

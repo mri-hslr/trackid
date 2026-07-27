@@ -72,7 +72,7 @@ export default function TheMoment() {
           className="absolute inset-0 pointer-events-none"
           style={{ background: 'radial-gradient(ellipse 70% 50% at 50% 40%, rgba(30,20,40,0.6) 0%, transparent 72%)' }}
         />
-        <span aria-hidden className="absolute top-14 left-1/2 -translate-x-1/2 font-display font-black text-[40vw] md:text-[24vw] leading-none text-ink/[0.035] pointer-events-none select-none">02</span>
+        <span aria-hidden className="absolute top-10 right-4 md:right-16 font-display font-black text-[30vw] md:text-[18vw] leading-none text-ink/[0.04] pointer-events-none select-none">02</span>
         <CornerLabels labels={{ tl: 'School’s Out', tr: 'Home By Four', bl: 'Twelve Minutes', br: 'Every Parent Knows' }} tone="text-slate/50" />
 
         <ChapterMarker className="mb-8">{moment.marker}</ChapterMarker>
@@ -111,24 +111,6 @@ export default function TheMoment() {
           </motion.h3>
         </StackCard>
       ))}
-
-      {/* ---------- Panel 3 · the split-slab climax ---------- */}
-      <StackCard bg="#050205" className="flex flex-col items-center justify-center px-6">
-        <motion.div
-          aria-hidden
-          initial={{ scaleX: 0 }}
-          whileInView={{ scaleX: 1 }}
-          viewport={{ once: false, amount: 0.5 }}
-          transition={{ duration: 0.8, ease: EASE }}
-          className="absolute inset-y-0 left-0 w-[66%] origin-left bg-accentDeep"
-        />
-        <motion.h2
-          {...wordPop}
-          className="relative z-10 font-display font-black uppercase tracking-tighter text-ink text-[13vw] md:text-[10vw] leading-[0.9] text-center"
-        >
-          She isn’t<br />home yet.
-        </motion.h2>
-      </StackCard>
 
       {/* ---------- Panel 4 · nothing / everything (both fly in from the right) ---------- */}
       <StackCard bg="#050205" className="flex items-center justify-center px-6">

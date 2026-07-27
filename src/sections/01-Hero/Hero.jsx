@@ -180,10 +180,18 @@ export default function Hero({ start = true }) {
           <div className="flex flex-col items-center text-center mb-auto" style={{ marginTop: '52vh' }}>
             <h1
               ref={wordmarkRef}
-              style={{ opacity: prefersReducedMotion ? 1 : 0 }}
-              className="font-display text-7xl md:text-[9rem] lg:text-[12rem] font-black text-white mb-5 tracking-tighter leading-none"
+              className="font-display text-7xl md:text-[9rem] lg:text-[12rem] font-black text-white mb-5 tracking-tighter leading-none flex justify-center"
             >
-              {COPY.hero.wordmark}
+              {COPY.hero.wordmark.split('').map((ch, i) => (
+                <span key={i} className="inline-block overflow-hidden pb-[0.08em]">
+                  <span
+                    className="hero-letter inline-block"
+                    style={{ opacity: prefersReducedMotion ? 1 : 0 }}
+                  >
+                    {ch}
+                  </span>
+                </span>
+              ))}
             </h1>
             <p
               ref={taglineRef}
